@@ -9,6 +9,25 @@ Two probabilistic models built on **real, public, uncleaned** U.S. flood insuran
 
 ---
 
+## What we predict, in one paragraph
+
+Flood insurance is renewed every year, and FEMA records each year of coverage as its own row, called a **policy term**. We predict per **policy-year**: for each policy at the start of a coverage year, the probability that it **files a flood claim during that year**, and the probability that it **is cancelled during that year or not renewed at the end of it**. The same house is scored again each year, because its premium, flood map, claim history and storm exposure change from year to year. This is the same approach as a bank's credit model, which predicts default "in the next 12 months" and re-scores each customer every year.
+
+**Example: one house, insured for four years, appears as four rows**
+
+| Row | `policyEffectiveDate` | `policyTerminationDate` | What happened | `CLAIM_IN_TERM` | `CANCEL_IN_TERM` | `NON_RENEWAL` |
+|---|---|---|---|---|---|---|
+| 1 | 2019-06-01 | 2020-06-01 | New business | 0 | 0 | 0 |
+| 2 | 2020-06-01 | 2021-06-01 | Renewed | 0 | 0 | 0 |
+| 3 | 2021-06-01 | 2022-06-01 | Flood claim in Sept 2021 | 1 | 0 | 0 |
+| 4 | 2022-06-01 | 2023-06-01 | Cancelled in Jan 2023 | 0 | 1 | 1 |
+
+All four rows share the same `originalNBDate` (2019-06-01), the date the policy was first bought. That shared value is part of how the rows are linked back into one policy (section 5).
+
+**How it would be used:** each month, score the policies coming up for renewal. High lapse risk points to retention outreach; high claim risk points to pricing and reserving review.
+
+---
+
 ## 1. Why this project
 
 - **Real data only.** All data comes from official FEMA, Census and FRED records; nothing is synthetic or deliberately degraded.
@@ -53,6 +72,8 @@ National (FRED, monthly)
 
 There is **no policyholder (person) level**: NFIP redacts all personal data.
 
+**Unit of prediction: the policy term (policy-year).** The policy level is used in a supporting role: to build history features (tenure, prior claims, premium change), the non-renewal label, and the optional survival model.
+
 ## 4. Targets
 
 | Model | Target | Definition | Expected base rate |
@@ -62,6 +83,10 @@ There is **no policyholder (person) level**: NFIP redacts all personal data.
 | Lapse (B) | `NON_RENEWAL` | 1 if no linked term for the same policy starts within ±60 days of `policyTerminationDate` | To be validated (linkage-sensitive) |
 
 Terms ending after the data cutoff are **censored** and excluded from the lapse labels, or handled with survival methods.
+
+`CANCEL_IN_TERM` comes straight from fields on the row and needs no linkage, so it is the most reliable lapse target. `CLAIM_IN_TERM` and `NON_RENEWAL` depend on the reconstructed policy key (section 5) and carry its linkage error.
+
+**Survival extension (notebook 07b):** a discrete-time hazard model on the term rows, i.e. "given the policy has survived to this tenure year, does it lapse in this term?", with tenure as a feature. Policies still active at the cutoff are censored, and policies that began before 2019 enter at their true tenure (computed from `originalNBDate`), not at year 1.
 
 ### Cancellation reason codes
 
@@ -79,6 +104,8 @@ Terms ending after the data cutoff are **censored** and excluded from the lapse 
 In the Beaufort County, SC pilot, two of the three most common codes (24 and 22) were rewrites, so treating every cancellation as lapse would overstate attrition.
 
 ## 5. The key problem: no policy ID
+
+**`id` is not a policy ID.** Both FEMA tables have an `id` column that the dictionary marks as the primary key, but it identifies the **record**: each policy term, and each claim, gets its own `id`. The same house's 2019 and 2020 terms have different `id`s, and nothing in `id` connects a claim to a policy. FEMA removes the real policy number for privacy. `id` is used only to check for duplicate records.
 
 Policies and claims share a set of fields that together approximate a property key:
 
