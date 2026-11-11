@@ -1,0 +1,16 @@
+# Mac
+.DS_Store
+
+# Data (re-create with: python src/download.py); keep folder placeholders
+data/**
+!data/**/
+!data/**/.gitkeep
+*.part
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+
+# Office lock files
+~$*
