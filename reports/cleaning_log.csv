@@ -1,0 +1,4 @@
+rule,rows_affected
+bad term dates,1
+negative premium,382
+multi-policy row,894383
