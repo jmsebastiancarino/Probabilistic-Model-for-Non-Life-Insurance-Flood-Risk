@@ -1,0 +1,5 @@
+check,count
+claim_geoid_not_in_policies,5373
+claim_zip_not_in_policies,7155
+policy_tracts_not_in_acs,41236
+policy_community_not_in_csb,3963
