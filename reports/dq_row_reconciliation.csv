@@ -1,0 +1,5 @@
+table,rows_raw,rows_clean,table_short,removed_by_log,expected_clean,difference,reconciled
+raw_policies,74739461,74739461,policies,0,74739461,0,True
+raw_claims,2725989,2714607,claims,11382,2714607,0,True
+raw_community,25133,25133,community,0,25133,0,True
+raw_disasters,70599,70586,disasters,13,70586,0,True
