@@ -1,0 +1,5 @@
+table,columns_raw,columns_dropped,columns_added,placeholders_raw,placeholders_clean,invalid_raw,invalid_clean,rows_raw,rows_clean
+raw_claims,84,3,25,55828.0,0.0,2198324.0,0.0,2725989,2714607
+raw_community,18,0,18,0.0,0.0,0.0,0.0,25133,25133
+raw_disasters,29,1,11,0.0,0.0,0.0,0.0,70599,70586
+raw_policies,87,2,41,74750369.0,1.0,35482099.0,0.0,74739461,74739461
