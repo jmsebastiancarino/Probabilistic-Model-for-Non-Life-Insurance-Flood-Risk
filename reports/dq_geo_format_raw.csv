@@ -1,0 +1,9 @@
+table,rule,condition,violations,violation_pct
+raw_policies,geoid_not_11_digits,"NOT regexp_matches(CAST(censusGeoid AS VARCHAR), '^\d{11}$')",74428755,99.58428118714959
+raw_policies,zip_not_5_digits,"NOT regexp_matches(CAST(reportedZipCode AS VARCHAR), '^\d{5}$')",53843,0.07204092627855585
+raw_policies,state_not_2_letters,"NOT regexp_matches(propertyState, '^[A-Z]{2}$')",9,1.2041831556692655e-05
+raw_claims,geoid_not_11_digits,"NOT regexp_matches(CAST(censusGeoid AS VARCHAR), '^\d{11}$')",2588848,94.9691286355154
+raw_claims,zip_not_5_digits,"NOT regexp_matches(CAST(reportedZipCode AS VARCHAR), '^\d{5}$')",56130,2.0590692038742637
+raw_claims,county_not_5_digits,"NOT regexp_matches(CAST(countyCode AS VARCHAR), '^\d{5}$')",0,0.0
+raw_disasters,state_fips_not_2,"NOT regexp_matches(CAST(fipsStateCode AS VARCHAR), '^\d{2}$')",0,0.0
+raw_disasters,county_fips_not_3,"NOT regexp_matches(CAST(fipsCountyCode AS VARCHAR), '^\d{3}$')",0,0.0
