@@ -1,89 +1,219 @@
-,n_missing,pct_missing
-n_rows,74739461,1.0
-reportedCity,74739461,1.0
-cancellationVoidanceReasonCode,71586182,0.9578097171452709
-cancellationDateOfFloodPolicy,71586182,0.9578097171452709
-obstructionType,61139615,0.8180366058567107
-elevationCertificateIndicator,58965698,0.7889500032653434
-enclosureTypeCode,55895611,0.7478728138004634
-insuranceToValueCode,53884767,0.7209680974284789
-lowestAdjacentGrade,51641174,0.6909492429976181
-lowestFloorElevation,50428399,0.6747225404796537
-baseFloodElevation,50228435,0.6720470595847621
-elevationDifference,49928558,0.6680347614495106
-propertyPurchaseDate,44435963,0.5945448683393636
-basementEnclosureCrawlspaceType,44290222,0.592594881036137
-subsidizedRateType,41826560,0.5596315445732208
-buildingPurpose,39913437,0.5340343168918491
-fullRiskPremium,35499691,0.4749792214851536
-premiumPaymentIndicator,34522708,0.46190737179653996
-waitingPeriodType,27715487,0.37082802885078336
-disasterAssistanceCoverageRequiredCode,27249800,0.36459722394840394
-locationOfContents,23891717,0.31966670190463375
-floodZoneCurrent,23306225,0.3118329285248659
-crsClassCode,19540378,0.26144660047789214
-additionalContentsRate,19406945,0.2596612919111097
-basicContentsRate,19405322,0.2596395764748691
-additionalBuildingRate,19402580,0.2596028890280598
-basicBuildingRate,19401768,0.25959202462003306
-endorsementEffectiveDate,18118500,0.2424221389554843
-communityProbationSurcharge,16916007,0.22633300767314873
-buildingDescriptionCode,13541825,0.181187084022455
-contentsDeductibleCode,11152490,0.14921822890855474
-grandfatheringTypeCode,6603539,0.08835411590672296
-mapPanelNumber,5161342,0.06905778996720353
-mapPanelSuffix,4928683,0.06594485609148291
-buildingReplacementCost,4858457,0.06500524535492704
-buildingOverWaterType,3904342,0.05223936522635613
-rolloverTransferCode,1776692,0.02377180643569265
-buildingDeductibleCode,1059474,0.01417556382966155
-iccPremium,802187,0.010733111923298457
-censusGeoid,310706,0.004157188128504165
-longitude,71324,0.0009543017710550521
-latitude,71324,0.0009543017710550521
-numberOfFloorsInInsuredBuilding,58435,0.0007818493633503726
-ratedFloodZone,45664,0.0006109757735609037
-originalConstructionDate,45283,0.0006058780648685706
-femaRegion,44452,0.000594759440397891
-condominiumCoverageTypeCode,31051,0.0004154565685187374
-originalNBDate,15146,0.0002026506452862966
-reportedZipCode,4439,5.939298920017633e-05
-nfipCommunityName,355,4.749833558473214e-06
-rateMethod,203,2.716102006676232e-06
-nfipRatedCommunityNumber,77,1.0302455887392606e-06
-nfipCommunityNumberCurrent,77,1.0302455887392606e-06
-occupancyType,44,5.887117649938631e-07
-propertyState,9,1.2041831556692655e-07
-preFIRMConstructionIndicator,0,0.0
-programTypeIndicator,0,0.0
-asOfDate,0,0.0
-foundationType,0,0.0
-seasonallyOccupied,0,0.0
-mandatoryPurchaseFlag,0,0.0
-construction,0,0.0
-buildingOnFederalLand,0,0.0
-policyEffectiveDate,0,0.0
-federalPolicyFee,0,0.0
-stateOwnedIndicator,0,0.0
-policyCost,0,0.0
-policyTermIndicator,0,0.0
-postFIRMConstructionIndicator,0,0.0
-primaryResidenceIndicator,0,0.0
-regularEmergencyProgramIndicator,0,0.0
-smallBusinessIndicatorBuilding,0,0.0
-totalBuildingInsuranceCoverage,0,0.0
-totalContentsInsuranceCoverage,0,0.0
-totalInsurancePremiumOfThePolicy,0,0.0
-policyCount,0,0.0
-reserveFundAssessment,0,0.0
-tenantIndicator,0,0.0
-agricultureStructureIndicator,0,0.0
-nonProfitIndicator,0,0.0
-houseOfWorshipIndicator,0,0.0
-hfiaaSurcharge,0,0.0
-postFirmVzoneIndicator,0,0.0
-floodproofedIndicator,0,0.0
-policyTerminationDate,0,0.0
-elevatedBuildingIndicator,0,0.0
-rentalPropertyIndicator,0,0.0
-id,0,0.0
+table,column,type,total,null_n,null_pct,placeholder_n,placeholder_pct,true_missing_pct,hidden_pct,distinct,top_value,top_value_pct,suggestion
+raw_policies,agricultureStructureIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.9408692551315,review: near-constant
+raw_policies,asOfDate,TIMESTAMP WITH TIME ZONE,74739461,0,0.0,0,0.0,0.0,0.0,1,2026-09-08 08:00:00+08,100.0,drop column: constant
+raw_policies,baseFloodElevation,"DECIMAL(8,2)",74739461,50228435,67.2047,0,0.0,67.2,0.0,37535,8.00,9.895330370911442,review: mostly missing - why?
+raw_policies,basementEnclosureCrawlspaceType,SMALLINT,74739461,44290222,59.2595,0,0.0,59.26,0.0,4,0,68.11130485067295,review: mostly missing - why?
+raw_policies,cancellationDateOfFloodPolicy,DATE,74739461,71586182,95.781,0,0.0,95.78,0.0,6515,2014-06-30,0.07595268290563569,review: mostly missing - why?
+raw_policies,condominiumCoverageTypeCode,VARCHAR,74739461,31051,0.0415,0,0.0,0.04,0.0,5,N,94.68836641015382,keep; handle missing in 05
+raw_policies,construction,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.78244558119037,review: near-constant
+raw_policies,crsClassCode,SMALLINT,74739461,19540378,26.1447,0,0.0,26.14,0.0,10,5,34.90982812160122,keep; handle missing in 05
+raw_policies,buildingDeductibleCode,VARCHAR,74739461,1059474,1.4176,0,0.0,1.42,0.0,15,F,38.5751615292766,keep; handle missing in 05
+raw_policies,contentsDeductibleCode,VARCHAR,74739461,11152490,14.9218,0,0.0,14.92,0.0,15,1,43.77602606672364,keep; handle missing in 05
+raw_policies,elevatedBuildingIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,83.27176456356837,keep
+raw_policies,elevationCertificateIndicator,VARCHAR,74739461,58965698,78.895,0,0.0,78.9,0.0,9,3,45.254426607018246,review: mostly missing - why?
+raw_policies,elevationDifference,INTEGER,74739461,49928558,66.8035,0,0.0,66.8,0.0,912,1,23.697505084760518,review: mostly missing - why?
+raw_policies,federalPolicyFee,SMALLINT,74739461,0,0.0,0,0.0,0.0,0.0,619,47,22.135265331924188,keep
+raw_policies,ratedFloodZone,VARCHAR,74739461,45664,0.0611,0,0.0,0.06,0.0,72,X,39.99466649151602,keep; handle missing in 05
+raw_policies,hfiaaSurcharge,SMALLINT,74739461,0,0.0,0,0.0,0.0,0.0,668,25,43.69101350623869,keep
+raw_policies,houseOfWorshipIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.87520916159671,review: near-constant
+raw_policies,locationOfContents,SMALLINT,74739461,23891717,31.9667,0,0.0,31.97,0.0,7,3,56.13915929092154,keep; handle missing in 05
+raw_policies,lowestAdjacentGrade,"DECIMAL(8,2)",74739461,51641174,69.0949,0,0.0,69.09,0.0,44004,0.00,6.839697679745688,review: mostly missing - why?
+raw_policies,lowestFloorElevation,"DECIMAL(8,2)",74739461,50428399,67.4723,0,0.0,67.47,0.0,46308,9.00,1.5055944491441797,review: mostly missing - why?
+raw_policies,nonProfitIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.63785930968916,review: near-constant
+raw_policies,numberOfFloorsInInsuredBuilding,SMALLINT,74739461,58435,0.0782,0,0.0,0.08,0.0,6,1,57.393831198837574,keep; handle missing in 05
+raw_policies,obstructionType,SMALLINT,74739461,61139615,81.8037,0,0.0,81.8,0.0,20,10,40.469340608709835,review: mostly missing - why?
+raw_policies,occupancyType,SMALLINT,74739461,44,0.0001,0,0.0,0.0,0.0,14,1,65.6888385950348,keep
+raw_policies,originalConstructionDate,DATE,74739461,45283,0.0606,0,0.0,0.06,0.0,44959,1970-01-01,1.2992337903497646,keep; handle missing in 05
+raw_policies,originalNBDate,DATE,74739461,15146,0.0203,0,0.0,0.02,0.0,18239,2000-01-01,0.8402137911869785,keep; handle missing in 05
+raw_policies,policyCost,INTEGER,74739461,0,0.0,0,0.0,0.0,0.0,50118,450,3.4679779133007127,keep
+raw_policies,policyCount,SMALLINT,74739461,0,0.0,0,0.0,0.0,0.0,533,1,98.8033322852034,keep
+raw_policies,policyEffectiveDate,DATE,74739461,0,0.0,0,0.0,0.0,0.0,6563,2017-09-30,0.04422964730773212,keep
+raw_policies,policyTerminationDate,DATE,74739461,0,0.0,0,0.0,0.0,0.0,6517,2018-09-30,0.04422964730773212,keep
+raw_policies,policyTermIndicator,SMALLINT,74739461,0,0.0,0,0.0,0.0,0.0,8,1,99.88183885885931,review: near-constant
+raw_policies,postFIRMConstructionIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,true,52.70809887162552,keep
+raw_policies,primaryResidenceIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,true,70.75656727040084,keep
+raw_policies,rateMethod,VARCHAR,74739461,203,0.0003,0,0.0,0.0,0.0,22,1,37.366176420964734,keep
+raw_policies,regularEmergencyProgramIndicator,VARCHAR,74739461,0,0.0,0,0.0,0.0,0.0,2,R,99.98950353682642,review: near-constant
+raw_policies,smallBusinessIndicatorBuilding,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,98.5413568877624,keep
+raw_policies,totalBuildingInsuranceCoverage,INTEGER,74739461,0,0.0,0,0.0,0.0,0.0,54099,250000,51.68393842176625,keep
+raw_policies,totalContentsInsuranceCoverage,INTEGER,74739461,0,0.0,0,0.0,0.0,0.0,5092,100000,38.50974119280844,keep
+raw_policies,totalInsurancePremiumOfThePolicy,INTEGER,74739461,0,0.0,0,0.0,0.0,0.0,46324,348,5.346296249045735,keep
+raw_policies,cancellationVoidanceReasonCode,VARCHAR,74739461,71586182,95.781,0,0.0,95.78,0.0,28,01,48.38652082483028,review: mostly missing - why?
+raw_policies,subsidizedRateType,VARCHAR,74739461,41826560,55.9632,0,0.0,55.96,0.0,3,N,85.37179387499145,review: mostly missing - why?
+raw_policies,iccPremium,SMALLINT,74739461,802187,1.0733,0,0.0,1.07,0.0,89,5,21.803217954721998,keep; handle missing in 05
+raw_policies,reserveFundAssessment,INTEGER,74739461,0,0.0,0,0.0,0.0,0.0,12493,0,33.22791289597339,keep
+raw_policies,communityProbationSurcharge,SMALLINT,74739461,16916007,22.6333,0,0.0,22.63,0.0,4,0,99.99775350673448,review: near-constant
+raw_policies,premiumPaymentIndicator,SMALLINT,74739461,34522708,46.1907,0,0.0,46.19,0.0,2,1,55.350748977671074,keep; handle missing in 05
+raw_policies,buildingReplacementCost,BIGINT,74739461,4858457,6.5005,0,0.0,6.5,0.0,298774,250000,15.727382794900887,keep; handle missing in 05
+raw_policies,basicBuildingRate,"DECIMAL(8,2)",74739461,19401768,25.9592,0,0.0,25.96,0.0,1761,0.00,41.6529055520981,keep; handle missing in 05
+raw_policies,additionalBuildingRate,"DECIMAL(8,2)",74739461,19402580,25.9603,0,0.0,25.96,0.0,1263,0.00,41.828801301612934,keep; handle missing in 05
+raw_policies,basicContentsRate,"DECIMAL(8,2)",74739461,19405322,25.964,0,0.0,25.96,0.0,1189,0.00,57.71411930707009,keep; handle missing in 05
+raw_policies,additionalContentsRate,"DECIMAL(8,2)",74739461,19406945,25.9661,0,0.0,25.97,0.0,934,0.00,57.82738308881526,keep; handle missing in 05
+raw_policies,enclosureTypeCode,VARCHAR,74739461,55895611,74.7873,0,0.0,74.79,0.0,3,N,80.40771392257952,review: mostly missing - why?
+raw_policies,buildingDescriptionCode,SMALLINT,74739461,13541825,18.1187,0,0.0,18.12,0.0,21,1,94.70918778627332,keep; handle missing in 05
+raw_policies,insuranceToValueCode,SMALLINT,74739461,53884767,72.0968,0,0.0,72.1,0.0,3,3,71.58760996445213,review: mostly missing - why?
+raw_policies,postFirmVzoneIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.85820208149481,review: near-constant
+raw_policies,floodproofedIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.9888158144464,review: near-constant
+raw_policies,waitingPeriodType,VARCHAR,74739461,27715487,37.0828,0,0.0,37.08,0.0,5,N,75.88201286433171,keep; handle missing in 05
+raw_policies,rolloverTransferCode,VARCHAR,74739461,1776692,2.3772,0,0.0,2.38,0.0,6,N,54.91076277546429,keep; handle missing in 05
+raw_policies,endorsementEffectiveDate,DATE,74739461,18118500,24.2422,0,0.0,24.24,0.0,6657,2016-09-30,0.06573890542055617,keep; handle missing in 05
+raw_policies,propertyPurchaseDate,DATE,74739461,44435963,59.4545,0,0.0,59.45,0.0,23184,1999-01-01,18.972628176456723,review: mostly missing - why?
+raw_policies,rentalPropertyIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,96.13502698393825,keep
+raw_policies,tenantIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.32813537416332,review: near-constant
+raw_policies,stateOwnedIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.94677510451942,review: near-constant
+raw_policies,disasterAssistanceCoverageRequiredCode,SMALLINT,74739461,27249800,36.4597,0,0.0,36.46,0.0,6,0,99.71121082544683,review: near-constant
+raw_policies,mandatoryPurchaseFlag,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,91.88880690482902,keep
+raw_policies,grandfatheringTypeCode,SMALLINT,74739461,6603539,8.8354,0,0.0,8.84,0.0,3,1,89.02075325259413,keep; handle missing in 05
+raw_policies,nfipRatedCommunityNumber,VARCHAR,74739461,76,0.0001,1,0.0,0.0,0.0,21619,480296,3.0979248758870574,placeholders -> NULL
+raw_policies,nfipCommunityNumberCurrent,VARCHAR,74739461,76,0.0001,1,0.0,0.0,0.0,21619,480296,3.0979248758870574,placeholders -> NULL
+raw_policies,nfipCommunityName,VARCHAR,74739461,355,0.0005,0,0.0,0.0,0.0,15756,"HOUSTON, CITY OF",3.0983940321683807,keep
+raw_policies,programTypeIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.98950353682642,review: near-constant
+raw_policies,mapPanelNumber,VARCHAR,74739461,5161342,6.9058,0,0.0,6.91,0.0,6429,0000,2.7187814605910803,keep; handle missing in 05
+raw_policies,mapPanelSuffix,VARCHAR,74739461,4922225,6.5858,6458,0.0086,6.59,0.0086,47,F,19.286860625648373,placeholders -> NULL
+raw_policies,floodZoneCurrent,VARCHAR,74739461,23306225,31.1833,0,0.0,31.18,0.0,70,X,41.666351695234574,keep; handle missing in 05
+raw_policies,femaRegion,SMALLINT,74739461,44452,0.0595,0,0.0,0.06,0.0,10,4,42.08030552616976,keep; handle missing in 05
+raw_policies,propertyState,VARCHAR,74739461,0,0.0,9,0.0,0.0,0.0,58,FL,29.941159195675763,placeholders -> NULL
+raw_policies,reportedCity,VARCHAR,74739461,0,0.0,74739461,100.0,100.0,100.0,1,NA,100.0,drop column: all missing
+raw_policies,reportedZipCode,VARCHAR,74739461,0,0.0,4439,0.0059,0.01,0.0059,42899,77573,0.3547229220719159,placeholders -> NULL
+raw_policies,censusGeoid,VARCHAR,74739461,310706,0.4157,0,0.0,0.42,0.0,244764,480610123051,0.07871151411843447,keep; handle missing in 05
+raw_policies,latitude,"DECIMAL(9,1)",74739461,71324,0.0954,0,0.0,0.1,0.0,390,30.0,4.624419650379117,keep; handle missing in 05
+raw_policies,longitude,"DECIMAL(9,1)",74739461,71324,0.0954,0,0.0,0.1,0.0,784,-80.3,3.419699623682857,keep; handle missing in 05
+raw_policies,buildingOnFederalLand,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.97629632357129,review: near-constant
+raw_policies,buildingPurpose,VARCHAR,74739461,39913437,53.4034,0,0.0,53.4,0.0,3,R,89.23840688790658,review: mostly missing - why?
+raw_policies,seasonallyOccupied,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,99.67678519918681,review: near-constant
+raw_policies,fullRiskPremium,INTEGER,74739461,35499691,47.4979,0,0.0,47.5,0.0,28865,426,0.08801784516066226,keep; handle missing in 05
+raw_policies,buildingOverWaterType,SMALLINT,74739461,3904342,5.2239,0,0.0,5.22,0.0,3,1,99.87386906203969,review: near-constant
+raw_policies,foundationType,VARCHAR,74739461,0,0.0,0,0.0,0.0,0.0,7,0,47.44820276399906,keep
+raw_policies,preFIRMConstructionIndicator,BOOLEAN,74739461,0,0.0,0,0.0,0.0,0.0,2,false,86.91735280242388,keep
+raw_policies,id,BIGINT,74739461,0,0.0,0,0.0,0.0,0.0,73954962,148883386,1.3379812840769616e-06,keep
+raw_claims,agricultureStructureIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.98525305861469,review: near-constant
+raw_claims,asOfDate,TIMESTAMP WITH TIME ZONE,2725989,0,0.0,0,0.0,0.0,0.0,1,2026-09-08 08:00:00+08,100.0,drop column: constant
+raw_claims,basementEnclosureCrawlspaceType,SMALLINT,2725989,1902200,69.7802,0,0.0,69.78,0.0,4,2,34.60485634064062,review: mostly missing - why?
+raw_claims,policyCount,SMALLINT,2725989,0,0.0,0,0.0,0.0,0.0,409,1,98.75120552577431,keep
+raw_claims,crsClassCode,SMALLINT,2725989,2174254,79.7602,0,0.0,79.76,0.0,10,5,40.63291253953438,review: mostly missing - why?
+raw_claims,dateOfLoss,DATE,2725989,0,0.0,0,0.0,0.0,0.0,18150,2005-08-29,6.762573143178494,keep
+raw_claims,elevatedBuildingIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,81.8832724563452,keep
+raw_claims,elevationCertificateIndicator,VARCHAR,2725989,2126487,78.0079,0,0.0,78.01,0.0,9,1,49.58598970478831,review: mostly missing - why?
+raw_claims,elevationDifference,INTEGER,2725989,1990171,73.0073,0,0.0,73.01,0.0,390,1,22.20834499835557,review: mostly missing - why?
+raw_claims,baseFloodElevation,"DECIMAL(6,1)",2725989,2063952,75.7139,0,0.0,75.71,0.0,10315,9.0,9.034993512447189,review: mostly missing - why?
+raw_claims,ratedFloodZone,VARCHAR,2725989,139030,5.1002,0,0.0,5.1,0.0,74,AE,36.412405453662004,keep; handle missing in 05
+raw_claims,houseWorship,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.92864974877008,review: near-constant
+raw_claims,locationOfContents,SMALLINT,2725989,926574,33.9904,0,0.0,33.99,0.0,7,3,54.60774751794333,keep; handle missing in 05
+raw_claims,lowestAdjacentGrade,"DECIMAL(6,1)",2725989,2210485,81.0893,0,0.0,81.09,0.0,12448,0.0,11.040651478940998,review: mostly missing - why?
+raw_claims,lowestFloorElevation,"DECIMAL(6,1)",2725989,2082251,76.3852,0,0.0,76.39,0.0,13650,10.0,1.5114844859243979,review: mostly missing - why?
+raw_claims,numberOfFloorsInTheInsuredBuilding,SMALLINT,2725989,17248,0.6327,0,0.0,0.63,0.0,6,1,52.08969775995564,keep; handle missing in 05
+raw_claims,nonProfitIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.84383649383764,review: near-constant
+raw_claims,obstructionType,SMALLINT,2725989,1213304,44.5088,0,0.0,44.51,0.0,20,10,81.33464667131624,keep; handle missing in 05
+raw_claims,occupancyType,SMALLINT,2725989,572,0.021,0,0.0,0.02,0.0,14,1,65.80846160422423,keep; handle missing in 05
+raw_claims,originalConstructionDate,DATE,2725989,2040,0.0748,0,0.0,0.07,0.0,32856,1492-10-12,12.238334858692289,keep; handle missing in 05
+raw_claims,originalNBDate,DATE,2725989,68,0.0025,0,0.0,0.0,0.0,19307,2000-01-01,0.40412029548912093,keep
+raw_claims,amountPaidOnBuildingClaim,"DECIMAL(12,2)",2725989,567072,20.8024,0,0.0,20.8,0.0,1397471,0.00,6.987484928786054,keep; handle missing in 05
+raw_claims,amountPaidOnContentsClaim,"DECIMAL(12,2)",2725989,567072,20.8024,0,0.0,20.8,0.0,473587,0.00,54.03588929078793,keep; handle missing in 05
+raw_claims,amountPaidOnIncreasedCostOfComplianceClaim,"DECIMAL(12,2)",2725989,567072,20.8024,0,0.0,20.8,0.0,8993,0.00,98.07083829531196,keep; handle missing in 05
+raw_claims,postFIRMConstructionIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,73.46280560926695,keep
+raw_claims,rateMethod,VARCHAR,2725989,33319,1.2223,0,0.0,1.22,0.0,21,1,64.56015776162694,keep; handle missing in 05
+raw_claims,smallBusinessIndicatorBuilding,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.36639509550479,review: near-constant
+raw_claims,totalBuildingInsuranceCoverage,INTEGER,2725989,4,0.0001,0,0.0,0.0,0.0,11218,250000,25.516134534856207,keep
+raw_claims,totalContentsInsuranceCoverage,INTEGER,2725989,51,0.0019,0,0.0,0.0,0.0,2873,0,27.67795892643193,keep
+raw_claims,yearOfLoss,SMALLINT,2725989,0,0.0,0,0.0,0.0,0.0,50,2005,10.162440127234555,keep
+raw_claims,primaryResidenceIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,50.79690343578056,keep
+raw_claims,buildingDamageAmount,INTEGER,2725989,594762,21.8182,0,0.0,21.82,0.0,210919,0,1.3263251638610059,keep; handle missing in 05
+raw_claims,buildingDeductibleCode,VARCHAR,2725989,269456,9.8847,0,0.0,9.88,0.0,15,0,28.49532247276955,keep; handle missing in 05
+raw_claims,netBuildingPaymentAmount,"DECIMAL(12,2)",2725989,0,0.0,0,0.0,0.0,0.0,1386526,0.00,26.390348603754454,keep
+raw_claims,buildingPropertyValue,INTEGER,2725989,596789,21.8926,0,0.0,21.89,0.0,436997,0,1.4357974826225812,keep; handle missing in 05
+raw_claims,causeOfDamage,VARCHAR,2725989,37745,1.3846,0,0.0,1.38,0.0,17,4,44.970694624446296,keep; handle missing in 05
+raw_claims,condominiumCoverageTypeCode,VARCHAR,2725989,37453,1.3739,0,0.0,1.37,0.0,5,N,96.74960647727983,keep; handle missing in 05
+raw_claims,contentsDamageAmount,INTEGER,2725989,1587352,58.2303,0,0.0,58.23,0.0,103354,0,6.524291762870871,review: mostly missing - why?
+raw_claims,contentsDeductibleCode,VARCHAR,2725989,553288,20.2968,0,0.0,20.3,0.0,15,0,42.50455999237815,keep; handle missing in 05
+raw_claims,netContentsPaymentAmount,"DECIMAL(12,2)",2725989,0,0.0,0,0.0,0.0,0.0,472648,0.00,64.02744104983549,keep
+raw_claims,contentsPropertyValue,INTEGER,2725989,1587352,58.2303,0,0.0,58.23,0.0,71762,0,59.786305907852984,review: mostly missing - why?
+raw_claims,disasterAssistanceCoverageRequired,SMALLINT,2725989,401690,14.7356,0,0.0,14.74,0.0,6,0,98.21735499606548,keep; handle missing in 05
+raw_claims,eventDesignationNumber,VARCHAR,2725989,2541817,93.2438,0,0.0,93.24,0.0,66,FL0124,29.68746606433117,review: mostly missing - why?
+raw_claims,ficoNumber,SMALLINT,2725989,996743,36.5645,0,0.0,36.56,0.0,726,654,10.193807011842155,keep; handle missing in 05
+raw_claims,floodCharacteristicsIndicator,SMALLINT,2725989,2686136,98.538,0,0.0,98.54,0.0,5,2,73.07605450028856,review: mostly missing - why?
+raw_claims,floodWaterDuration,SMALLINT,2725989,283322,10.3934,0,0.0,10.39,0.0,268,0,98.30443527504977,keep; handle missing in 05
+raw_claims,floodproofedIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.98639026056232,review: near-constant
+raw_claims,floodEvent,VARCHAR,2725989,772772,28.3483,0,0.0,28.35,0.0,197,Flooding,18.308974374071084,keep; handle missing in 05
+raw_claims,iccCoverage,INTEGER,2725989,752822,27.6165,0,0.0,27.62,0.0,4,30000,86.10867706585402,keep; handle missing in 05
+raw_claims,netIccPaymentAmount,"DECIMAL(8,2)",2725989,0,0.0,0,0.0,0.0,0.0,8908,0.00,98.47842379407987,keep
+raw_claims,nfipRatedCommunityNumber,VARCHAR,2725989,48,0.0018,0,0.0,0.0,0.0,16868,225203,4.722039105028319,keep
+raw_claims,nfipCommunityNumberCurrent,VARCHAR,2725989,1948580,71.4816,0,0.0,71.48,0.0,12111,480296,5.170380070207574,review: mostly missing - why?
+raw_claims,nfipCommunityName,VARCHAR,2725989,27694,1.0159,0,0.0,1.02,0.0,12567,NEW ORLEANS/ORLEANS PARISH*,4.753223795026118,keep; handle missing in 05
+raw_claims,nonPaymentReasonContents,VARCHAR,2725989,1867322,68.5007,0,0.0,68.5,0.0,23,97,34.04125231317845,review: mostly missing - why?
+raw_claims,nonPaymentReasonBuilding,VARCHAR,2725989,2123351,77.8929,0,0.0,77.89,0.0,23,97,21.714694393649257,review: mostly missing - why?
+raw_claims,numberOfUnits,INTEGER,2725989,2832,0.1039,0,0.0,0.1,0.0,475,1,88.9616720593047,keep; handle missing in 05
+raw_claims,buildingReplacementCost,BIGINT,2725989,596902,21.8967,0,0.0,21.9,0.0,482498,0,28.65453595837089,keep; handle missing in 05
+raw_claims,contentsReplacementCost,INTEGER,2725989,1588181,58.2607,0,0.0,58.26,0.0,10149,0,97.17834643454783,review: mostly missing - why?
+raw_claims,replacementCostBasis,VARCHAR,2725989,190156,6.9757,0,0.0,6.98,0.0,2,A,73.09633560254164,keep; handle missing in 05
+raw_claims,stateOwnedIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,99.92505472325824,review: near-constant
+raw_claims,waterDepth,SMALLINT,2725989,237054,8.6961,0,0.0,8.7,0.0,476,0,40.304427395653164,keep; handle missing in 05
+raw_claims,floodZoneCurrent,VARCHAR,2725989,1949806,71.5266,0,0.0,71.53,0.0,63,AE,62.49247922203913,review: mostly missing - why?
+raw_claims,buildingDescriptionCode,SMALLINT,2725989,1741664,63.8911,0,0.0,63.89,0.0,18,1,94.78708759810021,review: mostly missing - why?
+raw_claims,rentalPropertyIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,98.57629652944307,keep
+raw_claims,state,VARCHAR,2725989,0,0.0,1,0.0,0.0,0.0,58,LA,17.818964053046436,placeholders -> NULL
+raw_claims,reportedCity,VARCHAR,2725989,0,0.0,0,0.0,0.0,0.0,1,Currently Unavailable,100.0,drop column: constant
+raw_claims,reportedZipCode,VARCHAR,2725989,0,0.0,55827,2.048,2.05,2.048,26805,,2.0479539719345894,placeholders -> NULL
+raw_claims,countyCode,VARCHAR,2725989,62433,2.2903,0,0.0,2.29,0.0,2915,48201,6.414507523025609,keep; handle missing in 05
+raw_claims,censusGeoid,VARCHAR,2725989,137141,5.0309,0,0.0,5.03,0.0,123844,010030114072,0.17787834588975482,keep; handle missing in 05
+raw_claims,latitude,"DECIMAL(9,1)",2725989,41493,1.5221,0,0.0,1.52,0.0,347,30.0,8.050673198991543,keep; handle missing in 05
+raw_claims,longitude,"DECIMAL(9,1)",2725989,41493,1.5221,0,0.0,1.52,0.0,714,-90.1,5.0302179627013786,keep; handle missing in 05
+raw_claims,foundationType,VARCHAR,2725989,0,0.0,0,0.0,0.0,0.0,7,0,80.60131570596947,keep
+raw_claims,openDate,DATE,2725989,0,0.0,0,0.0,0.0,0.0,15726,2005-09-02,1.2426315733482416,keep
+raw_claims,mostRecentRecoveryDate,DATE,2725989,2689206,98.6507,0,0.0,98.65,0.0,6079,2016-01-09,1.9791751624391702,review: mostly missing - why?
+raw_claims,exteriorWaterDepth,INTEGER,2725989,2277975,83.5651,0,0.0,83.57,0.0,540,0,19.642020115442822,review: mostly missing - why?
+raw_claims,interiorWaterDepth,INTEGER,2725989,2338061,85.7693,0,0.0,85.77,0.0,463,0,38.268699346270445,review: mostly missing - why?
+raw_claims,mostRecentPaymentDate,DATE,2725989,567072,20.8024,0,0.0,20.8,0.0,16176,2005-11-23,0.4121510924227286,keep; handle missing in 05
+raw_claims,preFirmIndicator,BOOLEAN,2725989,0,0.0,0,0.0,0.0,0.0,2,false,93.19234230218831,keep
+raw_claims,totalSalvageRecovery,"DECIMAL(12,2)",2725989,2689206,98.6507,0,0.0,98.65,0.0,4684,0.00,75.31740206073458,review: mostly missing - why?
+raw_claims,totalBldgClaimPmtRecovery,"DECIMAL(12,2)",2725989,2689206,98.6507,0,0.0,98.65,0.0,6479,0.00,73.1261724166055,review: mostly missing - why?
+raw_claims,totalContentsClaimPmtRecovery,"DECIMAL(12,2)",2725989,2689206,98.6507,0,0.0,98.65,0.0,2690,0.00,52.108310904493926,review: mostly missing - why?
+raw_claims,totalIccClaimPmtRecovery,"DECIMAL(12,2)",2725989,2689206,98.6507,0,0.0,98.65,0.0,241,0.00,98.86088682271702,review: mostly missing - why?
+raw_claims,totalSubrogationRecovery,"DECIMAL(12,2)",2725989,2689206,98.6507,0,0.0,98.65,0.0,298,0.00,98.97235135796427,review: mostly missing - why?
+raw_claims,id,BIGINT,2725989,0,0.0,0,0.0,0.0,0.0,2742935,5696397,3.668393379430365e-05,keep
+raw_community,communityIdNumber,VARCHAR,25133,0,0.0,0,0.0,0.0,0.0,25912,180101,0.003978832610512076,keep
+raw_community,communityName,VARCHAR,25133,0,0.0,0,0.0,0.0,0.0,19376,"WASHINGTON, TOWNSHIP OF",0.11140731309433811,keep
+raw_community,county,VARCHAR,25133,0,0.0,0,0.0,0.0,0.0,2636,WASHINGTON COUNTY,1.4642104006684438,keep
+raw_community,state,VARCHAR,25133,0,0.0,0,0.0,0.0,0.0,55,PA,10.010742848048382,keep
+raw_community,initialFloodHazardBoundaryMap,DATE,25133,5369,21.3624,0,0.0,21.36,0.0,894,1974-06-28,4.4778384942319365,keep; handle missing in 05
+raw_community,initialFloodInsuranceRateMap,DATE,25133,1150,4.5757,0,0.0,4.58,0.0,1919,1986-09-01,0.7672101071592378,keep; handle missing in 05
+raw_community,currentlyEffectiveMapDate,VARCHAR,25133,283,1.126,0,0.0,1.13,0.0,1844,(NSFHA),6.511066398390342,keep; handle missing in 05
+raw_community,regularEmergencyProgramDate,VARCHAR,25133,2339,9.3065,0,0.0,9.31,0.0,3631,04/30/84,2.3383346494691586,keep; handle missing in 05
+raw_community,tribal,BOOLEAN,25133,0,0.0,0,0.0,0.0,0.0,2,false,99.78912187164286,review: near-constant
+raw_community,participatingInNFIP,BOOLEAN,25133,0,0.0,0,0.0,0.0,0.0,2,true,90.68157402618071,keep
+raw_community,originalEntryDate,DATE,25133,23351,92.9097,0,0.0,92.91,0.0,70,1991-10-01,15.712682379349046,review: mostly missing - why?
+raw_community,classRatingEffectiveDate,DATE,25133,23351,92.9097,0,0.0,92.91,0.0,67,2024-10-01,4.882154882154882,review: mostly missing - why?
+raw_community,classRating,VARCHAR,25133,23347,92.8938,0,0.0,92.89,0.0,10,7,23.908174692049272,review: mostly missing - why?
+raw_community,sfhaDiscount,VARCHAR,25133,23616,93.9641,0,0.0,93.96,0.0,9,15%,28.14765985497693,review: mostly missing - why?
+raw_community,nonSfhaDiscount,VARCHAR,25133,23347,92.8938,0,0.0,92.89,0.0,3,05%,55.711086226203804,review: mostly missing - why?
+raw_community,sanction,BOOLEAN,25133,0,0.0,0,0.0,0.0,0.0,2,false,90.68157402618071,keep
+raw_community,sanctionDate,VARCHAR,25133,22783,90.6497,0,0.0,90.65,0.0,810,12/17/11,1.446808510638298,review: mostly missing - why?
+raw_community,lastRefresh,TIMESTAMP,25133,0,0.0,0,0.0,0.0,0.0,25636,2026-08-25 16:02:43.552,0.003978832610512076,keep
+raw_disasters,id,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,71371,d5828ed4-3f92-4b72-a877-2c53850daa5c,0.0014164506579413306,keep
+raw_disasters,disasterNumber,SMALLINT,70599,0,0.0,0,0.0,0.0,0.0,5307,4522,0.6274876414680095,keep
+raw_disasters,state,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,59,TX,7.723905437754076,keep
+raw_disasters,femaDeclarationString,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,5260,DR-4522-ME,0.6274876414680095,keep
+raw_disasters,declarationType,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,3,DR,66.20773665349367,keep
+raw_disasters,declarationDate,DATE,70599,0,0.0,0,0.0,0.0,0.0,3612,2020-03-13,5.229535829119393,keep
+raw_disasters,fyDeclared,SMALLINT,70599,0,0.0,0,0.0,0.0,0.0,76,2020,13.442116743863227,keep
+raw_disasters,incidentType,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,26,Severe Storm,27.61087267525036,keep
+raw_disasters,declarationTitle,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,2530,COVID-19 PANDEMIC,5.899516990325642,keep
+raw_disasters,ihProgramDeclared,BOOLEAN,70599,0,0.0,0,0.0,0.0,0.0,2,false,83.18389778892052,keep
+raw_disasters,iaProgramDeclared,BOOLEAN,70599,0,0.0,0,0.0,0.0,0.0,2,false,76.53224549922804,keep
+raw_disasters,paProgramDeclared,BOOLEAN,70599,0,0.0,0,0.0,0.0,0.0,2,true,93.58347851952577,keep
+raw_disasters,hmProgramDeclared,BOOLEAN,70599,0,0.0,0,0.0,0.0,0.0,2,false,57.476734797943315,keep
+raw_disasters,incidentBeginDate,DATE,70599,0,0.0,0,0.0,0.0,0.0,3357,2020-01-20,11.150299579314154,keep
+raw_disasters,incidentEndDate,DATE,70599,636,0.9009,0,0.0,0.9,0.0,3570,2023-05-11,11.230221688606836,keep; handle missing in 05
+raw_disasters,disasterCloseoutDate,DATE,70599,17910,25.3686,0,0.0,25.37,0.0,2055,2020-04-21,1.4063656550703183,keep; handle missing in 05
+raw_disasters,tribalRequest,BOOLEAN,70599,0,0.0,0,0.0,0.0,0.0,2,false,99.73654017762291,review: near-constant
+raw_disasters,fipsStateCode,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,61,48,7.723905437754076,keep
+raw_disasters,fipsCountyCode,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,343,000,2.2904007138911315,keep
+raw_disasters,placeCode,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,1330,99005,1.5325996118925198,keep
+raw_disasters,designatedArea,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,2893,Washington (County),0.8583690987124464,keep
+raw_disasters,declarationRequestNumber,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,5493,20130,0.6274876414680095,keep
+raw_disasters,lastIAFilingDate,DATE,70599,50743,71.875,0,0.0,71.88,0.0,558,2025-09-30,20.930701047542303,review: mostly missing - why?
+raw_disasters,incidentId,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,4447,2020030901,11.129052819445034,keep
+raw_disasters,region,SMALLINT,70599,0,0.0,0,0.0,0.0,0.0,10,4,26.379977053499342,keep
+raw_disasters,designatedIncidentTypes,VARCHAR,70599,47812,67.7233,0,0.0,67.72,0.0,112,W,27.818493000394962,review: mostly missing - why?
+raw_disasters,declarationRequestDate,DATE,70599,10,0.0142,0,0.0,0.01,0.0,3913,2020-03-13,5.23027667200272,keep; handle missing in 05
+raw_disasters,lastRefresh,TIMESTAMP,70599,0,0.0,0,0.0,0.0,0.0,1,2026-11-06 12:27:53.589,100.0,drop column: constant
+raw_disasters,hash,VARCHAR,70599,0,0.0,0,0.0,0.0,0.0,71112,75ea231f2ccf5f9b85bf927676911f093d116d08,0.0014164506579413306,keep
