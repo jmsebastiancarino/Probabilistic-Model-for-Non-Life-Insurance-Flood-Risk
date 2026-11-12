@@ -12,6 +12,9 @@ Usage
 
 The ACS step needs a free Census API key (https://api.census.gov/data/key_signup.html):
   export CENSUS_API_KEY=your_key
+
+From a notebook, import the pieces instead (notebook 01 does this):
+  from src.download import FEMA_FILES, FRED_SERIES, ACS_VARS, download_file, download_bulk, fetch_acs
 """
 import argparse
 import csv
@@ -94,6 +97,163 @@ def stream(url, dest, force):
                 last = time.time()
     part.rename(dest)
     print(f"  saved {dest.relative_to(RAW)} ({dest.stat().st_size / 1e6:,.1f} MB)")
+
+
+def download_file(url, dest, headers=None):
+    """Download a small file once; skip it if it is already there.
+
+    Used by notebook 01 for the small OpenFEMA files and the FRED series.
+
+    Parameters
+    ----------
+    url : str
+        Address of the file.
+    dest : pathlib.Path
+        Where to save it. Parent folders are created if needed.
+    headers : dict, optional
+        Extra HTTP headers. Leave empty for FRED, which stalls on custom
+        user agents.
+
+    Returns
+    -------
+    pathlib.Path
+        ``dest``.
+
+    Notes
+    -----
+    The data goes to ``dest`` + ``.part`` first and is renamed only when
+    the download finishes, so an interrupted download is never mistaken
+    for a complete file. Delete a leftover ``.part`` file and run again.
+
+    To download again, delete ``dest`` first.
+
+    Examples
+    --------
+    >>> download_file("https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE",
+    ...               RAW / "fred" / "UNRATE.csv")
+    """
+    dest = Path(dest)
+    if dest.exists():
+        print(f"skip (exists): {dest.name}")
+        return dest
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    part = dest.with_suffix(dest.suffix + ".part")
+    print(f"downloading {dest.name} ...")
+    with open_url(url, timeout=600, headers=headers or {}) as r, open(part, "wb") as f:
+        shutil.copyfileobj(r, f, length=8 * 1024 * 1024)
+    part.rename(dest)
+    print(f"saved {dest.name} ({dest.stat().st_size / 1e6:,.1f} MB)")
+    return dest
+
+
+def download_bulk(url, dest):
+    """Download a large file with ``curl``, resuming an interrupted download.
+
+    Used by notebook 01 for the two NFIP bulk files (policies about
+    3.7 GB, claims about 0.2 GB).
+
+    Parameters
+    ----------
+    url : str
+        Address of the file.
+    dest : pathlib.Path
+        Where to save it. Parent folders are created if needed.
+
+    Returns
+    -------
+    pathlib.Path
+        ``dest``.
+
+    Raises
+    ------
+    RuntimeError
+        If ``curl`` is not installed.
+    subprocess.CalledProcessError
+        If ``curl`` fails after its retries. Run again to resume.
+
+    Notes
+    -----
+    Why ``curl``? It can **resume** (``-C -``) from the ``.part`` file
+    after a dropped connection, instead of starting the 3.7 GB download
+    again. FEMA's server also refused Python's ``urllib`` for these
+    files during testing (HTTP 403).
+
+    Progress is printed by ``curl`` in the terminal that runs Jupyter,
+    not in the notebook.
+
+    Examples
+    --------
+    >>> download_bulk("https://www.fema.gov/about/reports-and-data/openfema/v3/NfipClaimsV3.parquet",
+    ...               RAW / "fema" / "nfip_claims_v3.parquet")
+    """
+    import subprocess
+
+    dest = Path(dest)
+    if dest.exists():
+        print(f"skip (exists): {dest.name}")
+        return dest
+    if not shutil.which("curl"):
+        raise RuntimeError("curl not found; install it or use download_file instead")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    part = dest.with_suffix(dest.suffix + ".part")
+    print(f"downloading {dest.name} (progress is shown in the terminal running Jupyter) ...")
+    subprocess.run(["curl", "-L", "--fail", "--retry", "5", "-C", "-", "-o", str(part), url], check=True)
+    part.rename(dest)
+    print(f"saved {dest.name} ({dest.stat().st_size / 1e9:,.2f} GB)")
+    return dest
+
+
+def fetch_acs(states, key, year=ACS_YEAR, variables=ACS_VARS):
+    """Download ACS 5-year tract estimates for some states into a DataFrame.
+
+    Parameters
+    ----------
+    states : list of str
+        Two-digit state FIPS codes, for example ``["12"]`` for Florida
+        or :data:`STATE_FIPS` for every state.
+    key : str
+        Census API key (kept in ``.env``, never in the code).
+    year : int, default :data:`ACS_YEAR`
+        Last year of the 5-year estimate (2022 = 2018-2022).
+    variables : dict of {str: str}, default :data:`ACS_VARS`
+        Census variable code -> readable column name.
+
+    Returns
+    -------
+    pandas.DataFrame
+        One row per tract with ``NAME``, one column per variable (named
+        with the readable names), and ``state``, ``county``, ``tract``.
+        Values are kept exactly as returned, as text, including the
+        Census "not available" codes such as ``-666666666``; they are
+        cleaned in notebook 02.
+
+    Raises
+    ------
+    RuntimeError
+        If the Census API returns a page that is not JSON, which usually
+        means the key is missing, wrong or not yet activated.
+
+    Examples
+    --------
+    >>> acs = fetch_acs(["12"], KEY)
+    >>> acs.to_csv(RAW / "census" / "acs5_2022_tract.csv", index=False)
+    """
+    import pandas as pd
+
+    frames = []
+    for st in states:
+        params = {"get": "NAME," + ",".join(variables), "for": "tract:*", "in": f"state:{st}", "key": key}
+        url = f"https://api.census.gov/data/{year}/acs/acs5?" + urllib.parse.urlencode(params)
+        with open_url(url) as r:
+            body = r.read().decode()
+        try:
+            data = json.loads(body)
+        except json.JSONDecodeError:
+            raise RuntimeError(f"State {st}: the Census API did not return JSON. "
+                               "Check that the key is loaded and activated.") from None
+        frames.append(pd.DataFrame(data[1:], columns=data[0]))
+        print(f"state {st}: {len(data) - 1:,} tracts")
+    return pd.concat(frames, ignore_index=True).rename(columns=variables)
 
 
 def download_fema(key, force):
