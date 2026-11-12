@@ -1,3 +1,7 @@
 pandas>=2.2
 pyarrow>=16
 duckdb>=1.1
+openpyxl>=3.1         # read/write the Excel dictionaries and reports
+requests>=2.31        # notebook 00 (dictionary APIs)
+python-dotenv>=1.0    # notebook 01 (Census API key from .env)
+matplotlib>=3.8       # notebook 02 figures
