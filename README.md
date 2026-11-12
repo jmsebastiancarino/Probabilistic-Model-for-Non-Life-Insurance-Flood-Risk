@@ -195,8 +195,15 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 │   └── processed/    # cleaned and modeling tables (gitignored)
 ├── docs/             # data dictionaries, field mapping, cleaning decisions
 ├── notebooks/        # 00–09, see section 8
-├── src/
-│   └── download.py   # optional command-line downloader (untested; notebook 01 is the main path)
+├── src/              # shared functions, imported by the notebooks (documented with docstrings)
+│   ├── paths.py      # folder locations, correct from any working directory
+│   ├── db.py         # DuckDB connection and raw views
+│   ├── download.py   # downloads (used by notebook 01; also a command-line script)
+│   ├── dictionary.py # allowed codes and types from the data dictionaries
+│   ├── dates.py      # MM/DD/YY text dates, legend-code flags, FRED dates
+│   ├── dq.py         # data-quality checks and the cleaning log
+│   ├── clean.py      # cleaned views: column cleaning, de-duplication, dq_ flags
+│   └── geo.py        # state FIPS codes and geography keys
 ├── reports/          # audits, cleaning log, figures, final report
 ├── requirements.txt
 └── README.md
