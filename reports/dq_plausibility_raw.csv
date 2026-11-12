@@ -1,0 +1,36 @@
+table,rule,condition,violations,violation_pct
+raw_policies,term_end_before_start,policyTerminationDate <= policyEffectiveDate,560,0.0007492695190830986
+raw_policies,term_longer_than_3y,"date_diff('day', policyEffectiveDate, policyTerminationDate) > 3*366",43,5.753319521530935e-05
+raw_policies,effective_in_future,policyEffectiveDate > asOfDate,215731,0.288644040395207
+raw_policies,effective_before_1968,policyEffectiveDate < DATE '1968-01-01',0,0.0
+raw_policies,nb_after_effective,originalNBDate > policyEffectiveDate,2130987,2.851220722611312
+raw_policies,nb_before_1968,originalNBDate < DATE '1968-01-01',2086,0.002791028958584542
+raw_policies,construction_before_1800,originalConstructionDate < DATE '1800-01-01',77056,0.10309948582583436
+raw_policies,construction_in_future,originalConstructionDate > asOfDate,25,3.3449532101924043e-05
+raw_policies,cancel_before_effective,cancellationDateOfFloodPolicy < policyEffectiveDate,37820,0.05060245216379069
+raw_policies,cancel_after_termination,cancellationDateOfFloodPolicy > policyTerminationDate,9,1.2041831556692655e-05
+raw_policies,negative_premium,totalInsurancePremiumOfThePolicy < 0,382,0.0005111088505173994
+raw_policies,negative_policy_cost,policyCost < 0,442,0.0005913877275620171
+raw_policies,negative_building_cov,totalBuildingInsuranceCoverage < 0,0,0.0
+raw_policies,negative_contents_cov,totalContentsInsuranceCoverage < 0,0,0.0
+raw_policies,building_cov_over_limit,"totalBuildingInsuranceCoverage > 500000 AND COALESCE(policyCount,1) = 1",148442,0.19861261777095235
+raw_policies,contents_cov_over_limit,"totalContentsInsuranceCoverage > 500000 AND COALESCE(policyCount,1) = 1",8,1.0703850272615693e-05
+raw_policies,policycount_zero_or_less,policyCount <= 0,0,0.0
+raw_policies,latitude_out_of_range,latitude NOT BETWEEN -15 AND 72,11,1.4717794124846578e-05
+raw_policies,longitude_out_of_range,longitude NOT BETWEEN -180 AND 146,11,1.4717794124846578e-05
+raw_policies,term_mismatch,"CASE TRY_CAST(policyTermIndicator AS INTEGER)
+                                    WHEN 1 THEN date_diff('day', policyEffectiveDate, policyTerminationDate) NOT BETWEEN 360 AND 370
+                                    WHEN 3 THEN date_diff('day', policyEffectiveDate, policyTerminationDate) NOT BETWEEN 1090 AND 1100
+                                END",57670,0.07716138065271838
+raw_claims,loss_before_1978,dateOfLoss < DATE '1978-01-01',0,0.0
+raw_claims,loss_in_future,dateOfLoss > asOfDate,0,0.0
+raw_claims,nb_after_loss,originalNBDate > dateOfLoss,38519,1.4130284458227822
+raw_claims,construction_after_loss,originalConstructionDate > dateOfLoss,12875,0.47230564760165944
+raw_claims,negative_building_paid,amountPaidOnBuildingClaim < 0,84,0.003081450438721506
+raw_claims,negative_contents_paid,amountPaidOnContentsClaim < 0,47,0.0017241448883322714
+raw_claims,building_paid_over_cov,amountPaidOnBuildingClaim > totalBuildingInsuranceCoverage * 1.01,11042,0.40506399695670087
+raw_claims,contents_paid_over_cov,amountPaidOnContentsClaim > totalContentsInsuranceCoverage * 1.01,31878,1.1694104414948117
+raw_claims,year_mismatch,yearOfLoss <> YEAR(dateOfLoss),0,0.0
+raw_disasters,incident_end_before_begin,incidentEndDate < incidentBeginDate,2,0.0028329013158826613
+raw_disasters,declared_before_incident,declarationDate < incidentBeginDate - INTERVAL 30 DAY,11,0.015580957237354637
+raw_disasters,declared_before_1953,declarationDate < DATE '1953-01-01',0,0.0
