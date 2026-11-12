@@ -1,0 +1,314 @@
+table,column,null_n_raw,placeholder_n_raw,true_missing_pct_raw,invalid_n_raw,null_n_clean,placeholder_n_clean,true_missing_pct_clean,invalid_n_clean,status,outcome
+raw_claims,agricultureStructureIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,amountPaidOnBuildingClaim,567072.0,0.0,20.8,,558513.0,0.0,20.57435938240784,,kept,unchanged
+raw_claims,amountPaidOnContentsClaim,567072.0,0.0,20.8,,558513.0,0.0,20.57435938240784,,kept,unchanged
+raw_claims,amountPaidOnIncreasedCostOfComplianceClaim,567072.0,0.0,20.8,,558513.0,0.0,20.57435938240784,,kept,unchanged
+raw_claims,asOfDate,0.0,0.0,0.0,,,,,,dropped,dropped
+raw_claims,baseFloodElevation,2063952.0,0.0,75.71,,2054594.0,0.0,75.68660951658933,,kept,unchanged
+raw_claims,basementEnclosureCrawlspaceType,1902200.0,0.0,69.78,0.0,1892625.0,0.0,69.72003682300974,0.0,kept,unchanged
+raw_claims,buildingDamageAmount,594762.0,0.0,21.82,,586343.0,0.0,21.59955382123453,,kept,unchanged
+raw_claims,buildingDeductibleCode,269456.0,0.0,9.88,0.0,267289.0,0.0,9.846323979861541,0.0,kept,unchanged
+raw_claims,buildingDescriptionCode,1741664.0,0.0,63.89,2.0,1732800.0,0.0,63.83244425436168,0.0,kept,invalid codes -> NULL
+raw_claims,buildingPropertyValue,596789.0,0.0,21.89,,588370.0,0.0,21.674223930020073,,kept,unchanged
+raw_claims,buildingReplacementCost,596902.0,0.0,21.9,,588483.0,0.0,21.678386595186705,,kept,unchanged
+raw_claims,causeOfDamage,37745.0,0.0,1.38,25.0,36976.0,0.0,1.3621124531101556,0.0,kept,invalid codes -> NULL
+raw_claims,censusGeoid,137141.0,0.0,5.03,,135244.0,0.0,4.982083962798298,,kept,unchanged
+raw_claims,condominiumCoverageTypeCode,37453.0,0.0,1.37,0.0,36209.0,0.0,1.3338579028198188,0.0,kept,unchanged
+raw_claims,contentsDamageAmount,1587352.0,0.0,58.23,,1576283.0,0.0,58.06671094563596,,kept,unchanged
+raw_claims,contentsDeductibleCode,553288.0,0.0,20.3,0.0,548779.0,0.0,20.215780774159942,0.0,kept,unchanged
+raw_claims,contentsPropertyValue,1587352.0,0.0,58.23,,1576283.0,0.0,58.06671094563596,,kept,unchanged
+raw_claims,contentsReplacementCost,1588181.0,0.0,58.26,,1577112.0,0.0,58.09724943610622,,kept,unchanged
+raw_claims,countyCode,62433.0,0.0,2.29,,61090.0,0.0,2.250417832120819,,kept,unchanged
+raw_claims,county_fips,,,,,61090.0,0.0,2.250417832120819,,new (derived),new (derived)
+raw_claims,crsClassCode,2174254.0,0.0,79.76,0.0,2164027.0,0.0,79.71787444738779,0.0,kept,unchanged
+raw_claims,dateOfLoss,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,disasterAssistanceCoverageRequired,401690.0,0.0,14.74,1103.0,400895.0,0.0,14.76806771661607,0.0,kept,invalid codes -> NULL
+raw_claims,dq_building_paid_over_cov,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_construction_after_loss,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_contents_paid_over_cov,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_geo_county_mismatch,,,,,153158.0,0.0,5.64199532381667,,new (derived),new (derived)
+raw_claims,dq_invalid_buildingDescriptionCode,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_invalid_causeOfDamage,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_invalid_disasterAssistanceCoverageRequired,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_invalid_foundationType,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_invalid_ratedFloodZone,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_key_incomplete,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_loss_before_1978,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_loss_in_future,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_nb_after_loss,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_negative_building_paid,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_negative_contents_paid,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_no_geoid,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,dq_year_mismatch,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,elevatedBuildingIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,elevationCertificateIndicator,2126487.0,0.0,78.01,0.0,2117221.0,0.0,77.99364696252533,0.0,kept,unchanged
+raw_claims,elevationDifference,1990171.0,0.0,73.01,,1981701.0,0.0,73.00139578215189,,kept,unchanged
+raw_claims,eventDesignationNumber,2541817.0,0.0,93.24,,2530846.0,0.0,93.23065917092235,,kept,unchanged
+raw_claims,exteriorWaterDepth,2277975.0,0.0,83.57,,2266766.0,0.0,83.50254751424424,,kept,unchanged
+raw_claims,ficoNumber,996743.0,0.0,36.56,,992807.0,0.0,36.57277093885045,,kept,unchanged
+raw_claims,floodCharacteristicsIndicator,2686136.0,0.0,98.54,0.0,2674864.0,0.0,98.53595750692458,0.0,kept,unchanged
+raw_claims,floodEvent,772772.0,0.0,28.35,,769267.0,0.0,28.33806145788322,,kept,unchanged
+raw_claims,floodWaterDuration,283322.0,0.0,10.39,,282833.0,0.0,10.41892988561512,,kept,unchanged
+raw_claims,floodZoneCurrent,1949806.0,0.0,71.53,0.0,1939844.0,0.0,71.45947829649006,0.0,kept,unchanged
+raw_claims,floodproofedIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,foundationType,0.0,0.0,0.0,2197183.0,2186717.0,0.0,80.55372287774989,0.0,kept,invalid codes -> NULL
+raw_claims,geoid11,,,,,135244.0,0.0,4.982083962798298,,new (derived),new (derived)
+raw_claims,houseWorship,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,iccCoverage,752822.0,0.0,27.62,,747530.0,0.0,27.537319398351215,,kept,unchanged
+raw_claims,id,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,interiorWaterDepth,2338061.0,0.0,85.77,,2326788.0,0.0,85.71362263487865,,kept,unchanged
+raw_claims,latitude,41493.0,0.0,1.52,,40211.0,0.0,1.4812825576593591,,kept,unchanged
+raw_claims,locationOfContents,926574.0,0.0,33.99,0.0,919183.0,0.0,33.860628812936824,0.0,kept,unchanged
+raw_claims,longitude,41493.0,0.0,1.52,,40211.0,0.0,1.4812825576593591,,kept,unchanged
+raw_claims,loss_date,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,loss_year,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,lowestAdjacentGrade,2210485.0,0.0,81.09,,2200183.0,0.0,81.04977994973122,,kept,unchanged
+raw_claims,lowestFloorElevation,2082251.0,0.0,76.39,,2072806.0,0.0,76.35749852556927,,kept,unchanged
+raw_claims,mostRecentPaymentDate,567072.0,0.0,20.8,,558513.0,0.0,20.57435938240784,,kept,unchanged
+raw_claims,mostRecentRecoveryDate,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,netBuildingPaymentAmount,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,netContentsPaymentAmount,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,netIccPaymentAmount,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,nfipCommunityName,27694.0,0.0,1.02,,26398.0,0.0,0.9724427882194365,,kept,unchanged
+raw_claims,nfipCommunityNumberCurrent,1948580.0,0.0,71.48,,1938618.0,0.0,71.41431522131933,,kept,unchanged
+raw_claims,nfipRatedCommunityNumber,48.0,0.0,0.0,,48.0,0.0,0.0017682117521983845,,kept,unchanged
+raw_claims,nonPaymentReasonBuilding,2123351.0,0.0,77.89,0.0,2119514.0,0.0,78.07811591143764,0.0,kept,unchanged
+raw_claims,nonPaymentReasonContents,1867322.0,0.0,68.5,0.0,1858436.0,0.0,68.46059116476161,0.0,kept,unchanged
+raw_claims,nonProfitIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,numberOfFloorsInInsuredBuilding,,,,,17231.0,0.0,0.6347511812943826,,new (derived),new (derived)
+raw_claims,numberOfFloorsInTheInsuredBuilding,17248.0,0.0,0.63,0.0,,,,,dropped,dropped
+raw_claims,numberOfUnits,2832.0,0.0,0.1,,2819.0,0.0,0.10384560269681763,,kept,unchanged
+raw_claims,obstructionType,1213304.0,0.0,44.51,0.0,1207931.0,0.0,44.497453959265556,0.0,kept,unchanged
+raw_claims,occupancyType,572.0,0.0,0.02,0.0,571.0,0.0,0.021034352302193284,0.0,kept,unchanged
+raw_claims,openDate,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,originalConstructionDate,2040.0,0.0,0.07,,2040.0,0.0,0.07514899946843134,,kept,unchanged
+raw_claims,originalNBDate,68.0,0.0,0.0,,68.0,0.0,0.0025049666489477115,,kept,unchanged
+raw_claims,policyCount,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,postFIRMConstructionIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,preFirmIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,primaryResidenceIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,rateMethod,33319.0,0.0,1.22,0.0,32151.0,0.0,1.1843703342693803,0.0,kept,unchanged
+raw_claims,ratedFloodZone,139030.0,0.0,5.1,11.0,137562.0,0.0,5.067473855331545,0.0,kept,invalid codes -> NULL
+raw_claims,rentalPropertyIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,replacementCostBasis,190156.0,0.0,6.98,0.0,186125.0,0.0,6.856425257873424,0.0,kept,unchanged
+raw_claims,reportedCity,0.0,0.0,0.0,,,,,,dropped,dropped
+raw_claims,reportedZipCode,0.0,55827.0,2.05,,54435.0,0.0,2.0052626402274805,,kept,placeholders -> NULL
+raw_claims,smallBusinessIndicatorBuilding,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,state,0.0,1.0,0.0,,1.0,0.0,3.683774483746634e-05,,kept,placeholders -> NULL
+raw_claims,stateOwnedIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_claims,state_fips,,,,,135244.0,0.0,4.982083962798298,,new (derived),new (derived)
+raw_claims,totalBldgClaimPmtRecovery,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,totalBuildingInsuranceCoverage,4.0,0.0,0.0,,4.0,0.0,0.00014735097934986537,,kept,unchanged
+raw_claims,totalContentsClaimPmtRecovery,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,totalContentsInsuranceCoverage,51.0,0.0,0.0,,51.0,0.0,0.0018787249867107836,,kept,unchanged
+raw_claims,totalIccClaimPmtRecovery,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,totalSalvageRecovery,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,totalSubrogationRecovery,2689206.0,0.0,98.65,,2677844.0,0.0,98.64573398654022,,kept,unchanged
+raw_claims,total_paid,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_claims,waterDepth,237054.0,0.0,8.7,,235438.0,0.0,8.6730049690434,,kept,unchanged
+raw_claims,yearOfLoss,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_claims,zip5,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,classRating,23347.0,0.0,92.89,,23347.0,0.0,92.89380495762543,,kept,unchanged
+raw_community,classRatingEffectiveDate,23351.0,0.0,92.91,,23351.0,0.0,92.90972028806748,,kept,unchanged
+raw_community,communityIdNumber,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_community,communityName,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_community,community_id6,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,county,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_community,crs_class,,,,,23347.0,0.0,92.89380495762543,,new (derived),new (derived)
+raw_community,crs_class_filled,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,currentlyEffectiveMapDate,283.0,0.0,1.13,,283.0,0.0,1.1260096287749175,,kept,unchanged
+raw_community,ever_sanctioned,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,in_crs,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,initialFloodHazardBoundaryMap,5369.0,0.0,21.36,,5369.0,0.0,21.362352285839336,,kept,unchanged
+raw_community,initialFloodInsuranceRateMap,1150.0,0.0,4.58,,1150.0,0.0,4.575657502088887,,kept,unchanged
+raw_community,lastRefresh,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_community,map_all_zone_d,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,map_date,,,,,1910.0,0.0,7.599570286078064,,new (derived),new (derived)
+raw_community,map_firm_by_letter,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,map_is_not_applicable,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,map_is_nsfha,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,map_map_date_future,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,map_no_elevation_determined,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,nonSfhaDiscount,23347.0,0.0,92.89,,23347.0,0.0,92.89380495762543,,kept,unchanged
+raw_community,originalEntryDate,23351.0,0.0,92.91,,23351.0,0.0,92.90972028806748,,kept,unchanged
+raw_community,participatingInNFIP,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_community,program_date,,,,,2339.0,0.0,9.306489475987744,,new (derived),new (derived)
+raw_community,program_is_emergency,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,program_is_not_applicable,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,regularEmergencyProgramDate,2339.0,0.0,9.31,,2339.0,0.0,9.306489475987744,,kept,unchanged
+raw_community,sanction,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_community,sanctionDate,22783.0,0.0,90.65,,22783.0,0.0,90.64974336529662,,kept,unchanged
+raw_community,sanction_date,,,,,22783.0,0.0,90.64974336529662,,new (derived),new (derived)
+raw_community,sanction_is_suspended,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,sanction_is_withdrawn,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_community,sfhaDiscount,23616.0,0.0,93.96,,23616.0,0.0,93.96411092985318,,kept,unchanged
+raw_community,state,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_community,tribal,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,county_fips,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,declarationDate,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,declarationRequestDate,10.0,0.0,0.01,,10.0,0.0,0.014167115291984247,,kept,unchanged
+raw_disasters,declarationRequestNumber,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,declarationTitle,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,declarationType,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,declaration_date,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,designatedArea,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,designatedIncidentTypes,47812.0,0.0,67.72,0.0,47799.0,0.0,67.7173943841555,,kept,unchanged
+raw_disasters,disasterCloseoutDate,17910.0,0.0,25.37,,17903.0,0.0,25.363386507239397,,kept,unchanged
+raw_disasters,disasterNumber,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,dq_declared_before_1953,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,dq_declared_before_incident,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,dq_incident_end_before_begin,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,dq_no_end_date,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,femaDeclarationString,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,fipsCountyCode,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,fipsStateCode,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,fyDeclared,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,hash,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,hmProgramDeclared,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,iaProgramDeclared,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,id,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,ihProgramDeclared,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,incidentBeginDate,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,incidentEndDate,636.0,0.0,0.9,,636.0,0.0,0.9010285325701981,,kept,unchanged
+raw_disasters,incidentId,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,incidentType,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,incident_begin,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,incident_end,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,is_fire_management,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,is_flood_related,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,is_statewide_or_tribal,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_disasters,lastIAFilingDate,50743.0,0.0,71.88,,50737.0,0.0,71.87969285694047,,kept,unchanged
+raw_disasters,lastRefresh,0.0,0.0,0.0,,,,,,dropped,dropped
+raw_disasters,paProgramDeclared,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,placeCode,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,region,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,state,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_disasters,tribalRequest,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,additionalBuildingRate,19402580.0,0.0,25.96,,19402580.0,0.0,25.960288902805974,,kept,unchanged
+raw_policies,additionalContentsRate,19406945.0,0.0,25.97,,19406945.0,0.0,25.966129191110973,,kept,unchanged
+raw_policies,agricultureStructureIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,asOfDate,0.0,0.0,0.0,,,,,,dropped,dropped
+raw_policies,baseFloodElevation,50228435.0,0.0,67.2,,50228435.0,0.0,67.20470595847621,,kept,unchanged
+raw_policies,basementEnclosureCrawlspaceType,44290222.0,0.0,59.26,0.0,44290222.0,0.0,59.2594881036137,0.0,kept,unchanged
+raw_policies,basicBuildingRate,19401768.0,0.0,25.96,,19401768.0,0.0,25.959202462003304,,kept,unchanged
+raw_policies,basicContentsRate,19405322.0,0.0,25.96,,19405322.0,0.0,25.963957647486914,,kept,unchanged
+raw_policies,buildingDeductibleCode,1059474.0,0.0,1.42,0.0,1059474.0,0.0,1.4175563829661548,0.0,kept,unchanged
+raw_policies,buildingDescriptionCode,13541825.0,0.0,18.12,19.0,13541844.0,0.0,18.1187338238899,0.0,kept,invalid codes -> NULL
+raw_policies,buildingOnFederalLand,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,buildingOverWaterType,3904342.0,0.0,5.22,,3904342.0,0.0,5.223936522635613,,kept,unchanged
+raw_policies,buildingPurpose,39913437.0,0.0,53.4,,39913437.0,0.0,53.40343168918491,,kept,unchanged
+raw_policies,buildingReplacementCost,4858457.0,0.0,6.5,,4858457.0,0.0,6.500524535492703,,kept,unchanged
+raw_policies,cancel_category,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,cancellationDateOfFloodPolicy,71586182.0,0.0,95.78,,71586182.0,0.0,95.78097171452708,,kept,unchanged
+raw_policies,cancellationVoidanceReasonCode,71586182.0,0.0,95.78,0.0,71586182.0,0.0,95.78097171452708,0.0,kept,unchanged
+raw_policies,censusGeoid,310706.0,0.0,0.42,,310706.0,0.0,0.41571881285041645,,kept,unchanged
+raw_policies,communityProbationSurcharge,16916007.0,0.0,22.63,,16916007.0,0.0,22.63330076731487,,kept,unchanged
+raw_policies,community_id6,,,,,76.0,1.0,0.00010302455887392605,,new (derived),new (derived)
+raw_policies,community_name_clean,,,,,355.0,0.0,0.0004749833558473214,,new (derived),new (derived)
+raw_policies,condominiumCoverageTypeCode,31051.0,0.0,0.04,0.0,31051.0,0.0,0.04154565685187374,0.0,kept,unchanged
+raw_policies,construction,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,contentsDeductibleCode,11152490.0,0.0,14.92,0.0,11152490.0,0.0,14.921822890855475,0.0,kept,unchanged
+raw_policies,county_fips,,,,,310706.0,0.0,0.41571881285041645,,new (derived),new (derived)
+raw_policies,crsClassCode,19540378.0,0.0,26.14,0.0,19540378.0,0.0,26.144660047789213,0.0,kept,unchanged
+raw_policies,disasterAssistanceCoverageRequiredCode,27249800.0,0.0,36.46,515.0,27250315.0,0.0,36.460411455201694,0.0,kept,invalid codes -> NULL
+raw_policies,dq_building_cov_over_limit,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_cancel_after_termination,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_cancel_before_effective,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_construction_before_1800,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_construction_in_future,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_contents_cov_over_limit,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_effective_before_1968,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_effective_in_future,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_geo_state_mismatch,,,,,310706.0,0.0,0.41571881285041645,,new (derived),new (derived)
+raw_policies,dq_identical_group_size,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_identical_row,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_invalid_buildingDescriptionCode,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_invalid_disasterAssistanceCoverageRequiredCode,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_invalid_floodZoneCurrent,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_invalid_foundationType,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_invalid_policyTermIndicator,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_latitude_out_of_range,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_longitude_out_of_range,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_multi_unit,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_nb_after_effective,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_nb_before_1968,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_negative_building_cov,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_negative_contents_cov,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_negative_policy_cost,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_negative_premium,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_policycount_zero_or_less,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_term_end_before_start,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_term_longer_than_3y,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,dq_term_mismatch,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,eff_year,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,effective_date,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,elevatedBuildingIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,elevationCertificateIndicator,58965698.0,0.0,78.9,0.0,58965698.0,0.0,78.89500032653433,0.0,kept,unchanged
+raw_policies,elevationDifference,49928558.0,0.0,66.8,,49928558.0,0.0,66.80347614495106,,kept,unchanged
+raw_policies,enclosureTypeCode,55895611.0,0.0,74.79,0.0,55895611.0,0.0,74.78728138004635,0.0,kept,unchanged
+raw_policies,endorsementEffectiveDate,18118500.0,0.0,24.24,,18118500.0,0.0,24.24221389554843,,kept,unchanged
+raw_policies,federalPolicyFee,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,femaRegion,44452.0,0.0,0.06,,44452.0,0.0,0.0594759440397891,,kept,unchanged
+raw_policies,floodZoneCurrent,23306225.0,0.0,31.18,5.0,23306230.0,0.0,31.18329954239301,0.0,kept,invalid codes -> NULL
+raw_policies,floodproofedIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,foundationType,0.0,0.0,0.0,35462531.0,35462531.0,0.0,47.44820276399906,0.0,kept,invalid codes -> NULL
+raw_policies,fullRiskPremium,35499691.0,0.0,47.5,,35499691.0,0.0,47.49792214851536,,kept,unchanged
+raw_policies,geoid11,,,,,310706.0,0.0,0.41571881285041645,,new (derived),new (derived)
+raw_policies,grandfatheringTypeCode,6603539.0,0.0,8.84,0.0,6603539.0,0.0,8.835411590672296,0.0,kept,unchanged
+raw_policies,hfiaaSurcharge,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,houseOfWorshipIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,iccPremium,802187.0,0.0,1.07,,802187.0,0.0,1.0733111923298457,,kept,unchanged
+raw_policies,id,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,insuranceToValueCode,53884767.0,0.0,72.1,0.0,53884767.0,0.0,72.0968097428479,0.0,kept,unchanged
+raw_policies,latitude,71324.0,0.0,0.1,,71324.0,0.0,0.09543017710550522,,kept,unchanged
+raw_policies,locationOfContents,23891717.0,0.0,31.97,0.0,23891717.0,0.0,31.966670190463375,0.0,kept,unchanged
+raw_policies,longitude,71324.0,0.0,0.1,,71324.0,0.0,0.09543017710550522,,kept,unchanged
+raw_policies,lowestAdjacentGrade,51641174.0,0.0,69.09,,51641174.0,0.0,69.09492429976181,,kept,unchanged
+raw_policies,lowestFloorElevation,50428399.0,0.0,67.47,,50428399.0,0.0,67.47225404796536,,kept,unchanged
+raw_policies,mandatoryPurchaseFlag,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,mapPanelNumber,5161342.0,0.0,6.91,,5161342.0,0.0,6.905778996720354,,kept,unchanged
+raw_policies,mapPanelSuffix,4922225.0,6458.0,6.59,,4928683.0,0.0,6.5944856091482915,,kept,placeholders -> NULL
+raw_policies,nfipCommunityName,355.0,0.0,0.0,,355.0,0.0,0.0004749833558473214,,kept,unchanged
+raw_policies,nfipCommunityNumberCurrent,76.0,1.0,0.0,,77.0,0.0,0.00010302455887392605,,kept,placeholders -> NULL
+raw_policies,nfipRatedCommunityNumber,76.0,1.0,0.0,,77.0,0.0,0.00010302455887392605,,kept,placeholders -> NULL
+raw_policies,nonProfitIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,numberOfFloorsInInsuredBuilding,58435.0,0.0,0.08,0.0,58435.0,0.0,0.07818493633503726,0.0,kept,unchanged
+raw_policies,obstructionType,61139615.0,0.0,81.8,0.0,61139615.0,0.0,81.80366058567107,0.0,kept,unchanged
+raw_policies,occupancyType,44.0,0.0,0.0,0.0,44.0,0.0,5.887117649938631e-05,0.0,kept,unchanged
+raw_policies,originalConstructionDate,45283.0,0.0,0.06,,45283.0,0.0,0.060587806486857056,,kept,unchanged
+raw_policies,originalNBDate,15146.0,0.0,0.02,,15146.0,0.0,0.02026506452862966,,kept,unchanged
+raw_policies,policyCost,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,policyCount,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,policyEffectiveDate,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,policyTermIndicator,0.0,0.0,0.0,19029.0,19029.0,0.0,0.025460445854700503,0.0,kept,invalid codes -> NULL
+raw_policies,policyTerminationDate,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,postFIRMConstructionIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,postFirmVzoneIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,preFIRMConstructionIndicator,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,premiumPaymentIndicator,34522708.0,0.0,46.19,0.0,34522708.0,0.0,46.190737179654,0.0,kept,unchanged
+raw_policies,primaryResidenceIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,programTypeIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,propertyPurchaseDate,44435963.0,0.0,59.45,,44435963.0,0.0,59.45448683393636,,kept,unchanged
+raw_policies,propertyState,0.0,9.0,0.0,,9.0,0.0,1.2041831556692655e-05,,kept,placeholders -> NULL
+raw_policies,rateMethod,203.0,0.0,0.0,0.0,203.0,0.0,0.00027161020066762323,0.0,kept,unchanged
+raw_policies,ratedFloodZone,45664.0,0.0,0.06,0.0,45664.0,0.0,0.06109757735609038,0.0,kept,unchanged
+raw_policies,regularEmergencyProgramIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,kept,unchanged
+raw_policies,rentalPropertyIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,reportedCity,0.0,74739461.0,100.0,,,,,,dropped,dropped
+raw_policies,reportedZipCode,0.0,4439.0,0.01,,4439.0,0.0,0.005939298920017633,,kept,placeholders -> NULL
+raw_policies,reserveFundAssessment,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,rolloverTransferCode,1776692.0,0.0,2.38,0.0,1776692.0,0.0,2.377180643569265,0.0,kept,unchanged
+raw_policies,seasonallyOccupied,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,smallBusinessIndicatorBuilding,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,stateOwnedIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,state_fips,,,,,310706.0,0.0,0.41571881285041645,,new (derived),new (derived)
+raw_policies,subsidizedRateType,41826560.0,0.0,55.96,0.0,41826560.0,0.0,55.963154457322084,0.0,kept,unchanged
+raw_policies,tenantIndicator,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,kept,unchanged
+raw_policies,tenure_months,,,,,15146.0,0.0,0.02026506452862966,,new (derived),new (derived)
+raw_policies,term_days,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,totalBuildingInsuranceCoverage,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,totalContentsInsuranceCoverage,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,totalInsurancePremiumOfThePolicy,0.0,0.0,0.0,,0.0,0.0,0.0,,kept,unchanged
+raw_policies,waitingPeriodType,27715487.0,0.0,37.08,0.0,27715487.0,0.0,37.08280288507834,0.0,kept,unchanged
+raw_policies,zip5,,,,,0.0,0.0,0.0,,new (derived),new (derived)
+raw_policies,zone_group,,,,,0.0,0.0,0.0,,new (derived),new (derived)
