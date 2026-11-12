@@ -14,3 +14,6 @@ __pycache__/
 
 # Office lock files
 ~$*
+
+# Secrets (Census API key). Each teammate keeps their own .env
+.env
