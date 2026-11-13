@@ -1,4 +1,74 @@
-rule,rows_affected
-bad term dates,1
-negative premium,382
-multi-policy row,894383
+step,table,column,rule,reason,rows_affected
+1,disasters,ALL,remove exact duplicates (keep lowest id),same declaration and county published twice; check the examples in 2.7.3,13
+2,claims,ALL,remove exact duplicates (keep lowest id),identical claim records under different ids,11382
+3,policies,ALL,flag dq_identical_group_size (rows kept),"identical after redaction; likely separate units, decided in notebook 04",719387
+4,policies,asOfDate,drop column,constant: one value in every row,0
+5,policies,reportedCity,drop column,constant 'NA',0
+6,policies,buildingDescriptionCode,"set ['21', '32', '34'] to NULL + dq_invalid_buildingDescriptionCode",value not in the dictionary's allowed codes,19
+7,policies,disasterAssistanceCoverageRequiredCode,set ['3'] to NULL + dq_invalid_disasterAssistanceCoverageRequiredCode,value not in the dictionary's allowed codes,515
+8,policies,floodZoneCurrent,set ['AA'] to NULL + dq_invalid_floodZoneCurrent,value not in the dictionary's allowed codes,5
+9,policies,foundationType,set ['0'] to NULL + dq_invalid_foundationType,value not in the dictionary's allowed codes,35462531
+10,policies,policyTermIndicator,"set ['0', '2', '4', '5', '6'] to NULL + dq_invalid_policyTermIndicator",value not in the dictionary's allowed codes,19029
+11,policies,nfipRatedCommunityNumber,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",1
+12,policies,nfipCommunityNumberCurrent,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",1
+13,policies,mapPanelSuffix,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",6458
+14,policies,propertyState,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",9
+15,policies,reportedZipCode,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",4439
+16,policies,term_end_before_start,flag dq_term_end_before_start (row kept),implausible: policyTerminationDate <= policyEffectiveDate,560
+17,policies,term_longer_than_3y,flag dq_term_longer_than_3y (row kept),"implausible: date_diff('day', policyEffectiveDate, policyTerminationDate) > 3*366",43
+18,policies,effective_in_future,flag dq_effective_in_future (row kept),implausible: policyEffectiveDate > asOfDate,215731
+19,policies,nb_after_effective,flag dq_nb_after_effective (row kept),implausible: originalNBDate > policyEffectiveDate,2130987
+20,policies,nb_before_1968,flag dq_nb_before_1968 (row kept),implausible: originalNBDate < DATE '1968-01-01',2086
+21,policies,construction_before_1800,flag dq_construction_before_1800 (row kept),implausible: originalConstructionDate < DATE '1800-01-01',77056
+22,policies,construction_in_future,flag dq_construction_in_future (row kept),implausible: originalConstructionDate > asOfDate,25
+23,policies,cancel_before_effective,flag dq_cancel_before_effective (row kept),implausible: cancellationDateOfFloodPolicy < policyEffectiveDate,37820
+24,policies,cancel_after_termination,flag dq_cancel_after_termination (row kept),implausible: cancellationDateOfFloodPolicy > policyTerminationDate,9
+25,policies,negative_premium,flag dq_negative_premium (row kept),implausible: totalInsurancePremiumOfThePolicy < 0,382
+26,policies,negative_policy_cost,flag dq_negative_policy_cost (row kept),implausible: policyCost < 0,442
+27,policies,building_cov_over_limit,flag dq_building_cov_over_limit (row kept),"implausible: totalBuildingInsuranceCoverage > 500000 AND COALESCE(policyCount,1) = 1",148442
+28,policies,contents_cov_over_limit,flag dq_contents_cov_over_limit (row kept),"implausible: totalContentsInsuranceCoverage > 500000 AND COALESCE(policyCount,1) = 1",8
+29,policies,latitude_out_of_range,flag dq_latitude_out_of_range (row kept),implausible: latitude NOT BETWEEN -15 AND 72,11
+30,policies,longitude_out_of_range,flag dq_longitude_out_of_range (row kept),implausible: longitude NOT BETWEEN -180 AND 146,11
+31,policies,term_mismatch,flag dq_term_mismatch (row kept),"implausible: CASE TRY_CAST(policyTermIndicator AS INTEGER)
+                                    WHEN 1 THEN date_diff('day', policyEffectiveDate, policyTerminationDate) NOT BETWEEN 360 AND 370
+                                    WHEN 3 THEN date_diff('day', policyEffectiveDate, policyTerminationDate) NOT BETWEEN 1090 AND 1100
+                                END",57670
+32,policies,reportedZipCode / censusGeoid,"LPAD to 5 / 11 digits (zip5, geoid11)",leading zeros lost,0
+33,policies,cancellationVoidanceReasonCode,decode to cancel_category,not every cancellation is a lapse,0
+34,policies,propertyState / censusGeoid,flag dq_geo_state_mismatch,state from the tract does not match the property state,2944
+35,claims,asOfDate,drop column,constant: one value in every row,0
+36,claims,reportedCity,drop column,constant: one value in every row,0
+37,claims,buildingDescriptionCode,set ['21'] to NULL + dq_invalid_buildingDescriptionCode,value not in the dictionary's allowed codes,2
+38,claims,causeOfDamage,"set ['5', '6', '@', 'N', 'Z'] to NULL + dq_invalid_causeOfDamage",value not in the dictionary's allowed codes,25
+39,claims,disasterAssistanceCoverageRequired,set ['3'] to NULL + dq_invalid_disasterAssistanceCoverageRequired,value not in the dictionary's allowed codes,1103
+40,claims,foundationType,set ['0'] to NULL + dq_invalid_foundationType,value not in the dictionary's allowed codes,2197183
+41,claims,ratedFloodZone,"set ['AA', 'AS'] to NULL + dq_invalid_ratedFloodZone",value not in the dictionary's allowed codes,11
+42,claims,state,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",1
+43,claims,reportedZipCode,placeholder text -> NULL,"hidden missing value ('None', 'NA', '')",55827
+44,claims,nb_after_loss,flag dq_nb_after_loss (row kept),implausible: originalNBDate > dateOfLoss,38519
+45,claims,construction_after_loss,flag dq_construction_after_loss (row kept),implausible: originalConstructionDate > dateOfLoss,12875
+46,claims,negative_building_paid,flag dq_negative_building_paid (row kept),implausible: amountPaidOnBuildingClaim < 0,84
+47,claims,negative_contents_paid,flag dq_negative_contents_paid (row kept),implausible: amountPaidOnContentsClaim < 0,47
+48,claims,building_paid_over_cov,flag dq_building_paid_over_cov (row kept),implausible: amountPaidOnBuildingClaim > totalBuildingInsuranceCoverage * 1.01,11042
+49,claims,contents_paid_over_cov,flag dq_contents_paid_over_cov (row kept),implausible: amountPaidOnContentsClaim > totalContentsInsuranceCoverage * 1.01,31878
+50,claims,numberOfFloorsInTheInsuredBuilding,rename to numberOfFloorsInInsuredBuilding,match policies for linkage,0
+51,claims,linkage key fields,flag dq_key_incomplete,claim cannot be linked to a policy term,151617
+52,claims,amountPaidOn*,mark target_only; derive total_paid,known only after the loss; never a feature,0
+53,community,date columns,MM/DD/YY -> DATE; legend codes -> flags,two-digit years with codes mixed into the date field,23223
+54,community,classRating,'None' -> NULL; crs_class / in_crs / crs_class_filled (10 when not in CRS),None = not in CRS program = no discount (class 10 equivalent),23347
+55,community,sanctionDate,suffix -> flag sanction_is_suspended,legend code appended to the date,204
+56,community,sanctionDate,suffix -> flag sanction_is_withdrawn,legend code appended to the date,30
+57,community,sanctionDate,ever_sanctioned flag,None = never sanctioned,2350
+58,disasters,lastRefresh,drop column,constant: one value in every row,0
+59,disasters,incident_end_before_begin,flag dq_incident_end_before_begin (row kept),implausible: incidentEndDate < incidentBeginDate,2
+60,disasters,declared_before_incident,flag dq_declared_before_incident (row kept),implausible: declarationDate < incidentBeginDate - INTERVAL 30 DAY,11
+61,disasters,fipsStateCode + fipsCountyCode,build 5-digit county_fips,join key to policies,0
+62,disasters,incidentType / designatedIncidentTypes,flag is_flood_related,only flood-type disasters are relevant,49214
+63,disasters,fipsCountyCode,flag is_statewide_or_tribal (000),no single county; decide in notebook 05,1608
+64,acs,median_household_income,sentinel code -> NaN,Census code for 'not available',1581
+65,acs,median_home_value,sentinel code -> NaN,Census code for 'not available',3201
+66,acs,median_age,sentinel code -> NaN,Census code for 'not available',902
+67,acs,state/county/tract,build geoid11,join key to policies,0
+68,fred,all series,resample to monthly mean,align frequencies,0
+69,validation,spot-check,manual raw vs clean comparison,random + targeted rows for each rule; all matched expectations,0
+70,export,all tables,write clean Parquet to data/processed/,policies partitioned by propertyState and eff_year,74739461
