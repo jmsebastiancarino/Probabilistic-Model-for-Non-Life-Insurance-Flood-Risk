@@ -1,0 +1,7 @@
+key,n_fields,terms,key_complete_pct,collision_pct,multi_year_pct,renewed_pct,avg_terms_per_key,claims,matched_pct,matched_multi_pct,outside_term_pct,key_not_found_pct,key_incomplete_pct
+chosen (5 fields),5,2659242,99.49,3.43,0.191,82.17,11.5,96676,95.86,3.01,0.5,0.08,0.55
+with occupancy (old 6 fields),6,2659242,99.49,3.24,0.191,77.63,7.92,96676,72.12,2.1,24.93,0.3,0.55
+without tract,4,2659242,99.78,3.87,0.191,82.25,11.89,96676,95.78,3.47,0.5,0.07,0.18
+without zip,4,2659242,99.49,3.5,0.191,82.17,11.54,96676,95.8,3.07,0.5,0.08,0.55
+without floors,4,2659242,99.68,4.31,0.191,82.44,12.4,96676,95.27,3.84,0.45,0.06,0.39
+without construction date,4,2659242,99.49,9.68,0.191,82.68,13.55,96676,88.87,10.03,0.47,0.07,0.55

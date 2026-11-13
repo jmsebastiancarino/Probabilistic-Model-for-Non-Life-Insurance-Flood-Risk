@@ -1,0 +1,10 @@
+step,rows
+terms_clean,74739461
+no_state,9
+void_or_duplicate,282869
+flat_cancelled,1132211
+end_not_after_start,559
+starts_after_cutoff,215179
+terms_labeled,73108634
+check (expect 0),0
+policy_years,73248304
