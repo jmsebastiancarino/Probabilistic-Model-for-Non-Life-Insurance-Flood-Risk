@@ -1,0 +1,12 @@
+table,column,rule,reason,rows_affected
+policies,cancellationVoidanceReasonCode,decode to cancel_category (src/targets.py),"lapse = 05, 28, 30, 52; rewrites, duplicates and voids are not lapse",3153279
+policies,cancel_category,void and duplicate terms left out of the policy-years,never real cover; would double-count exposure and claims,282869
+policies,cancellationDateOfFloodPolicy,flat cancellations (on or before the start) left out,the term never gave cover; an unpaid renewal becomes NON_RENEWAL of the term before,1132211
+policies,policyEffectiveDate,terms starting after the cutoff left out,after asOfDate 2026-09-08,215179
+policies,policy key,key incomplete: claim and renewal targets NULL,"a key field is missing, so the term can't be linked",366192
+policies,policy key,flag dq_key_collision,more than one term of the key starts in the same year,3941389
+policies,policyEffectiveDate / policyTerminationDate,split multi-year terms into policy-years,unit of prediction is the policy-year (option B),85337
+claims,policy key + dateOfLoss,link claim to policy-year,claim target,982116
+periods,censored_claim,target set to NULL,outcome not observable before the cutoff,6992287
+periods,censored_cancel,target set to NULL,outcome not observable before the cutoff,3380428
+periods,censored_renewal,target set to NULL,outcome not observable before the cutoff,4042016
