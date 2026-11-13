@@ -1,0 +1,21 @@
+table,column,rule,reason,rows_affected
+population_claim,-,policy-year starts 2014-01-01 to 2024-08-31,filter 2 of the claim population,29952965
+population_claim,-,single unit (policyCount = 1),filter 3 of the claim population,506381
+population_claim,-,no dq_term_end_before_start,filter 4 of the claim population,0
+population_claim,-,no dq_effective_in_future,filter 5 of the claim population,0
+population_claim,-,no dq_cancel_after_termination,filter 6 of the claim population,8
+population_claim,-,key complete,filter 7 of the claim population,281212
+population_claim,-,no key collision,filter 8 of the claim population,2010411
+population_claim,-,claim outcome observed,filter 9 of the claim population,0
+population_claim,CLAIM_IN_TERM,sample training negatives at 1.0,weight 1/1.0 keeps rates unbiased; valid and test not sampled,0
+population_lapse,-,policy-year starts 2014-01-01 to 2024-08-31,filter 2 of the lapse population,29952965
+population_lapse,-,single unit (policyCount = 1),filter 3 of the lapse population,506381
+population_lapse,-,no dq_term_end_before_start,filter 4 of the lapse population,0
+population_lapse,-,no dq_effective_in_future,filter 5 of the lapse population,0
+population_lapse,-,no dq_cancel_after_termination,filter 6 of the lapse population,8
+population_lapse,-,key complete,filter 7 of the lapse population,281212
+population_lapse,-,no key collision,filter 8 of the lapse population,2010411
+population_lapse,-,community not sanctioned,filter 9 of the lapse population,257
+population_lapse,-,not ended by rewrite or sold_removed,filter 10 of the lapse population,1011334
+population_lapse,-,lapse outcome observed,filter 11 of the lapse population,0
+population_lapse,LAPSE,sample training negatives at 1.0,weight 1/1.0 keeps rates unbiased; valid and test not sampled,0

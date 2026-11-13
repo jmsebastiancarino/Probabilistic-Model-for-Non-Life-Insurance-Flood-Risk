@@ -1,0 +1,10 @@
+step,filter,rows_left,rows_removed,pct_of_start,positives_left,positive_pct
+1,policy-years in all 57 states,73248304,0,100.0,890071,1.215
+2,policy-year starts 2014-01-01 to 2024-08-31,43295339,29952965,59.11,549962,1.27
+3,single unit (policyCount = 1),42788958,506381,58.42,541361,1.265
+4,no dq_term_end_before_start,42788958,0,58.42,541361,1.265
+5,no dq_effective_in_future,42788958,0,58.42,541361,1.265
+6,no dq_cancel_after_termination,42788950,8,58.42,541361,1.265
+7,key complete,42507738,281212,58.03,541361,1.274
+8,no key collision,40497327,2010411,55.29,530941,1.311
+9,claim outcome observed,40497327,0,55.29,530941,1.311

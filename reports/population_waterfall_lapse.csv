@@ -1,0 +1,12 @@
+step,filter,rows_left,rows_removed,pct_of_start,positives_left,positive_pct
+1,policy-years in all 57 states,73248304,0,100.0,11441954,15.621
+2,policy-year starts 2014-01-01 to 2024-08-31,43295339,29952965,59.11,6443384,14.882
+3,single unit (policyCount = 1),42788958,506381,58.42,6403597,14.966
+4,no dq_term_end_before_start,42788958,0,58.42,6403597,14.966
+5,no dq_effective_in_future,42788958,0,58.42,6403597,14.966
+6,no dq_cancel_after_termination,42788950,8,58.42,6403592,14.966
+7,key complete,42507738,281212,58.03,6401570,15.06
+8,no key collision,40497327,2010411,55.29,6134522,15.148
+9,community not sanctioned,40497070,257,55.29,6134305,15.148
+10,not ended by rewrite or sold_removed,39485736,1011334,53.91,5136155,13.008
+11,lapse outcome observed,39485736,0,53.91,5136155,13.008

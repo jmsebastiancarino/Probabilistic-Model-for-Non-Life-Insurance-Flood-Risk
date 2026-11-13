@@ -1,0 +1,4 @@
+split,rows,positives,rate_pct,sampled_rows,weighted_rate_pct
+test,7275717,83603.0,1.149,7275717,1.149
+train,27496820,357822.0,1.301,27496820,1.301
+valid,5724790,89516.0,1.564,5724790,1.564
