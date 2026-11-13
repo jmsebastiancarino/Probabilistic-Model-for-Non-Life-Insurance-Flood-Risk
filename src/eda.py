@@ -142,12 +142,13 @@ def quantile_bins_sql(con, view, col, q=5, where="TRUE"):
     Examples
     --------
     >>> b = quantile_bins_sql(con, "features", "premium", 5, "split = 'train'")
-    >>> rate_table(con, "features", b, "CANCEL_IN_TERM", "split = 'train' AND in_pop_cancel")
+    >>> rate_table(con, "features", b, "LAPSE", "split = 'train' AND in_pop_lapse")
     """
     probs = [i / q for i in range(1, q)]
+    # fetchall, not fetchone: DuckDB 2 keeps a result "unfinished" until every row is fetched
     cuts = con.execute(f"SELECT quantile_cont({col}, {probs}) FROM {view} WHERE {where} AND {col} IS NOT NULL"
-                       ).fetchone()[0] or []
-    lo_hi = con.execute(f"SELECT MIN({col}), MAX({col}) FROM {view} WHERE {where}").fetchone()
+                       ).fetchall()[0][0] or []
+    lo_hi = con.execute(f"SELECT MIN({col}), MAX({col}) FROM {view} WHERE {where}").fetchall()[0]
     edges = sorted(set(round(float(c), 4) for c in cuts))
     bounds = [lo_hi[0], *edges, lo_hi[1]]
 

@@ -1,18 +1,19 @@
 """Modeling population, sampling and time-based split (notebook 04).
 
 A *population* is the set of policy-years one model is trained and
-tested on. Each target has its own, because each needs different rows:
+tested on. We build two models, so there are two populations:
 
 ``claim``
     Policy-years whose claim outcome is known (key complete, not
     censored), usually without colliding keys.
-``cancel``
-    Policy-years whose cancellation outcome is known. The policy-year in
-    which a rewrite or a sale ended the term is left out: it is neither a
-    lapse nor a normal continuation.
-``nonrenewal``
-    Only the last policy-year of each term (where a renewal decision
-    exists), without colliding keys or sanctioned communities.
+``lapse``
+    Policy-years whose lapse outcome is known. A policy-year lapses when
+    it is cancelled for a lapse reason during the year
+    (``CANCEL_IN_TERM``) or not renewed at the end (``NON_RENEWAL``),
+    combined in :data:`LAPSE_SQL`. Non-renewal needs the policy key, so
+    the key must be complete and, usually, not colliding. The policy-year
+    in which a rewrite or a sale ended the term is left out: it is
+    neither a lapse nor a normal continuation.
 
 A population is written as an ordered list of **steps**: ``(label, SQL
 condition that is TRUE for rows we keep)``. Keeping the steps in order
@@ -22,7 +23,15 @@ gives the final population flag.
 import pandas as pd
 
 #: Target column of each population.
-TARGETS = {"claim": "CLAIM_IN_TERM", "cancel": "CANCEL_IN_TERM", "nonrenewal": "NON_RENEWAL"}
+TARGETS = {"claim": "CLAIM_IN_TERM", "lapse": "LAPSE"}
+
+#: SQL for the combined lapse target, from the two notebook 03 targets.
+#: 1 if the policy-year was cancelled for a lapse reason or not renewed;
+#: 0 if both are known to be 0; NULL (unknown) otherwise, for example a
+#: term still running at the cutoff. In the inner years of a multi-year
+#: term ``NON_RENEWAL`` is 0, so ``LAPSE`` equals ``CANCEL_IN_TERM``.
+LAPSE_SQL = """CASE WHEN CANCEL_IN_TERM = 1 OR NON_RENEWAL = 1 THEN 1
+     WHEN CANCEL_IN_TERM = 0 AND NON_RENEWAL = 0 THEN 0 END"""
 
 
 def all_of(steps):
@@ -235,7 +244,7 @@ def split_summary_sql(view, target_key, by="split"):
         The population view (notebook 04, Step 5.1), with ``in_pop_<key>``,
         ``sample_<key>`` and ``weight_<key>``.
     target_key : str
-        ``"claim"``, ``"cancel"`` or ``"nonrenewal"`` (see :data:`TARGETS`).
+        ``"claim"`` or ``"lapse"`` (see :data:`TARGETS`).
     by : str or list of str, default ``"split"``
         Group column(s).
 

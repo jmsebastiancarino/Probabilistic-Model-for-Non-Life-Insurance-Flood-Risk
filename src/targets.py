@@ -9,7 +9,10 @@ each period gets three targets:
 ``CANCEL_IN_TERM``
     1 if the policy was cancelled inside the period **for a lapse
     reason** (see :data:`CANCEL_CATEGORIES`). Rewrites, duplicates and
-    voids are not lapses.
+    voids are not lapses. Terms cancelled on their start date (flat
+    cancellations, mostly an unpaid renewal) are not in force, so this
+    target measures lapses **during** a term; a lapse at renewal shows
+    up as ``NON_RENEWAL`` on the term before.
 ``NON_RENEWAL``
     1 if no term of the same policy starts within
     :data:`src.linkage.RENEWAL_WINDOW_DAYS` days of the term's end. Only
@@ -28,13 +31,28 @@ can't be linked.
 #: Decided in notebook 03, Section 2 (team decision, 2026-11-12):
 #:
 #: - ``lapse``: the policyholder stops cover without a replacement:
-#:   05 non-payment, 28 insurance no longer required by lender,
-#:   30 insufficient premium, 52 mortgage paid off.
-#: - ``sold_removed``: 01 building sold or removed, 02 contents sold or
-#:   removed. An ownership change, kept as its own flag.
-#: - ``rewrite``: 03, 22, 24, 25. The policy continues under a new term.
-#: - ``duplicate``: 04, 17, 26. Another policy covers the same building.
-#: - ``void``: 60, 70. The policy was never in force.
+#:          05 non-payment, 
+#:          28 insurance no longer required by lender,
+#:          30 insufficient premium, 
+#:          52 mortgage paid off.
+#: - ``sold_removed``: 
+#:          01 building sold or removed, 
+#:          02 contents sold or removed. An ownership change, kept as its own flag.
+#: - ``rewrite``: 
+#:          03 policy canceled and rewritten to establish a common expiration; date with other lines of insurance, 
+#:          22 cancel/rewrite due to misrating, 
+#:          24 cancel/rewrite to PRP after map revision, 
+#:          25 cancel/rewrite to process HFIAA refund 
+#:          The policy continues under a new term.
+#: - ``duplicate``: 
+#:          04 duplicate policies (NFIP), 
+#:          17 duplicate policy from source other than the NFIP (legacy system), 
+#:          26 duplicate policy from source other than the NFIP. 
+#:          Another policy covers the same building.
+#: - ``void``: 
+#:          60 voidance prior to effective date, 
+#:          70 voidance due to credit card error (legacy system). 
+#:         The policy was never in force.
 CANCEL_CATEGORIES = {
     "lapse": ("05", "28", "30", "52"),
     "sold_removed": ("01", "02"),
@@ -198,7 +216,8 @@ WITH claim_totals AS (
     GROUP BY term_id, period_no
 ),
 sanctions AS (
-    SELECT community_id6, MAX(sanction_date) AS sanction_date
+    SELECT community_id6, 
+           MAX(sanction_date) AS sanction_date
     FROM {community}
     WHERE sanction_is_suspended OR sanction_is_withdrawn
     GROUP BY community_id6
@@ -287,7 +306,7 @@ SELECT {cols},
        COUNT(CANCEL_IN_TERM)                                AS cancel_labeled,
        ROUND(100 * AVG(CANCEL_IN_TERM), 3)                  AS cancel_pct,
        ROUND(100 * AVG(SOLD_REMOVED_IN_TERM), 3)            AS sold_removed_pct,
-       COUNT(NON_RENEWAL) FILTER (WHERE is_last_period)     AS renewal_labeled,
+       COUNT(NON_RENEWAL) FILTER (WHERE is_last_period)     AS non_renewal_labeled,
        ROUND(100 * AVG(NON_RENEWAL) FILTER (WHERE is_last_period), 3) AS non_renewal_pct
 FROM {view}
 GROUP BY {cols}

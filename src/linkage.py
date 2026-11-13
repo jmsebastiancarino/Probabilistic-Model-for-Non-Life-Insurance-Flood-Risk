@@ -27,11 +27,12 @@ import pandas as pd
 
 from src.targets import cancel_category_sql, cancel_code_sql
 
-#: Field name -> SQL expression used in the policy key. The same
-#: expressions run on policies and on claims, so both sides are built the
-#: same way. Codes are cast to INTEGER so ``"01"`` and ``1`` match.
-#: ``geoid11`` and ``zip5`` are the zero-padded columns made in notebook 02.
-KEY_FIELDS = {
+#: Field name -> SQL expression for every field we considered for the
+#: policy key. The same expressions run on policies and on claims, so both
+#: sides are built the same way. Codes are cast to INTEGER so ``"01"`` and
+#: ``1`` match. ``geoid11`` and ``zip5`` are the zero-padded columns made
+#: in notebook 02.
+CANDIDATE_FIELDS = {
     "originalNBDate": "CAST(originalNBDate AS DATE)",
     "originalConstructionDate": "CAST(originalConstructionDate AS DATE)",
     "censusGeoid": "geoid11",
@@ -40,20 +41,40 @@ KEY_FIELDS = {
     "numberOfFloorsInInsuredBuilding": "TRY_CAST(numberOfFloorsInInsuredBuilding AS INTEGER)",
 }
 
+#: The policy key we use: five fields that stay the same for one house.
+#:
+#: ``occupancyType`` is left out (decided 2026-11-13, notebook 03 Step 6.2).
+#: Risk Rating 2.0 replaced the 1-digit codes with 2-digit codes, and the
+#: claims file carries the new codes even for losses from 2017-2020 while
+#: the policies keep the code of their time. With occupancy in the key,
+#: one house got two keys and 25% of the pilot claims found no term.
+#: Without it, matched claims rose from 72.1% to 95.9% and collisions only
+#: from 3.24% to 3.43%. Occupancy stays a feature (notebook 05).
+KEY_FIELDS = {f: CANDIDATE_FIELDS[f] for f in (
+    "originalNBDate",
+    "originalConstructionDate",
+    "censusGeoid",
+    "reportedZipCode",
+    "numberOfFloorsInInsuredBuilding",
+)}
+
 #: Alternative keys compared in notebook 03, Section 6.2. Each is a list
-#: of :data:`KEY_FIELDS` names.
+#: of :data:`CANDIDATE_FIELDS` names.
 ALT_KEYS = {
-    "full (6 fields)": list(KEY_FIELDS),
+    "chosen (5 fields)": list(KEY_FIELDS),
+    "with occupancy (old 6 fields)": [*KEY_FIELDS, "occupancyType"],
     "without tract": [f for f in KEY_FIELDS if f != "censusGeoid"],
     "without zip": [f for f in KEY_FIELDS if f != "reportedZipCode"],
     "without floors": [f for f in KEY_FIELDS if f != "numberOfFloorsInInsuredBuilding"],
     "without construction date": [f for f in KEY_FIELDS if f != "originalConstructionDate"],
-    "without occupancy": [f for f in KEY_FIELDS if f != "occupancyType"],
 }
 
 #: Cancellation categories whose terms were never real cover: voided
 #: before they started, or a duplicate of another policy. They are left
 #: out of linkage and of the period table.
+#:
+#: Terms with a **flat cancellation** (cancellation date on or before the
+#: start, whatever the category) are left out too: see :func:`terms_sql`.
 NOT_IN_FORCE = ("void", "duplicate")
 
 #: A term is split into 1-year periods. A leftover shorter than this
@@ -72,7 +93,7 @@ def key_expr(fields=None):
     Parameters
     ----------
     fields : list of str, optional
-        Names from :data:`KEY_FIELDS`. Defaults to all six.
+        Names from :data:`CANDIDATE_FIELDS`. Defaults to :data:`KEY_FIELDS`.
 
     Returns
     -------
@@ -83,8 +104,8 @@ def key_expr(fields=None):
 
     Notes
     -----
-    ``hash()`` turns the six values into one 64-bit number, which is
-    much faster to join and group on than six columns or a long string.
+    ``hash()`` turns the key values into one 64-bit number, which is
+    much faster to join and group on than several columns or a long string.
     Two different keys getting the same hash is possible but very
     unlikely (about 1 pair in 10,000 across 75M terms), far below the
     real collisions measured in Section 3.2.
@@ -94,7 +115,7 @@ def key_expr(fields=None):
     >>> key_expr(["originalNBDate", "censusGeoid"])
     'CASE WHEN (CAST(originalNBDate AS DATE)) IS NULL OR (geoid11) IS NULL THEN NULL ELSE hash(...) END'
     """
-    exprs = [KEY_FIELDS[f] for f in (fields or list(KEY_FIELDS))]
+    exprs = [CANDIDATE_FIELDS[f] for f in (fields or list(KEY_FIELDS))]
     any_null = " OR ".join(f"({e}) IS NULL" for e in exprs)
     return f"CASE WHEN {any_null} THEN NULL ELSE hash({', '.join(exprs)}) END"
 
@@ -122,8 +143,26 @@ def terms_sql(source, fields=None):
         - ``eff_end``: when cover really stopped, the cancellation date
           if it is before ``term_end``, otherwise ``term_end``.
         - ``policy_count``: units covered by the row (1 for most).
-        - ``in_force``: False for void or duplicate terms and terms whose
-          end is not after their start. These are left out of linkage.
+        - ``flat_cancel``: cancelled on or before its start date (a *flat
+          cancellation*: the term is treated as if it never existed).
+        - ``in_force``: False for void or duplicate terms, flat
+          cancellations, and terms whose end is not after their start.
+          These are left out of linkage and get no policy-years.
+
+    Notes
+    -----
+    Why flat cancellations are not in force (decided 2026-11-13, notebook
+    03 Step 2.3): a cancellation dated on the start date means the term
+    never gave cover. Most are rewrites (the term was replaced by a
+    corrected term with the same start date), voids, duplicates, map or
+    eligibility changes, and non-payment of a renewal premium. Leaving
+    them out means:
+
+    - a replaced (rewritten) term doesn't look like a non-renewal;
+    - an unpaid renewal can't count as the previous term's renewal, so
+      the previous term gets ``NON_RENEWAL = 1``, which is what happened;
+    - ``CANCEL_IN_TERM`` measures lapses **during** a term, and lapses at
+      renewal are measured by ``NON_RENEWAL``, so the two don't overlap.
 
     Examples
     --------
@@ -151,8 +190,12 @@ SELECT
          THEN CAST(cancellationDateOfFloodPolicy AS DATE)
          ELSE CAST(policyTerminationDate AS DATE) END            AS eff_end,
     COALESCE(policyCount, 1)                                     AS policy_count,
+    COALESCE(CAST(cancellationDateOfFloodPolicy AS DATE)
+             <= CAST(policyEffectiveDate AS DATE), FALSE)        AS flat_cancel,
     policyTerminationDate > policyEffectiveDate
-        AND ({cat}) NOT IN ({not_in_force})                      AS in_force
+        AND ({cat}) NOT IN ({not_in_force})
+        AND NOT COALESCE(CAST(cancellationDateOfFloodPolicy AS DATE)
+                         <= CAST(policyEffectiveDate AS DATE), FALSE) AS in_force
 FROM {source}
 """
 
@@ -256,8 +299,7 @@ def periods_sql(linked, tolerance_days=PERIOD_TOLERANCE_DAYS):
         - ``is_last_period`` : the last period kept for the term. The
           cancellation (if any) and the renewal decision belong here.
         - ``exposure`` : length in years (``days / 365.25``). 1 for a full
-          year, less for a short last period, 0 when the term was
-          cancelled on its first day.
+          year, less for a short last period.
         - ``period_year`` : calendar year of ``period_start``.
 
     Notes
@@ -275,9 +317,10 @@ def periods_sql(linked, tolerance_days=PERIOD_TOLERANCE_DAYS):
     month 18
     ========================  ===========  ================================
 
-    The first period is always kept, even with 0 exposure, so that a
-    cancellation on the first day (common for non-payment) is still
-    counted.
+    Terms cancelled on or before their first day (flat cancellations)
+    never reach this step: :func:`terms_sql` marks them as not in force.
+    So every period here has some exposure. The ``period_no = 0`` rule
+    below is only a safeguard that keeps one row per term.
 
     Examples
     --------

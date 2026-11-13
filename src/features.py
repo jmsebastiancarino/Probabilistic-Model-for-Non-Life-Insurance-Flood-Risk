@@ -79,7 +79,9 @@ FEATURES = [
     # -- property
     ("building_age", "property", "num", "policies", "Policy-year start year minus construction year", "fixed property fact"),
     ("floors", "property", "cat", "policies", "Number of floors code", "fixed property fact"),
-    ("occupancy", "property", "cat", "policies", "Occupancy type code", "set when the term is written"),
+    ("occupancy_group", "property", "cat", "policies",
+     "Occupancy grouped so old and Risk Rating 2.0 codes mean the same: single_family, 2_4_family, "
+     "multi_family_or_condo, non_residential", "set when the term is written"),
     ("primary_residence", "property", "flag", "policies", "Primary residence", "set when the term is written"),
     ("rental_property", "property", "flag", "policies", "Rental property", "set when the term is written"),
     ("tenant", "property", "flag", "policies", "Policyholder is a tenant", "set when the term is written"),
@@ -143,7 +145,7 @@ FEATURES = [
 
 #: Columns that hold the outcome. They must never be used as features.
 TARGET_ONLY = {
-    "CLAIM_IN_TERM", "CLAIM_PAID_IN_TERM", "CANCEL_IN_TERM", "SOLD_REMOVED_IN_TERM", "NON_RENEWAL",
+    "CLAIM_IN_TERM", "CLAIM_PAID_IN_TERM", "CANCEL_IN_TERM", "SOLD_REMOVED_IN_TERM", "NON_RENEWAL", "LAPSE",
     "claim_count", "paid_claim_count", "claim_paid_total", "first_loss_date",
     "cancel_date", "cancel_code", "cancel_category", "cancel_in_period", "cancel_seen", "eff_end",
     "renewed", "next_start", "gap_to_next_days", "censored_claim", "censored_cancel", "censored_renewal",
@@ -191,7 +193,14 @@ BASE_SQL = {
     "coverage_to_value": "c.totalBuildingInsuranceCoverage / NULLIF(c.buildingReplacementCost, 0)",
     "building_age": "t.period_year - YEAR(c.originalConstructionDate)",
     "floors": "CAST(TRY_CAST(c.numberOfFloorsInInsuredBuilding AS INTEGER) AS VARCHAR)",
-    "occupancy": "CAST(c.occupancyType AS VARCHAR)",
+    # Old codes (1-6) and Risk Rating 2.0 codes (11-19) mapped to the same groups. The raw code would
+    # act as a hidden "rated after 2021" flag, and old code 1 covered what is now 11, 14 and 16.
+    "occupancy_group": """CASE
+        WHEN c.occupancyType IN (1, 11, 14, 16) THEN 'single_family'
+        WHEN c.occupancyType IN (2, 12) THEN '2_4_family'
+        WHEN c.occupancyType IN (3, 13, 15) THEN 'multi_family_or_condo'
+        WHEN c.occupancyType IN (4, 6, 17, 18, 19) THEN 'non_residential'
+    END""",
     "primary_residence": "c.primaryResidenceIndicator",
     "rental_property": "c.rentalPropertyIndicator",
     "tenant": "c.tenantIndicator",
