@@ -15,12 +15,14 @@ Flood insurance is renewed every year, and FEMA records each year of coverage as
 
 **Example: one house, insured for four years, appears as four rows**
 
-| Row | `policyEffectiveDate` | `policyTerminationDate` | What happened | `CLAIM_IN_TERM` | `CANCEL_IN_TERM` | `NON_RENEWAL` |
-|---|---|---|---|---|---|---|
-| 1 | 2019-06-01 | 2020-06-01 | New business | 0 | 0 | 0 |
-| 2 | 2020-06-01 | 2021-06-01 | Renewed | 0 | 0 | 0 |
-| 3 | 2021-06-01 | 2022-06-01 | Flood claim in Sept 2021 | 1 | 0 | 0 |
-| 4 | 2022-06-01 | 2023-06-01 | Cancelled in Jan 2023 | 0 | 1 | 1 |
+| Row | `policyEffectiveDate` | `policyTerminationDate` | What happened | `CLAIM_IN_TERM` | `CANCEL_IN_TERM` | `NON_RENEWAL` | `LAPSE` |
+|---|---|---|---|---|---|---|---|
+| 1 | 2019-06-01 | 2020-06-01 | New business | 0 | 0 | 0 | 0 |
+| 2 | 2020-06-01 | 2021-06-01 | Renewed | 0 | 0 | 0 | 0 |
+| 3 | 2021-06-01 | 2022-06-01 | Flood claim in Sept 2021 | 1 | 0 | 0 | 0 |
+| 4 | 2022-06-01 | 2023-06-01 | Cancelled in Jan 2023 | 0 | 1 | 1 | 1 |
+
+The two models use `CLAIM_IN_TERM` and `LAPSE`. `CANCEL_IN_TERM` and `NON_RENEWAL` are the two parts of `LAPSE` (section 4).
 
 All four rows share the same `originalNBDate` (2019-06-01), the date the policy was first bought. That shared value is part of how the rows are linked back into one policy (section 5).
 
@@ -47,7 +49,7 @@ All four rows share the same `originalNBDate` (2019-06-01), the date the policy 
 
 **Scale:** about 74.7M policy terms (87 columns) and about 2.7M claims nationally. All files are downloaded in full and kept unchanged in `data/raw/`.
 
-**Scope:** cleaning covers the full national data. The modeling population is chosen in notebook 04. The proposed scope is Florida, terms effective 2019–2023, a window that includes Hurricane Ian (2022) and so supplies enough claims to model.
+**Scope:** cleaning and linkage cover the full national data. The modeling population (notebook 04) is **all states, policy-years starting 2014-01-01 to 2024-08-31**, a window with both storm years (Matthew 2016, Harvey and Irma 2017, Florence 2018, Ida 2021, Ian 2022, Debby, Helene and Milton 2024) and calm years. August 2024 is the last start month whose claim outcome is fully known at the data cutoff (2026-09-08); we cut by start date, so the 2024 policy-years are not chosen by their outcome. Every policy-year is kept (no sampling).
 
 ### Data dictionaries
 
@@ -76,17 +78,27 @@ There is **no policyholder (person) level**: NFIP redacts all personal data.
 
 ## 4. Targets
 
-| Model | Target | Definition | Expected base rate |
+We build **two models**, one target each:
+
+| Model | Target | Definition | Base rate (all states, 2014–2023 starts) |
 |---|---|---|---|
-| Claim | `CLAIM_IN_TERM` | 1 if a linked claim's `dateOfLoss` falls between the term's `policyEffectiveDate` and `policyTerminationDate` | ~1% a year nationally; higher in storm years and areas |
-| Lapse (A) | `CANCEL_IN_TERM` | 1 if `cancellationDateOfFloodPolicy` is set **and** the reason code is real attrition (see below) | Below the raw ~9% cancellation rate of the pilot county, because rewrites are excluded |
-| Lapse (B) | `NON_RENEWAL` | 1 if no linked term for the same policy starts within ±60 days of `policyTerminationDate` | To be validated (linkage-sensitive) |
+| Claim | `CLAIM_IN_TERM` | 1 if a linked claim's `dateOfLoss` falls inside the policy-year | 0.5–1.3% in calm years, 2.1–2.6% in the storm years 2016–2017 |
+| Lapse | `LAPSE` | 1 if the policy-year is **cancelled for a lapse reason** during the year **or not renewed** at its end; 0 if neither; unknown (NULL) if either part is still unknown | about 12–20%, mostly non-renewal |
 
-Terms ending after the data cutoff are **censored** and excluded from the lapse labels, or handled with survival methods.
+`LAPSE` combines two parts, which we keep in the data to see which one drives a finding:
 
-`CANCEL_IN_TERM` comes straight from fields on the row and needs no linkage, so it is the most reliable lapse target. `CLAIM_IN_TERM` and `NON_RENEWAL` depend on the reconstructed policy key (section 5) and carry its linkage error.
+| Part | Definition | Base rate |
+|---|---|---|
+| `CANCEL_IN_TERM` | 1 if `cancellationDateOfFloodPolicy` falls inside the policy-year **and** the reason code is a lapse (see below) | 0.09–0.32% a year |
+| `NON_RENEWAL` | 1 if the policy-year is the last of its term and no linked term for the same policy starts within ±60 days of its end; 0 in the inner years of a multi-year term | about 12–20% of renewal decisions |
 
-**Survival extension (notebook 07b):** a discrete-time hazard model on the term rows, i.e. "given the policy has survived to this tenure year, does it lapse in this term?", with tenure as a feature. Policies still active at the cutoff are censored, and policies that began before 2019 enter at their true tenure (computed from `originalNBDate`), not at year 1.
+Notes on the targets:
+- **Flat cancellations** (cancelled on or before the start date, mostly unpaid renewals) are not in force: they never become a policy-year. An unpaid renewal therefore shows up as `NON_RENEWAL` of the year before it.
+- **Censoring:** a policy-year whose outcome cannot be seen by the data cutoff (2026-09-08) gets NULL, not 0: claims within 365 days of the cutoff, and renewals whose ±60-day window is not over. NULL rows are left out of the population.
+- **Linkage:** `CLAIM_IN_TERM` and `NON_RENEWAL` (and so `LAPSE`) depend on the reconstructed policy key (section 5) and carry its linkage error. Rows with an incomplete or colliding key are left out of both populations.
+- **Left out of the lapse population:** the policy-year in which a rewrite or a sale ended the term (neither a lapse nor a normal continuation), and terms in communities suspended or withdrawn from the NFIP (their non-renewal may be forced).
+
+**Survival extension (notebook 07b):** a discrete-time hazard model on the term rows, i.e. "given the policy has survived to this tenure year, does it lapse in this term?", with tenure as a feature. Policies still active at the cutoff are censored, and policies that began before 2014 enter at their true tenure (computed from `originalNBDate`), not at year 1.
 
 ### Cancellation reason codes
 
@@ -95,11 +107,11 @@ Terms ending after the data cutoff are **censored** and excluded from the lapse 
 | Category | Codes | Treatment |
 |---|---|---|
 | Voluntary or financial attrition | 05 non-payment, 28 lender no longer requires insurance, 52 mortgage paid off, 30 insufficient premium | **Lapse** |
-| Property sold or removed | 01, 02 | Analyzed separately (an ownership change, not a decision to drop cover) |
+| Property sold or removed | 01, 02 | **Not lapse**: kept as its own flag (`SOLD_REMOVED_IN_TERM`); the policy-year it ended is left out of the lapse population |
 | Rewrite | 03, 22 misrating, 24 rewrite to Preferred Risk Policy after map revision, 25 HFIAA refund | **Not lapse**: the policy continues |
 | Duplicate | 04, 17, 26 | **Not lapse** |
 | Voidance | 60, 70 | **Not lapse** |
-| Eligibility or other | 06, 08, 09, 10, 16, 20, 21, 23, 27, 29, 45, 50, UN | Reviewed case by case and documented |
+| Eligibility or other | 06, 08, 09, 10, 16, 20, 21, 23, 27, 29, 45, 50, UN | Not a lapse cancellation, but if no new term follows, the policy-year counts as `NON_RENEWAL` (so `LAPSE` = 1) |
 
 In the Beaufort County, SC pilot, two of the three most common codes (24 and 22) were rewrites, so treating every cancellation as lapse would overstate attrition.
 
@@ -109,7 +121,9 @@ In the Beaufort County, SC pilot, two of the three most common codes (24 and 22)
 
 Policies and claims share a set of fields that together approximate a property key:
 
-`originalNBDate` + `originalConstructionDate` + `censusGeoid` + `reportedZipCode` + `occupancyType` + `numberOfFloorsInInsuredBuilding`
+`originalNBDate` + `originalConstructionDate` + `censusGeoid` + `reportedZipCode` + `numberOfFloorsInInsuredBuilding`
+
+`occupancyType` was dropped from the key (notebook 03, Step 6.2): Risk Rating 2.0 replaced its 1-digit codes with 2-digit codes, and the claims file uses the new codes even for older losses, so one house got two keys. Without it, matched claims rose from 72% to 96%, while collisions rose only from 3.2% to 3.4%.
 
 (The claims table spells the last field `numberOfFloorsInTheInsuredBuilding`; it is renamed during cleaning.)
 
@@ -125,7 +139,7 @@ Policies and claims share a set of fields that together approximate a property k
 | Obligation | `mandatoryPurchaseFlag` (mortgage-required coverage) |
 | Flood risk | Rated and current flood zone, elevation difference, base flood elevation, foundation type, elevated building |
 | Coverage | Building and contents coverage, deductible codes, replacement cost |
-| Property | Construction year, floors, occupancy, primary residence, rental, condo type |
+| Property | Construction year, floors, occupancy group (old and Risk Rating 2.0 codes mapped together), primary residence, rental, condo type |
 | Tenure | Months since `originalNBDate`, number of prior terms |
 | History | Prior claims on the same property (count, amount, recency) |
 | Community | CRS class, map dates, suspended or withdrawn status |
@@ -158,7 +172,7 @@ Many integer columns (`occupancyType`, `obstructionType`, `crsClassCode`, `locat
 | `08_evaluation_benchmarking_monitoring` | Test-set scoring, benchmark table, calibration, lift by decile, segment results, linkage sensitivity, simulated monitoring (PSI, drift) |
 | `09_explainability_and_report` | SHAP and partial dependence, example explanations, business use, limitations, conclusions |
 
-**Split:** by time (proposed: train 2019–2021, validate 2022, test 2023), plus rolling-origin checks because storm years dominate claims.
+**Split:** by time, each split after the one before it: **train** 2014–2020; **test** 2021–2022, used to tune and compare models; **validation** 2023 to August 2024, the final holdout, used once in notebook 08. (We name the tuning split "test" and the final holdout "validation"; many ML texts use the opposite names.) Training includes the 2016–2017 storm years, tuning includes Ian (2022), and the final holdout has a calm year (2023) and a storm year (2024). Rolling-origin folds on 2014–2022 are used for tuning, because storm years dominate claims; the holdout years are never used for tuning.
 **Metrics:** ROC-AUC, PR-AUC (important for rare claims), Brier score, log loss, calibration error and lift by decile.
 
 ## 9. Data-quality findings so far
