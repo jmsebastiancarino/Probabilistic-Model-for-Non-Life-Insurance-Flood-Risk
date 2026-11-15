@@ -5,6 +5,7 @@ policies file never has to fit in memory. A *view* is a saved query: it
 stores no data, it only gives a short name (such as ``raw_policies``)
 to ``SELECT * FROM read_parquet('...')``.
 """
+import resource
 from pathlib import Path
 
 import duckdb
@@ -19,6 +20,35 @@ RAW_FILES = {
     "raw_community": RAW_FEMA / "nfip_community_status_book_v1.parquet",
     "raw_disasters": RAW_FEMA / "disaster_declarations_summaries_v2.parquet",
 }
+
+
+def raise_open_file_limit(target=10240):
+    """Let this Python process keep more files open at once.
+
+    Parameters
+    ----------
+    target : int, default 10240
+        Wanted limit on open files.
+
+    Returns
+    -------
+    tuple of (int, int)
+        The limit before and after (soft limits).
+
+    Notes
+    -----
+    macOS gives programs started from the Dock or Finder (such as
+    Jupyter) a limit of only 256 open files. DuckDB opens every Parquet
+    file a query reads, and our clean policies alone are about 1,000
+    files, so a query that joins several views fails with "Too many open
+    files". DuckDB runs inside the Python process, so raising the
+    limit here is enough. The limit is never lowered.
+    """
+    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+    new = target if hard == resource.RLIM_INFINITY else min(target, hard)
+    if soft < new:
+        resource.setrlimit(resource.RLIMIT_NOFILE, (new, hard))
+    return soft, resource.getrlimit(resource.RLIMIT_NOFILE)[0]
 
 
 def connect(db_path=INTERIM / "nfip.duckdb", memory_limit="8GB", temp_dir=INTERIM / "duckdb_tmp"):
@@ -52,7 +82,8 @@ def connect(db_path=INTERIM / "nfip.duckdb", memory_limit="8GB", temp_dir=INTERI
     any order, which saves memory on large scans. Add ``ORDER BY`` when
     order matters.
 
-    The folders for ``db_path`` and ``temp_dir`` are created if needed.
+    The folders for ``db_path`` and ``temp_dir`` are created if needed,
+    and the open-file limit is raised first (:func:`raise_open_file_limit`).
 
     Examples
     --------
@@ -61,6 +92,7 @@ def connect(db_path=INTERIM / "nfip.duckdb", memory_limit="8GB", temp_dir=INTERI
     >>> con.sql("SELECT 42").fetchall()
     [(42,)]
     """
+    raise_open_file_limit()     # macOS starts Jupyter with only 256 open files
     if db_path in (None, ":memory:"):
         target = ":memory:"
     else:
