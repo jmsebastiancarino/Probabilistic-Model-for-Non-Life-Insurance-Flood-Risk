@@ -1,0 +1,3 @@
+table,column,rule,reason,rows_affected
+features,all,"built 73 features for 40,497,327 policy-years",every feature known at the start of the policy-year,40497327
+features,-,"dropped after EDA, screening and leakage audit",see feature_plan.csv drop_reason,0
