@@ -1,7 +1,7 @@
 {
   "model": "claim_baseline_logreg",
   "target": "CLAIM_IN_TERM",
-  "saved_at": "2026-11-16T18:50:50",
+  "saved_at": "2026-11-16T22:37:08",
   "train_split": "train (2014-2020), every row, in chunks",
   "scored_on": "test (2021-2022)",
   "features_used": [
@@ -78,12 +78,12 @@
   ],
   "model_columns": 161,
   "params": {
-    "alpha": 0.0001,
+    "alpha": 1e-06,
     "average": true,
     "class_weight": null,
     "early_stopping": false,
     "epsilon": 0.1,
-    "eta0": 0.01,
+    "eta0": 0.001,
     "fit_intercept": true,
     "l1_ratio": 0.15,
     "learning_rate": "invscaling",
@@ -100,17 +100,18 @@
     "verbose": 0,
     "warm_start": false
   },
-  "epochs": 3,
+  "epochs": 1,
   "chunks": 28,
   "seed": 42,
   "base_rate_train": 0.013013213891642743,
   "test_overall": {
     "rows": 7275717,
     "claims": 83603,
-    "claim_rate": 0.011490688821459108,
-    "roc_auc": 0.6712873604506245,
-    "pr_auc": 0.0248855583320703,
-    "brier": 0.011306031199927994,
-    "log_loss": 0.060577259160207515
+    "actual_rate": 0.011490688821459108,
+    "predicted_rate": 0.01356374739501194,
+    "log_loss": 0.061124903423386716,
+    "brier": 0.01132259188928681,
+    "log_loss_skill": 0.027266337157242693,
+    "brier_skill": 0.003378151854830147
   }
 }

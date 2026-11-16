@@ -172,11 +172,12 @@ Many integer columns (`occupancyType`, `obstructionType`, `crsClassCode`, `locat
 | `06b_baseline_cancel` | Naive benchmark and logistic regression for the lapse target |
 | `07a_advanced_models_claim` | Gradient boosting (LightGBM or XGBoost), tuning, calibration; severity model for expected loss |
 | `07b_advanced_models_cancel` | Gradient boosting, tuning, calibration; discrete-time hazard or survival model |
-| `08_evaluation_benchmarking_monitoring` | Test-set scoring, benchmark table, calibration, lift by decile, segment results, linkage sensitivity, simulated monitoring (PSI, drift) |
+| `08_evaluation_benchmarking_monitoring` | Final scoring of the frozen models on the validation holdout (out-of-time 2, opened once; dry run on test first); benchmark table, confusion matrices and ROC curves, calibration (A/E, ECE, slope), calibration by segment and storm exposure, stability by year, cohort survival analysis for lapse (retention of new-business cohorts, actual vs predicted), simulated monitoring (PSI, A/E, alert rules); appendix: bootstrap of the gains, policy-history sensitivity |
 | `09_explainability_and_report` | SHAP and partial dependence, example explanations, business use, limitations, conclusions |
 
-**Split:** by time, each split after the one before it: **train** 2014–2020; **test** 2021–2022, used to tune and compare models; **validation** 2023 to August 2024, the final holdout, used once in notebook 08. (We name the tuning split "test" and the final holdout "validation"; many ML texts use the opposite names.) Training includes the 2016–2017 storm years, tuning includes Ian (2022), and the final holdout has a calm year (2023) and a storm year (2024). Rolling-origin folds on 2014–2022 are used for tuning, because storm years dominate claims; the holdout years are never used for tuning.
-**Metrics:** ROC-AUC, PR-AUC (important for rare claims), Brier score, log loss, calibration error and lift by decile.
+**Split:** by time, each split after the one before it: **train** 2014–2020; **test** 2021–2022, used to tune and compare models; **validation** 2023 to August 2024, the final holdout, used once in notebook 08. (We name the tuning split "test" and the final holdout "validation"; many ML texts use the opposite names.) Training includes the 2016–2017 storm years, tuning includes Ian (2022), and the final holdout has a calm year (2023) and a storm year (2024). Rolling-origin folds inside 2014–2020 (checking 2017, 2018, 2019 and 2020) are used for tuning, because storm years dominate claims; the holdout years are never used for tuning.
+**In-time and out-of-time:** the training years are the development sample; the rolling-origin folds inside 2014–2020 are the in-time validation used for tuning; test (2021–2022) is out-of-time 1 and validation (2023 to August 2024) is out-of-time 2 (notebooks 06a/06b, Step 1.2).
+**Metrics:** two views. As classifiers: confusion matrices with accuracy, precision, recall and F1 at fixed cut-offs (claims: the riskiest 5/10/20% of policy-years; lapse: 10/20/30%; and the default 0.5, which flags almost nobody for a 1% event), and ROC curves with their AUC. As probability models: log loss (also used for tuning), Brier score, skill over the base rate, calibration by decile, and expected vs actual counts.
 
 ## 9. Data-quality findings so far
 
@@ -198,7 +199,7 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 
 - **Linkage error** in the reconstructed policy key affects the non-renewal label and the claim matching.
 - **Weather drives claims.** A model trained on a storm year may not carry over to calmer years, so the time-based split and disaster features matter.
-- **Class imbalance** for claims calls for class weights, PR-AUC and calibration.
+- **Class imbalance** for claims (about 1%): we keep the real claim rate (no class weights), read precision, recall and F1 at cut-offs that flag the riskiest policy-years rather than accuracy at 0.5, and check the probabilities with log loss, Brier score and calibration.
 - **No personal or behavioral data:** no demographics, payment history or contact data.
 - **Data volume:** handled out of core with DuckDB and Parquet.
 - **Redaction:** coordinates are rounded and some fields are generalized.

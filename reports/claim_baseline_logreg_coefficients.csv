@@ -1,162 +1,162 @@
 model_column,coef,feature,kind,odds_ratio
-max_wind_kt_10y,0.7723960552623098,max_wind_kt_10y,number / flag,2.1649473777335357
-missingindicator_days_since_ts_wind,0.4376462825273064,days_since_ts_wind,missing flag,1.549056882016777
-missingindicator_prev_gap_days,0.38058176020523443,prev_gap_days,missing flag,1.463135535916485
-days_since_ts_wind,0.35435733048228,days_since_ts_wind,number / flag,1.425264385908625
-obstruction_type_54,0.21618726059574214,obstruction_type,category level,1.241334810333476
-policy_cost,0.20957680581993765,policy_cost,number / flag,1.2331560850378631
-prior_claims_n,0.1959774319176596,prior_claims_n,number / flag,1.2164994509647447
-hurricane_wind_per_year,0.13007290296190832,hurricane_wind_per_year,number / flag,1.1389114103132914
-prior_claims_5y_n,0.05699301592826663,prior_claims_5y_n,number / flag,1.0586484166931984
-coverage_to_value,0.050788179167148916,coverage_to_value,number / flag,1.0521000129776996
-primary_residence,0.04035029816120922,primary_residence,number / flag,1.0411754321585331
-rental_property,0.0321584619107736,rental_property,number / flag,1.0326811329659498
-ts_wind_storms_10y,0.031935042685664904,ts_wind_storms_10y,number / flag,1.032450437919252
-coverage_change_pct,0.0309209111077361,coverage_change_pct,number / flag,1.0314039280665472
-obstruction_type_92,0.029595001273838396,obstruction_type,category level,1.0300372856781115
-years_since_purchase,0.020383384239468963,years_since_purchase,number / flag,1.0205925441275587
-prev_gap_days,0.01614163109617095,prev_gap_days,number / flag,1.0162726110175901
-premium_change_pct,0.010121487656097187,premium_change_pct,number / flag,1.0101728831656014
-crs_class_9,0.009193028407655941,crs_class,category level,1.0092354140779682
-days_since_flood_disaster,0.008859778775456491,days_since_flood_disaster,number / flag,1.0088991427816791
-obstruction_type_90,0.004139729453392696,obstruction_type,category level,1.0041483099696191
-obstruction_type_40,0.003442635622367437,obstruction_type,category level,1.003448568298442
-missingindicator_coverage_to_value,0.0018758876889548586,coverage_to_value,missing flag,1.0018776482669758
-obstruction_type_34,0.0010142978573396326,obstruction_type,category level,1.0010148124313738
-small_business,0.0009951195277932616,small_business,number / flag,1.0009956148235097
-contents_deductible_G,0.0006116745896234893,contents_deductible,category level,1.0006118617006736
-community_sanctioned_before,0.0005667964966500528,community_sanctioned_before,number / flag,1.0005669571561366
-building_description_infrequent_sklearn,0.0004632517481227954,building_description,category level,1.000463359065785
-condo_type_H,6.62464623914896e-05,condo_type,category level,1.0000662486567369
-building_description_14,-0.0003896354120796908,building_description,category level,0.9996104404859396
-floors_6,-0.0005367587818403165,floors,category level,0.9994633852473839
-condo_type_(missing),-0.0006607478062404804,condo_type,category level,0.9993394704395201
-building_description_10,-0.0007945183956597058,building_description,category level,0.9992057971505062
-floodproofed,-0.001168657578507806,floodproofed,number / flag,0.99883202503582
-elevation_certificate_D,-0.0017001548822588304,elevation_certificate,category level,0.9983012895623439
-elevation_certificate_C,-0.0017793874835346584,elevation_certificate,category level,0.9982221946878025
-elevation_certificate_B,-0.0032376518250144316,elevation_certificate,category level,0.9967675837178431
-elevation_certificate_A,-0.004391940033644444,elevation_certificate,category level,0.9956176904310188
-obstruction_type_infrequent_sklearn,-0.0049342208119225,obstruction_type,category level,0.9950779324583984
-contents_deductible_B,-0.005408153865426657,contents_deductible,category level,0.9946064438712318
-obstruction_type_95,-0.00551085453632711,obstruction_type,category level,0.9945043023672546
-new_business,-0.006237770837509865,new_business,number / flag,0.993781643666284
-elevation_certificate_E,-0.0065400416227465044,elevation_certificate,category level,0.9934812979036607
-subsidized_rate_type_E,-0.007090264406368079,subsidized_rate_type,category level,0.9929348122166773
-building_description_12,-0.007463433777702783,building_description,category level,0.9925643484841843
-building_description_9,-0.007482244599830591,building_description,category level,0.9925456777083814
-contents_deductible_C,-0.007538764220338394,contents_deductible,category level,0.9924895809886383
-replacement_cost,-0.008370605064303496,replacement_cost,number / flag,0.9916643309039122
-returned_after_lapse,-0.009159021489551796,returned_after_lapse,number / flag,0.9908827945856133
-building_deductible_F,-0.010364346499231129,building_deductible,category level,0.9896891782639486
-contents_deductible_4,-0.011365258319504704,contents_deductible,category level,0.9886990822490882
-building_deductible_B,-0.01369996729299661,building_deductible,category level,0.9863934501669415
-building_description_13,-0.014641788858919171,building_description,category level,0.9854648808850159
-building_deductible_C,-0.01681229786384137,building_deductible,category level,0.9833282401248544
-flood_disasters_12m,-0.016864436842218587,flood_disasters_12m,number / flag,0.9832769717315574
-condo_type_L,-0.018175636594346404,condo_type,category level,0.9819885440875472
-building_description_4,-0.02109136305012091,building_description,category level,0.9791295042248674
-years_since_last_claim,-0.023597265508123536,years_since_last_claim,number / flag,0.9766789728721497
-contents_deductible_D,-0.025652969610665745,contents_deductible,category level,0.9746732721706574
-contents_deductible_5,-0.027332778155964476,contents_deductible,category level,0.9730373820549623
-building_description_6,-0.02851084710555776,building_description,category level,0.9718917518765368
-missingindicator_elevation_difference,-0.028634775425494398,elevation_difference,missing flag,0.971771314427526
-zone_group_D,-0.031643962752445805,zone_group,category level,0.9688514678893733
-condo_type_A,-0.033243244138518285,condo_type,category level,0.9673032401268218
-contents_coverage,-0.03558330390947395,contents_coverage,number / flag,0.9650423390817785
-premium_per_1k_coverage,-0.036715253147271386,premium_per_1k_coverage,number / flag,0.9639505781671538
-obstruction_type_30,-0.03730089315546271,obstruction_type,category level,0.9633862154154934
-contents_deductible_E,-0.03802235210514869,contents_deductible,category level,0.9626914224708086
-elevation_difference,-0.038636163123698865,elevation_difference,number / flag,0.9621006931848518
-building_deductible_4,-0.03942833428189477,building_deductible,category level,0.9613388465607322
-mandatory_purchase,-0.04032283592813304,mandatory_purchase,number / flag,0.960479311864803
-building_description_11,-0.04090174683491911,building_description,category level,0.9599234408308487
-building_deductible_G,-0.04307686459338145,building_deductible,category level,0.9578377634272148
-tenant,-0.04425911608900573,tenant,number / flag,0.9567060274289466
-crs_class_7,-0.04585709111784377,crs_class,category level,0.9551784559227946
-prior_claims_paid,-0.04645547093563537,prior_claims_paid,number / flag,0.9546070673831154
-obstruction_type_50,-0.0470871009812778,obstruction_type,category level,0.9540042992608418
-term_no,-0.04742989637651811,term_no,number / flag,0.9536773270255059
-building_deductible_0,-0.04805041993510225,building_deductible,category level,0.9530857313453102
-obstruction_type_20,-0.0516368123665437,obstruction_type,category level,0.9496737139657246
-tenure_years,-0.0526446640984193,tenure_years,number / flag,0.9487170658291056
-building_description_7,-0.05353366910862817,building_description,category level,0.9478740263929775
-crs_class_8,-0.0537985223661819,crs_class,category level,0.9476230121117791
-premium,-0.05450227717695584,premium,number / flag,0.9469563524681858
-building_description_3,-0.05557392161645908,building_description,category level,0.9459420955170881
-contents_deductible_3,-0.055599713182318405,contents_deductible,category level,0.9459176985038524
-start_month_7,-0.057764192538327895,start_month,category level,0.9438724933735756
-crs_class_(missing),-0.06042271937916439,crs_class,category level,0.9413665155961782
-contents_deductible_2,-0.06089148493962732,contents_deductible,category level,0.9409253388062151
-start_month_12,-0.062283504113384194,start_month,category level,0.9396164638943623
-building_description_2,-0.06245080474800262,building_description,category level,0.9394592786126201
-building_description_5,-0.06268502918382951,building_description,category level,0.9392392600609712
-occupancy_group_non_residential,-0.06388091161481073,occupancy_group,category level,0.938116711683101
-obstruction_type_70,-0.06606693429501014,obstruction_type,category level,0.9360682071291602
-obstruction_type_15,-0.06662246209153642,obstruction_type,category level,0.9355483396344471
-start_month_11,-0.06731414155507803,start_month,category level,0.9349014638019257
-building_deductible_D,-0.0677256316869346,building_deductible,category level,0.9345168402151454
-hfiaa_surcharge,-0.07144118519306415,hfiaa_surcharge,number / flag,0.9310510355714606
-missingindicator_returned_after_lapse,-0.07189673088173751,returned_after_lapse,missing flag,0.9306269958783313
-start_month_9,-0.07341079402799278,start_month,category level,0.9292190339815375
-building_deductible_3,-0.07793277701216597,building_deductible,category level,0.9250266075059034
-start_month_8,-0.08580172186677376,start_month,category level,0.9177761881298185
-contents_deductible_A,-0.08674416854737743,contents_deductible,category level,0.9169116404668075
-floors_4,-0.08896703930258673,floors,category level,0.9148757280195355
-building_age,-0.0926134673972515,building_age,number / flag,0.9115457743697388
-start_month_10,-0.09556538794642558,start_month,category level,0.90885893129157
-building_deductible_2,-0.10836205576567567,building_deductible,category level,0.8973026640090954
-building_deductible_E,-0.11027947765793168,building_deductible,category level,0.8955838046530407
-start_month_6,-0.11931410413917314,start_month,category level,0.8875289804485402
-building_deductible_(missing),-0.11958189095823382,building_deductible,category level,0.8872913437054556
-had_prior_claim,-0.12105777639846495,had_prior_claim,number / flag,0.8859827692205846
-obstruction_type_60,-0.13825759454414094,obstruction_type,category level,0.8708743303737696
-crs_class_6,-0.1455812156915905,crs_class,category level,0.8645196746594244
-elevation_certificate_4,-0.14886770432016386,elevation_certificate,category level,0.8616831043107268
-building_deductible_1,-0.15148116300806494,building_deductible,category level,0.8594340712731198
-start_month_5,-0.16137335961722749,start_month,category level,0.8509742923519025
-start_month_4,-0.1621807723156301,start_month,category level,0.8502874822091705
-start_month_3,-0.16259728288511247,start_month,category level,0.8499334022298776
-contents_only,-0.17979707896274916,contents_only,number / flag,0.8354397225070583
-building_description_8,-0.18208663389479968,building_description,category level,0.8335291254130835
-start_month_2,-0.18227684557541096,start_month,category level,0.8333705935150876
-contents_deductible_F,-0.1827688965801374,contents_deductible,category level,0.8329606335461177
-start_month_1,-0.18801244452376384,start_month,category level,0.8286043955814273
-crs_class_10,-0.18920122769012612,crs_class,category level,0.8276199498865568
-elevation_certificate_2,-0.1950081703936354,elevation_certificate,category level,0.8228279352004294
-elevated_building,-0.21037992907753258,elevated_building,number / flag,0.8102763399402839
-building_coverage,-0.2209289211851903,building_coverage,number / flag,0.8017736673869071
-missingindicator_coverage_change_pct,-0.224013661747374,coverage_change_pct,missing flag,0.7993042144025202
-floors_5,-0.22544003432299173,floors,category level,0.7981649215127489
-obstruction_type_10,-0.22641821117105218,obstruction_type,category level,0.7973845567951641
-contents_deductible_1,-0.23081419159383226,contents_deductible,category level,0.7938869632030217
-contents_deductible_0,-0.25760199131230227,contents_deductible,category level,0.7729027929232588
-missingindicator_premium_change_pct,-0.2731205139804376,premium_change_pct,missing flag,0.7610010708343038
-crs_class_5,-0.29923536391921074,crs_class,category level,0.7413848936442441
-building_deductible_A,-0.2997354183915933,building_deductible,category level,0.7410142534902772
-zone_group_V,-0.30254995092274395,zone_group,category level,0.7389315770229599
-elevation_certificate_1,-0.30688664083633554,elevation_certificate,category level,0.7357339983709654
-obstruction_type_80,-0.31024128387870265,obstruction_type,category level,0.7332700086460263
-building_deductible_5,-0.31136390615727555,building_deductible,category level,0.7324472852883014
-subsidized_rate_type_P,-0.33091677903521255,subsidized_rate_type,category level,0.7182649412547694
-hurricane_wind_storms_10y,-0.3452260487153759,hurricane_wind_storms_10y,number / flag,0.7080602792596618
-elevation_certificate_3,-0.35096323128125084,elevation_certificate,category level,0.7040096389121476
-floors_2,-0.35368321743234693,floors,category level,0.7020973443304392
-floors_3,-0.3672515647355248,floors,category level,0.6926353804895944
-occupancy_group_single_family,-0.37038771817085797,occupancy_group,category level,0.6904665722968724
-floors_1,-0.3820159365290131,floors,category level,0.6824841766898405
-elevation_certificate_(missing),-0.3985196284257399,elevation_certificate,category level,0.671313103643217
-building_description_1,-0.4087221255788692,building_description,category level,0.664498853904592
-contents_deductible_(missing),-0.4287655032614206,contents_deductible,category level,0.6513126419653442
-post_firm,-0.44218529814363533,post_firm,number / flag,0.6426305461751111
-zone_group_A,-0.4439700806687194,zone_group,category level,0.6414846133308626
-building_description_(missing),-0.47203004068700505,building_description,category level,0.6237347752151504
-occupancy_group_2_4_family,-0.47959757716425355,occupancy_group,category level,0.6190324544842777
-occupancy_group_multi_family_or_condo,-0.5040283441544138,occupancy_group,category level,0.6040922601288999
-subsidized_rate_type_N,-0.5343286272375065,subsidized_rate_type,category level,0.5860626245762635
-subsidized_rate_type_(missing),-0.5455588804253491,subsidized_rate_type,category level,0.579517811656487
-condo_type_N,-0.5488576514070179,condo_type,category level,0.5776092647762833
-crs_class_1-4,-0.632991439347854,crs_class,category level,0.5310009655672127
-zone_group_X,-0.6397305567604231,zone_group,category level,0.5274345185643314
-obstruction_type_(missing),-0.7181971080750069,obstruction_type,category level,0.4876306092217976
-condo_type_U,-0.8170235176207515,condo_type,category level,0.4417445444925652
+max_wind_kt_10y,0.31483976458440827,max_wind_kt_10y,number / flag,1.3700397644768674
+missingindicator_prev_gap_days,0.26677882518268525,prev_gap_days,missing flag,1.3057516150158155
+days_since_ts_wind,0.21263274016419959,days_since_ts_wind,number / flag,1.2369302929986372
+prior_claims_n,0.14171263700856623,prior_claims_n,number / flag,1.1522454882473092
+hurricane_wind_per_year,0.0817051913104013,hurricane_wind_per_year,number / flag,1.0851358551896573
+prior_claims_5y_n,0.04589888979962067,prior_claims_5y_n,number / flag,1.0469685464055165
+contents_coverage,0.04560023861588502,contents_coverage,number / flag,1.0466559146960372
+years_since_purchase,0.04236851779052353,years_since_purchase,number / flag,1.0432788747438524
+missingindicator_days_since_ts_wind,0.03435102090848156,days_since_ts_wind,missing flag,1.0349478313026532
+coverage_change_pct,0.03117725242466826,coverage_change_pct,number / flag,1.0316683533978777
+policy_cost,0.028237638265746788,policy_cost,number / flag,1.028640099628425
+coverage_to_value,0.0252248767048178,coverage_to_value,number / flag,1.0255457159369288
+obstruction_type_54,0.019728438294631955,obstruction_type,category level,1.019924330025396
+flood_disasters_12m,0.015367627424558973,flood_disasters_12m,number / flag,1.015486316621933
+premium,0.013801316006348019,premium,number / flag,1.0138969938213238
+premium_change_pct,0.010137175602237357,premium_change_pct,number / flag,1.010188730827693
+prev_gap_days,0.00605532230075274,prev_gap_days,number / flag,1.0060736928259342
+obstruction_type_92,0.0014270987629851765,obstruction_type,category level,1.001428117553005
+obstruction_type_40,0.00022084444631076313,obstruction_type,category level,1.0002208688342409
+building_description_infrequent_sklearn,3.217494251070636e-05,building_description,category level,1.0000321754601298
+community_sanctioned_before,2.731177602997781e-05,community_sanctioned_before,number / flag,1.000027312149
+condo_type_H,1.6841806180650582e-06,condo_type,category level,1.0000016841820363
+obstruction_type_34,-2.390513688138561e-05,obstruction_type,category level,0.9999760951488441
+condo_type_(missing),-3.442123663931043e-05,condo_type,category level,0.9999655793557647
+building_description_14,-4.5578847871874425e-05,building_description,category level,0.9999544221908281
+elevation_certificate_C,-0.00010938022110147461,elevation_certificate,category level,0.9998906257606968
+elevation_certificate_D,-0.00011290586961604072,elevation_certificate,category level,0.9998871005040117
+obstruction_type_95,-0.00017155564176863234,obstruction_type,category level,0.999828459073059
+floodproofed,-0.0001903302214216817,floodproofed,number / flag,0.9998096878902258
+floors_6,-0.00019610742691860062,floors,category level,0.9998039118008859
+obstruction_type_infrequent_sklearn,-0.00023267296195938662,obstruction_type,category level,0.999767354104295
+subsidized_rate_type_E,-0.000255919120561811,subsidized_rate_type,category level,0.999744113623943
+elevation_certificate_A,-0.0002880768088509001,elevation_certificate,category level,0.9997119646812888
+elevation_certificate_B,-0.0002911785380664783,elevation_certificate,category level,0.9997088638502898
+obstruction_type_90,-0.00031993548246611614,obstruction_type,category level,0.9996801156914328
+contents_deductible_B,-0.0004784456549267051,contents_deductible,category level,0.9995216687819444
+elevation_certificate_E,-0.0004996218083410166,elevation_certificate,category level,0.9995005029818512
+building_description_9,-0.0008910158776291288,building_description,category level,0.9991093809591466
+contents_deductible_C,-0.0009284291744370001,contents_deductible,category level,0.9990720016825786
+building_description_12,-0.000945009664113331,building_description,category level,0.9990554367168968
+contents_deductible_4,-0.0010537068391763943,contents_deductible,category level,0.9989468481149383
+building_deductible_B,-0.0014481212291976944,building_deductible,category level,0.998552926792401
+obstruction_type_30,-0.0018104468336869347,obstruction_type,category level,0.998191191036607
+building_deductible_C,-0.0019659277649090342,building_deductible,category level,0.9980360034053584
+obstruction_type_20,-0.0019876521812124738,obstruction_type,category level,0.9980143218912445
+building_description_4,-0.002098748096117854,building_description,category level,0.9979034527357344
+zone_group_D,-0.002137730537732665,zone_group,category level,0.9978645527808635
+building_description_13,-0.002613086437919436,building_description,category level,0.9973903247005997
+contents_deductible_D,-0.003374058897968943,contents_deductible,category level,0.9966316268422828
+building_description_6,-0.003590249018382631,building_description,category level,0.9964161882195577
+building_deductible_4,-0.003800980703720313,building_deductible,category level,0.9962062338797093
+building_description_10,-0.004053590345618408,building_description,category level,0.9959546143618084
+obstruction_type_70,-0.004555173291532685,obstruction_type,category level,0.9954551857752416
+building_description_3,-0.005408460413268259,building_description,category level,0.9946061389768199
+building_description_7,-0.005486875689787986,building_description,category level,0.9945281497192184
+contents_deductible_E,-0.005637128812745695,contents_deductible,category level,0.9943787299845257
+days_since_flood_disaster,-0.006046384597118391,days_since_flood_disaster,number / flag,0.9939718580004578
+contents_deductible_G,-0.006886132744175653,contents_deductible,category level,0.9931375223394171
+building_description_2,-0.007276760774940848,building_description,category level,0.992749650746477
+building_description_11,-0.00734757257667497,building_description,category level,0.9926793548439559
+contents_deductible_3,-0.007950822956466057,contents_deductible,category level,0.9920807012332992
+returned_after_lapse,-0.008574129847940353,returned_after_lapse,number / flag,0.9914625231726586
+condo_type_L,-0.009452717332160595,condo_type,category level,0.9905918191595591
+building_deductible_D,-0.00945816294931492,building_deductible,category level,0.9905864247904436
+floors_4,-0.009563533665282105,floors,category level,0.9904820514886773
+building_description_5,-0.010791254153509998,building_description,category level,0.9892667625510568
+building_deductible_3,-0.01352152563427099,building_deductible,category level,0.9865694795553662
+tenant,-0.013646349106460391,tenant,number / flag,0.986446340212872
+building_deductible_E,-0.01573289722796374,building_deductible,category level,0.9843902182993703
+crs_class_9,-0.01661842278130848,crs_class,category level,0.9835189014502085
+contents_deductible_A,-0.017323397987572375,contents_deductible,category level,0.9828257893519222
+condo_type_A,-0.01786323015075648,condo_type,category level,0.9822953715611961
+elevation_certificate_4,-0.01839903199653266,elevation_certificate,category level,0.9817691968632913
+building_deductible_G,-0.018631675094185347,building_deductible,category level,0.9815408216021472
+premium_per_1k_coverage,-0.018683718078400594,premium_per_1k_coverage,number / flag,0.9814897406178769
+missingindicator_elevation_difference,-0.020156646631261488,elevation_difference,missing flag,0.9800451405121263
+floors_5,-0.021705078569624094,floors,category level,0.9785287816077728
+building_deductible_0,-0.021944378627005982,building_deductible,category level,0.9782946476294387
+prior_claims_paid,-0.02261796864165338,prior_claims_paid,number / flag,0.9776359000112289
+small_business,-0.02333607430155777,small_business,number / flag,0.9769341061493354
+obstruction_type_60,-0.023942482197317753,obstruction_type,category level,0.9763418651816774
+missingindicator_returned_after_lapse,-0.02766159263749416,returned_after_lapse,missing flag,0.9727174858688044
+obstruction_type_15,-0.02902291937679733,obstruction_type,category level,0.9713942004617682
+contents_deductible_2,-0.031735954237137556,contents_deductible,category level,0.968762345903691
+missingindicator_coverage_to_value,-0.03487446217822239,coverage_to_value,missing flag,0.9657266438673859
+obstruction_type_80,-0.03869467258726709,obstruction_type,category level,0.96204440283617
+zone_group_V,-0.03872973393481581,zone_group,category level,0.9620106728543176
+contents_deductible_5,-0.040253495325779064,contents_deductible,category level,0.960545914387939
+building_deductible_(missing),-0.04071872106610471,building_deductible,category level,0.9600991476355557
+obstruction_type_50,-0.04204853378646252,obstruction_type,category level,0.9588232441206131
+rental_property,-0.045259783178136365,rental_property,number / flag,0.9557491620250299
+crs_class_10,-0.045842094069792526,crs_class,category level,0.9551927808874114
+elevation_difference,-0.04669783546050717,elevation_difference,number / flag,0.9543757325296032
+elevation_certificate_2,-0.04676938225163922,elevation_certificate,category level,0.9543074524510458
+start_month_12,-0.04842096202823478,start_month,category level,0.952732638385425
+ts_wind_storms_10y,-0.048970217907760946,ts_wind_storms_10y,number / flag,0.9522094880670215
+had_prior_claim,-0.04945913343580879,had_prior_claim,number / flag,0.9517440518511191
+start_month_11,-0.05269383177511952,start_month,category level,0.9486704207618571
+start_month_7,-0.05362885550939428,start_month,category level,0.9477838059699722
+crs_class_8,-0.05499380999627983,crs_class,category level,0.9464910067182036
+mandatory_purchase,-0.05510691390389655,mandatory_purchase,number / flag,0.9463839609405817
+building_deductible_A,-0.058173597674890686,building_deductible,category level,0.9434861462181795
+years_since_last_claim,-0.05850071976967898,years_since_last_claim,number / flag,0.9431775615288116
+replacement_cost,-0.06020320138425548,replacement_cost,number / flag,0.9415731851691715
+start_month_9,-0.060913866021464966,start_month,category level,0.9409042801148632
+start_month_8,-0.06372354646122097,start_month,category level,0.9382643501797928
+contents_only,-0.06541997257207116,contents_only,number / flag,0.936674003371593
+start_month_6,-0.07044498499788833,start_month,category level,0.9319790109426939
+tenure_years,-0.07060800137680268,tenure_years,number / flag,0.9318270954817964
+term_no,-0.07108608627809565,term_no,number / flag,0.9313817094914728
+start_month_10,-0.07175158120261986,start_month,category level,0.9307620858920602
+crs_class_7,-0.07361682319210629,crs_class,category level,0.929027607481086
+new_business,-0.07848097454993022,new_business,number / flag,0.9245196491666549
+building_deductible_2,-0.08062943225217209,building_deductible,category level,0.9225354900097588
+start_month_1,-0.08083195999223522,start_month,category level,0.9223486699006048
+start_month_4,-0.0811785980659662,start_month,category level,0.9220290041417245
+start_month_5,-0.0817566492189872,start_month,category level,0.9214961782279152
+obstruction_type_10,-0.08193696958443522,obstruction_type,category level,0.9213300286808218
+start_month_2,-0.08313974647253326,start_month,category level,0.9202225403801941
+start_month_3,-0.08894218333617973,start_month,category level,0.9148984684225139
+building_description_8,-0.09354872354702203,building_description,category level,0.9106936441206036
+hurricane_wind_storms_10y,-0.09991709460621871,hurricane_wind_storms_10y,number / flag,0.9049124370481073
+building_age,-0.10032215934344468,building_age,number / flag,0.9045459631574179
+building_coverage,-0.1044351472525451,building_coverage,number / flag,0.900833217021649
+occupancy_group_non_residential,-0.11115455500105646,occupancy_group,category level,0.8948004423580063
+crs_class_6,-0.11707115289377988,crs_class,category level,0.8895218988544673
+crs_class_(missing),-0.12714014892838982,crs_class,category level,0.8806102473659045
+contents_deductible_0,-0.1297164848375471,contents_deductible,category level,0.8783444195836707
+occupancy_group_2_4_family,-0.1540880374177465,occupancy_group,category level,0.8571965523185044
+elevated_building,-0.15563065026761494,elevated_building,number / flag,0.8558752492935677
+occupancy_group_multi_family_or_condo,-0.16058133910145547,occupancy_group,category level,0.8516485484269154
+elevation_certificate_3,-0.1629623672360553,elevation_certificate,category level,0.849623161480847
+contents_deductible_F,-0.16410158967203634,contents_deductible,category level,0.8486558028361169
+building_deductible_5,-0.16642699798268745,building_deductible,category level,0.8466846243649848
+subsidized_rate_type_P,-0.171235331712571,subsidized_rate_type,category level,0.8426232541636696
+hfiaa_surcharge,-0.171828038890235,hfiaa_surcharge,number / flag,0.8421239732911551
+subsidized_rate_type_(missing),-0.17707909143848113,subsidized_rate_type,category level,0.8377135259349836
+crs_class_1-4,-0.18051095671225423,crs_class,category level,0.8348435335064581
+building_deductible_F,-0.18718004785310127,building_deductible,category level,0.8292944102647265
+missingindicator_premium_change_pct,-0.19025975422840405,premium_change_pct,missing flag,0.8267443557075883
+contents_deductible_(missing),-0.19152187595376438,contents_deductible,category level,0.8257015618997173
+elevation_certificate_1,-0.19310783060669937,elevation_certificate,category level,0.824393074540759
+floors_3,-0.19602907935692596,floors,category level,0.821988331438564
+building_description_(missing),-0.20015213590395722,building_description,category level,0.8186062042091824
+building_deductible_1,-0.21779429902227368,building_deductible,category level,0.8042908680697282
+condo_type_U,-0.219282853257804,condo_type,category level,0.8030945281208173
+crs_class_5,-0.22163335650790802,crs_class,category level,0.8012090685797938
+contents_deductible_1,-0.23646524198809932,contents_deductible,category level,0.789413320262702
+missingindicator_coverage_change_pct,-0.24656542738848164,coverage_change_pct,missing flag,0.7814802296537338
+floors_2,-0.2975074687273776,floors,category level,0.7426670364224411
+primary_residence,-0.30382166710981356,primary_residence,number / flag,0.7379924630451126
+floors_1,-0.31242549733568337,floors,category level,0.7316701382907744
+zone_group_X,-0.3924461768552006,zone_group,category level,0.6754026976714993
+zone_group_A,-0.4041131237540664,zone_group,category level,0.6675685991313051
+occupancy_group_single_family,-0.4116028335615158,occupancy_group,category level,0.6625873812707863
+elevation_certificate_(missing),-0.4148869897448946,elevation_certificate,category level,0.6604149101454284
+post_firm,-0.42114073916216427,post_firm,number / flag,0.6562977281166683
+subsidized_rate_type_N,-0.48885642281022595,subsidized_rate_type,category level,0.6133273804942421
+building_description_1,-0.49320987867754745,building_description,category level,0.6106630904535245
+condo_type_N,-0.5907952272852219,condo_type,category level,0.5538866437808191
+obstruction_type_(missing),-0.6340562275241105,obstruction_type,category level,0.5304358629281917
