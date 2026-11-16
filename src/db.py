@@ -6,6 +6,7 @@ stores no data, it only gives a short name (such as ``raw_policies``)
 to ``SELECT * FROM read_parquet('...')``.
 """
 import resource
+import warnings
 from pathlib import Path
 
 import duckdb
@@ -102,7 +103,15 @@ def connect(db_path=INTERIM / "nfip.duckdb", memory_limit="8GB", temp_dir=INTERI
 
     con = duckdb.connect(target, config={"preserve_insertion_order": False})
     con.execute(f"SET memory_limit = '{memory_limit}'")
-    con.execute(f"SET temp_directory = '{temp_dir}'")
+    # Running this twice in one kernel returns the same database. Once it has spilled to disk,
+    # DuckDB refuses to set the spill folder again, even to the same folder, so we only set it
+    # when it is different.
+    current = con.execute("SELECT current_setting('temp_directory')").fetchall()[0][0]
+    if not current or Path(current).resolve() != Path(temp_dir).resolve():
+        try:
+            con.execute(f"SET temp_directory = '{temp_dir}'")
+        except duckdb.NotImplementedException:
+            warnings.warn(f"DuckDB keeps its spill folder {current!r} until the kernel restarts", stacklevel=2)
     return con
 
 

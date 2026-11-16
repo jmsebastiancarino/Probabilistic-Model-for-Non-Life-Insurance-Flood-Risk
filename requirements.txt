@@ -5,3 +5,6 @@ openpyxl>=3.1         # read/write the Excel dictionaries and reports
 requests>=2.31        # notebook 00 (dictionary APIs)
 python-dotenv>=1.0    # notebook 01 (Census API key from .env)
 matplotlib>=3.8       # notebook 02 figures
+numpy>=1.26
+netCDF4>=1.6         # notebook 02b (CPC rainfall files)
+scipy>=1.11          # notebook 02b (nearest grid cell)

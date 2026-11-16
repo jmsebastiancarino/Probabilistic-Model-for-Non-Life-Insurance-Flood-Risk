@@ -2,28 +2,28 @@ feature,group,kind,missing_pct,distinct,min,max,missing_plan,encoding,strength_c
 premium,price,num,0.0,23148,-17644,141324,none,standardize (logistic) / as is (boosting),0.569,0.526,True,
 policy_cost,price,num,0.0,24548,-19467,167062,none,standardize (logistic) / as is (boosting),0.582,0.522,True,
 premium_per_1k_coverage,price,num,0.0,2075300,-81.42131979695432,25495.0,none,standardize (logistic) / as is (boosting),0.609,0.532,True,
-rr2_rated,price,flag,0.0,1,false,false,none,0/1,0.5,0.5,True,
-full_risk_premium,price,num,50.43,16938,59,38819,fill 0 + missing flag (rated before Risk Rating 2.0),standardize (logistic) / as is (boosting),0.56,0.516,True,
-discount_to_full_risk,price,num,50.43,36280,-137941,31552,fill 0 + missing flag (rated before Risk Rating 2.0),standardize (logistic) / as is (boosting),0.514,0.512,True,
+rr2_rated,price,flag,0.0,1,false,false,none,0/1,0.5,0.5,False,false for every training policy-year (Risk Rating 2.0 started in October 2021)
+full_risk_premium,price,num,50.43,16938,59,38819,median (train) + missing flag,standardize (logistic) / as is (boosting),0.56,0.516,False,leakage: filled mainly for policies that stayed (lapse 27.6% missing vs 0.6% filled)
+discount_to_full_risk,price,num,50.43,36280,-137941,31552,median (train) + missing flag,standardize (logistic) / as is (boosting),0.514,0.512,False,leakage: same as full_risk_premium
 subsidized_rate_type,price,cat,5.52,3,E,P,'(missing)' category,one-hot,0.571,0.52,True,
 hfiaa_surcharge,price,num,0.0,618,-1325,2575,none,standardize (logistic) / as is (boosting),0.55,0.505,True,
 premium_change_pct,price,num,27.38,1057151,-112833.33333333333,83250.0,fill 0 + missing flag (first term),standardize (logistic) / as is (boosting),0.518,0.501,True,
 coverage_change_pct,price,num,28.67,105318,-100.0,499900.0,fill 0 + missing flag (first term),standardize (logistic) / as is (boosting),0.511,0.5,True,
 mandatory_purchase,obligation,flag,0.0,2,false,true,none,0/1,0.507,0.509,True,
 zone_group,flood_risk,cat,0.0,5,A,X,none,one-hot,0.558,0.531,True,
-current_zone_group,flood_risk,cat,10.95,4,A,X,'(missing)' category,one-hot,0.569,0.7,True,
-zone_changed,flood_risk,flag,10.95,2,false,true,true / false / '(missing)',0/1,0.518,0.684,True,
-in_sfha,flood_risk,flag,0.0,2,false,true,none,0/1,0.557,0.531,True,
+current_zone_group,flood_risk,cat,10.95,4,A,X,'(missing)' category,one-hot,0.569,0.7,False,leakage: lapse 55.7% when missing vs 9.0% when filled
+zone_changed,flood_risk,flag,10.95,2,false,true,true / false / '(missing)',0/1,0.518,0.684,False,leakage: built from the same field as current_zone_group
+in_sfha,flood_risk,flag,0.0,2,false,true,none,0/1,0.557,0.531,False,duplicate: zone_group is A or V
 elevation_difference,flood_risk,num,66.48,712,-90000,998,median (train) + missing flag,standardize (logistic) / as is (boosting),0.544,0.503,True,
 base_flood_elevation,flood_risk,num,66.68,32148,-9999.00,9994.00,median (train) + missing flag,standardize (logistic) / as is (boosting),0.587,0.513,True,
 elevated_building,flood_risk,flag,0.0,2,false,true,none,0/1,0.537,0.519,True,
-foundation_type,flood_risk,cat,50.43,6,1,6,NULL -> 'not_collected' (before 2010),one-hot,0.538,0.783,True,
-basement_type,flood_risk,cat,51.73,4,0,4,'(missing)' category,one-hot,0.513,0.653,True,
+foundation_type,flood_risk,cat,50.43,6,1,6,'(missing)' category,one-hot,0.538,0.783,False,leakage: same rows missing as full_risk_premium (lapse 27.6% vs 0.6%)
+basement_type,flood_risk,cat,51.73,4,0,4,'(missing)' category,one-hot,0.513,0.653,False,leakage: lapse 19.9% when missing vs 7.6% when filled
 post_firm,flood_risk,flag,0.0,2,false,true,none,0/1,0.56,0.51,True,
 elevation_certificate,flood_risk,cat,78.22,9,1,E,'(missing)' category,one-hot,0.511,0.55,True,
 obstruction_type,flood_risk,cat,81.0,20,10,98,'(missing)' category,"top 15 levels + 'other', one-hot",0.543,0.517,True,
 floodproofed,flood_risk,flag,0.0,2,false,true,none,0/1,0.5,0.5,True,
-crs_class,flood_risk,cat,26.48,10,1,9,NULL -> '10' (not in CRS),one-hot,0.548,0.52,True,
+crs_class,flood_risk,cat,26.48,10,1,9,'(missing)' category (not the same as class 10),one-hot,0.548,0.52,True,
 latitude,flood_risk,num,0.0,349,13.3,69.9,none,standardize (logistic) / as is (boosting),0.5,0.501,True,
 longitude,flood_risk,num,0.0,718,-166.1,145.8,none,standardize (logistic) / as is (boosting),0.576,0.516,True,
 building_coverage,coverage,num,0.0,7409,0,19200000,none,standardize (logistic) / as is (boosting),0.568,0.554,True,
@@ -42,12 +42,12 @@ tenant,property,flag,0.0,2,false,true,none,0/1,0.5,0.504,True,
 condo_type,property,cat,0.0,5,A,U,none,one-hot,0.511,0.505,True,
 building_description,property,cat,6.66,17,1,9,'(missing)' category,"top 15 levels + 'other', one-hot",0.505,0.506,True,
 small_business,property,flag,0.0,2,false,true,none,0/1,0.502,0.5,True,
-tenure_years,tenure,num,0.0,17084,-12.558521560574949,2018.7570157426421,none,standardize (logistic) / as is (boosting),0.512,0.582,True,
+tenure_years,tenure,num,0.0,17084,-12.558521560574949,2018.7570157426421,"median (train), NO missing flag (impossible values leak, Section 5)",standardize (logistic) / as is (boosting),0.512,0.582,True,
 new_business,tenure,flag,0.0,2,false,true,none,0/1,0.5,0.551,True,
-years_since_purchase,tenure,num,49.22,38206,0.0,2019.956194387406,median (train) + missing flag,standardize (logistic) / as is (boosting),0.516,0.588,True,
+years_since_purchase,tenure,num,49.22,38206,0.0,2019.956194387406,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.516,0.588,True,
 term_no,tenure,num,0.0,350,1,1073,none,standardize (logistic) / as is (boosting),0.517,0.593,True,
-year_in_term,tenure,num,0.0,3,0,2,none,standardize (logistic) / as is (boosting),0.5,0.5,True,
-multi_year_term,tenure,flag,0.0,2,false,true,none,0/1,0.5,0.5,True,
+year_in_term,tenure,num,0.0,3,0,2,none,standardize (logistic) / as is (boosting),0.5,0.5,False,no signal (strength 0.50 for both targets)
+multi_year_term,tenure,flag,0.0,2,false,true,none,0/1,0.5,0.5,False,no signal (strength 0.50 for both targets)
 start_month,tenure,cat,0.0,12,1,9,none,one-hot,0.514,0.514,True,
 prior_claims_n,history,num,0.0,39,0,44,none,standardize (logistic) / as is (boosting),0.555,0.513,True,
 prior_claims_5y_n,history,num,0.0,22,0,27,none,standardize (logistic) / as is (boosting),0.539,0.507,True,
@@ -58,17 +58,30 @@ prev_gap_days,history,num,14.59,1306,-366,3737,fill 0 + missing flag (first term
 returned_after_lapse,history,flag,14.59,2,false,true,true / false / '(missing)',0/1,0.502,0.568,True,
 flood_disasters_12m,context,num,0.0,8,0,7,none,standardize (logistic) / as is (boosting),0.501,0.508,True,
 days_since_flood_disaster,context,num,0.0,5529,1,5596,none,standardize (logistic) / as is (boosting),0.505,0.515,True,
-acs_median_income,context,num,20.51,45265,2499.0,250001.0,median (train) + missing flag,standardize (logistic) / as is (boosting),0.56,0.531,True,
-acs_median_home_value,context,num,20.71,11109,9999.0,2000001.0,median (train) + missing flag,standardize (logistic) / as is (boosting),0.605,0.527,True,
-acs_median_age,context,num,20.36,641,8.5,84.1,median (train) + missing flag,standardize (logistic) / as is (boosting),0.556,0.526,True,
-acs_owner_share,context,num,20.37,68913,0.0,1.0,median (train) + missing flag,standardize (logistic) / as is (boosting),0.509,0.534,True,
-acs_population,context,num,20.34,8029,0,38907,median (train) + missing flag,standardize (logistic) / as is (boosting),0.521,0.521,True,
-mortgage_rate,context,num,0.0,79,2.765,4.866,none,standardize (logistic) / as is (boosting),0.526,0.501,True,
-treasury_10y,context,num,0.0,84,0.6236363636363637,3.152272727272727,none,standardize (logistic) / as is (boosting),0.535,0.501,True,
-unemployment_rate,context,num,0.0,36,3.5,14.8,none,standardize (logistic) / as is (boosting),0.514,0.535,True,
-cpi_yoy,context,num,0.0,84,-0.22993097820542818,2.854124785561929,none,standardize (logistic) / as is (boosting),0.504,0.532,True,
-home_price_yoy,context,num,0.0,85,3.0999746702258246,10.831012038317,none,standardize (logistic) / as is (boosting),0.509,0.512,True,
-fed_funds,context,num,0.0,48,0.05,2.42,none,standardize (logistic) / as is (boosting),0.518,0.539,True,
-community_emergency_program,context,flag,0.0,2,false,true,none,0/1,0.501,0.5,True,
+max_wind_kt_10y,context,num,0.0,709,0.0,150.0,none,standardize (logistic) / as is (boosting),0.558,0.513,True,
+ts_wind_storms_10y,context,num,0.0,19,0,18,none,standardize (logistic) / as is (boosting),0.519,0.521,True,
+hurricane_wind_storms_10y,context,num,0.0,7,0,6,none,standardize (logistic) / as is (boosting),0.52,0.501,True,
+hurricane_wind_per_year,context,num,0.0,29232,0.0,0.4238222325365514,none,standardize (logistic) / as is (boosting),0.522,0.512,True,
+days_since_ts_wind,context,num,15.46,9918,1,10611,median (train) + missing flag,standardize (logistic) / as is (boosting),0.575,0.536,True,
+precip_annual_mean_mm,context,num,0.35,9341,74.363,4466.611,median (train) + missing flag,standardize (logistic) / as is (boosting),0.532,0.515,True,
+precip_max1d_mean_mm,context,num,0.35,8936,12.629,247.907,median (train) + missing flag,standardize (logistic) / as is (boosting),0.601,0.519,True,
+precip_100yr_1d_mm,context,num,0.35,8871,23.569,1564.837,median (train) + missing flag,standardize (logistic) / as is (boosting),0.568,0.52,True,
+precip_90d_mm,context,num,0.35,3182960,0.0,2019.9303,median (train) + missing flag,standardize (logistic) / as is (boosting),0.545,0.515,True,
+precip_365d_pct_normal,context,num,0.35,2880699,8.8477,394.63492,median (train) + missing flag,standardize (logistic) / as is (boosting),0.555,0.514,True,
+precip_max1d_365d_mm,context,num,0.35,111263,2.9414334,453.6892,median (train) + missing flag,standardize (logistic) / as is (boosting),0.566,0.515,True,
+precip_max3d_365d_mm,context,num,0.35,119051,4.140911,753.16815,median (train) + missing flag,standardize (logistic) / as is (boosting),0.576,0.514,True,
+heavy_rain_days_3y,context,num,0.38,52,0.0,51.0,median (train) + missing flag,standardize (logistic) / as is (boosting),0.617,0.522,True,
+acs_median_income,context,num,20.51,45265,2499.0,250001.0,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.56,0.531,True,
+acs_median_home_value,context,num,20.71,11109,9999.0,2000001.0,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.605,0.527,True,
+acs_median_age,context,num,20.36,641,8.5,84.1,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.556,0.526,True,
+acs_owner_share,context,num,20.37,68913,0.0,1.0,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.509,0.534,True,
+acs_population,context,num,20.34,8029,0,38907,"median (train), NO missing flag (missingness tied to lapse, 5.2d)",standardize (logistic) / as is (boosting),0.521,0.521,True,
+mortgage_rate,context,num,0.0,79,2.765,4.866,none,standardize (logistic) / as is (boosting),0.526,0.501,False,same for every policy in a month (a proxy for the year); test/validation outside the training range
+treasury_10y,context,num,0.0,84,0.6236363636363637,3.152272727272727,none,standardize (logistic) / as is (boosting),0.535,0.501,False,proxy for the year (FRED)
+unemployment_rate,context,num,0.0,36,3.5,14.8,none,standardize (logistic) / as is (boosting),0.514,0.535,False,proxy for the year (FRED)
+cpi_yoy,context,num,0.0,84,-0.22993097820542818,2.854124785561929,none,standardize (logistic) / as is (boosting),0.504,0.532,False,proxy for the year (FRED)
+home_price_yoy,context,num,0.0,85,3.0999746702258246,10.831012038317,none,standardize (logistic) / as is (boosting),0.509,0.512,False,proxy for the year (FRED)
+fed_funds,context,num,0.0,48,0.05,2.42,none,standardize (logistic) / as is (boosting),0.518,0.539,False,proxy for the year (FRED)
+community_emergency_program,context,flag,0.0,2,false,true,none,0/1,0.501,0.5,False,"current snapshot, no date; no signal (strength 0.50)"
 community_sanctioned_before,context,flag,0.0,2,false,true,none,0/1,0.5,0.5,True,
-years_since_map,context,num,63.51,15238,0.0,70.79808350444901,median (train) + missing flag,standardize (logistic) / as is (boosting),0.531,0.51,True,
+years_since_map,context,num,63.51,15238,0.0,70.79808350444901,median (train) + missing flag,standardize (logistic) / as is (boosting),0.531,0.51,False,status book has only the current map date: blank for 51% of policy-years

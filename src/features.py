@@ -121,6 +121,33 @@ FEATURES = [
      "declarations before the start"),
     ("days_since_flood_disaster", "context", "num", "disasters",
      "Days since the most recent flood-related declaration in the county or state", "declarations before the start"),
+    ("max_wind_kt_10y", "context", "num", "IBTrACS",
+     "Highest estimated tropical-cyclone wind (knots) at the property's 0.1-degree cell in the 10 years before the start; 0 = none",
+     "storms before the start"),
+    ("ts_wind_storms_10y", "context", "num", "IBTrACS",
+     "Storms that brought tropical-storm-force wind (34+ kt) to the cell in the 10 years before the start", "storms before the start"),
+    ("hurricane_wind_storms_10y", "context", "num", "IBTrACS",
+     "Storms that brought hurricane-force wind (64+ kt) to the cell in the 10 years before the start", "storms before the start"),
+    ("hurricane_wind_per_year", "context", "num", "IBTrACS",
+     "Long-run rate of 64+ kt storms at the cell per year, from 1980 to the start", "storms before the start"),
+    ("days_since_ts_wind", "context", "num", "IBTrACS",
+     "Days since the last 34+ kt wind at the cell; NULL = none since 1980", "storms before the start"),
+    ("precip_annual_mean_mm", "context", "num", "NOAA CPC Unified",
+     "Average annual rainfall at the property's grid cell, 1981-2013 (mm)", "fixed climate, before the first start"),
+    ("precip_max1d_mean_mm", "context", "num", "NOAA CPC Unified",
+     "Average of each year's wettest day at the cell, 1981-2013 (mm)", "fixed climate, before the first start"),
+    ("precip_100yr_1d_mm", "context", "num", "NOAA CPC Unified",
+     "1-day rainfall expected once in 100 years at the cell (GEV fit, 1981-2013, mm)", "fixed climate, before the first start"),
+    ("precip_90d_mm", "context", "num", "NOAA CPC Unified",
+     "Rain at the cell in the 90 days before the start (mm)", "rain before the start"),
+    ("precip_365d_pct_normal", "context", "num", "NOAA CPC Unified",
+     "Rain at the cell in the 365 days before the start, as % of the cell's normal year", "rain before the start"),
+    ("precip_max1d_365d_mm", "context", "num", "NOAA CPC Unified",
+     "Wettest single day at the cell in the 365 days before the start (mm)", "rain before the start"),
+    ("precip_max3d_365d_mm", "context", "num", "NOAA CPC Unified",
+     "Wettest 3 consecutive days at the cell in the 365 days before the start (mm)", "rain before the start"),
+    ("heavy_rain_days_3y", "context", "num", "NOAA CPC Unified",
+     "Days with 50+ mm at the cell in the 3 years before the start", "rain before the start"),
     ("acs_median_income", "context", "num", "census ACS 2018-2022", "Tract median household income ($)",
      "5-year average, slow-moving"),
     ("acs_median_home_value", "context", "num", "census ACS 2018-2022", "Tract median home value ($)", "5-year average, slow-moving"),
@@ -261,6 +288,81 @@ def feature_names(group=None):
     ['premium', 'policy_cost', 'premium_per_1k_coverage']
     """
     return [f[0] for f in FEATURES if group is None or f[1] == group]
+
+
+#: Fixed clean-up rules decided in notebook 05 (Section 6): values outside these
+#: (inclusive) ranges are impossible and become missing. ``None`` = no bound.
+IMPOSSIBLE_TO_MISSING = {
+    "elevation_difference": (-50, 50),          # feet; -90,000 and 998 are placeholders
+    "base_flood_elevation": (-9998, 9993),      # -9999 and 9994 are placeholders
+    "building_age": (0, 200),                   # built after the start, or a placeholder year
+    "tenure_years": (0, 100),                   # first purchase after the start (4.1% of train, lapse 1.7%:
+                                                # the date was updated later, so it leaks) or a placeholder
+    "years_since_purchase": (None, 100),        # placeholder purchase dates (up to 2,020 years)
+    "premium": (0, None),                       # negative premiums are refunds or errors
+    "premium_per_1k_coverage": (0, None),
+}
+
+
+def apply_fixed_rules(df):
+    """Apply the fixed clean-up rules from notebook 05 to a feature table.
+
+    These rules learn nothing from the data, so they give the same result on
+    every split and can't leak. Notebooks 06 and 07 call this before their
+    pipelines; anything learned from the data (medians, percentile caps,
+    scaling, one-hot categories) stays in the pipeline, fitted on train.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Rows of ``features.parquet``; columns that are absent are skipped.
+
+    Returns
+    -------
+    pandas.DataFrame
+        A copy with:
+
+        * values outside :data:`IMPOSSIBLE_TO_MISSING` set to missing,
+        * ``prior_claims_n`` capped at 3 ("3 or more"),
+        * ``crs_class`` 1-4 merged into ``"1-4"`` (each class is small),
+        * ``zone_group`` ``UNKNOWN`` merged into ``D`` (1,551 rows in train),
+        * ``term_no`` as a number,
+        * ``new_business`` recomputed from the cleaned ``tenure_years``
+          (tenure below 1 year; unknown tenure counts as not new).
+
+    Impossible ``tenure_years`` must be imputed **without** a missing flag:
+    a first-purchase date after the start was recorded later and goes with
+    policies that stayed, so a flag would carry that leak (notebook 05,
+    Section 5).
+
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> out = apply_fixed_rules(pd.DataFrame({"building_age": [-3, 20], "crs_class": ["2", "7"],
+    ...                                        "zone_group": ["UNKNOWN", "A"], "prior_claims_n": [5, 1]}))
+    >>> out["building_age"].tolist(), out["crs_class"].tolist(), out["zone_group"].tolist(), out["prior_claims_n"].tolist()
+    ([nan, 20.0], ['1-4', '7'], ['D', 'A'], [3, 1])
+    """
+    import numpy as np
+    import pandas as pd
+    out = df.copy()
+    for col, (low, high) in IMPOSSIBLE_TO_MISSING.items():
+        if col in out:
+            x = pd.to_numeric(out[col], errors="coerce").astype("float64")
+            bad = (x < low if low is not None else False) | (x > high if high is not None else False)
+            out[col] = x.mask(bad, np.nan)
+    if "prior_claims_n" in out:
+        out["prior_claims_n"] = out["prior_claims_n"].clip(upper=3)
+    if "crs_class" in out:
+        c = out["crs_class"].astype("string")
+        out["crs_class"] = c.mask(c.isin(["1", "2", "3", "4"]), "1-4").astype(object).where(c.notna(), None)
+    if "zone_group" in out:
+        out["zone_group"] = out["zone_group"].replace("UNKNOWN", "D")
+    if "term_no" in out:
+        out["term_no"] = pd.to_numeric(out["term_no"], errors="coerce")
+    if "new_business" in out and "tenure_years" in out:
+        out["new_business"] = (out["tenure_years"] < 1).fillna(False)
+    return out
 
 
 def base_features_sql(population, periods, policies):
@@ -455,6 +557,161 @@ FROM {base} b
 LEFT JOIN agg a ON a.county_fips = b.county_fips AND a.period_start = b.period_start
 """
 
+
+#: Wind profile settings (modified Rankine vortex), used by :func:`storm_wind_sql`.
+WIND_DEFAULT_RMW_NMI = 25   # radius of maximum wind when IBTrACS has none (most storms before 2004)
+WIND_DECAY = 0.6            # how fast wind falls off outside the radius of maximum wind
+WIND_MAX_KM = 500           # ignore track points farther than this from the property
+
+
+def storm_tracks_sql(csv_path):
+    """SQL: IBTrACS track points of at least tropical-storm strength (34 kt).
+
+    Parameters
+    ----------
+    csv_path : str or pathlib.Path
+        The IBTrACS "list" CSV (``ibtracs.since1980.list.v04r01.csv``).
+
+    Returns
+    -------
+    str
+        A ``SELECT`` with ``SID``, ``storm_name``, ``season``, ``basin``,
+        ``ts``, ``lat``, ``lon``, ``vmax_kt`` and ``rmw_nmi``.
+
+    Notes
+    -----
+    Keeps the main and provisional tracks (spurs duplicate them) and the
+    US-agency wind (``USA_WIND``: 1-minute sustained, knots) and radius of
+    maximum wind (``USA_RMW``: nautical miles). The units row under the
+    header is dropped by the ``SEASON`` cast. All basins are kept, so
+    Hawaii, Guam and the other territories are covered too.
+    """
+    return f"""
+SELECT SID, NAME AS storm_name, TRY_CAST(SEASON AS INT) AS season, BASIN AS basin,
+       TRY_CAST(ISO_TIME AS TIMESTAMP) AS ts, TRY_CAST(LAT AS DOUBLE) AS lat, TRY_CAST(LON AS DOUBLE) AS lon,
+       TRY_CAST(NULLIF(TRIM(USA_WIND), '') AS DOUBLE) AS vmax_kt,
+       TRY_CAST(NULLIF(TRIM(USA_RMW), '') AS DOUBLE) AS rmw_nmi
+FROM read_csv('{csv_path}', all_varchar = true)
+WHERE TRY_CAST(SEASON AS INT) IS NOT NULL
+  AND TRACK_TYPE IN ('main', 'PROVISIONAL', 'US-PROVISIONAL')
+  AND TRY_CAST(NULLIF(TRIM(USA_WIND), '') AS DOUBLE) >= 34
+"""
+
+
+def storm_wind_sql(policies, tracks):
+    """SQL: peak estimated wind of each storm at each 0.1-degree policy cell.
+
+    Parameters
+    ----------
+    policies : str
+        Clean policies with ``latitude`` and ``longitude`` (FEMA rounds
+        them to 0.1 degree, so each distinct pair is one cell).
+    tracks : str
+        Track points from :func:`storm_tracks_sql`.
+
+    Returns
+    -------
+    str
+        A ``SELECT`` with one row per (cell, storm) with at least 34 kt:
+        ``latitude``, ``longitude``, ``SID``, ``storm_name``, ``season``,
+        ``basin``, ``wind_kt``, ``wind_date`` (date of the peak at the
+        cell) and ``closest_km``.
+
+    Notes
+    -----
+    IBTrACS gives the storm's centre and maximum wind, not the wind at a
+    house. We estimate it with a modified Rankine vortex: the maximum
+    wind inside the radius of maximum wind (RMW), and
+    ``vmax * (RMW / r) ** WIND_DECAY`` at distance ``r`` outside it. A
+    missing RMW is set to ``WIND_DEFAULT_RMW_NMI``. Terrain, gusts and
+    asymmetry are ignored, so the value is a rough exposure measure.
+    """
+    return f"""
+WITH cells AS (
+    SELECT DISTINCT CAST(latitude AS DOUBLE) AS latitude, CAST(longitude AS DOUBLE) AS longitude
+    FROM {policies} WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+),
+pairs AS (                                   -- track points in a box around the cell, then the true distance
+    SELECT k.latitude, k.longitude, t.SID, t.storm_name, t.season, t.basin, t.ts, t.vmax_kt,
+           COALESCE(t.rmw_nmi, {WIND_DEFAULT_RMW_NMI}) * 1.852 AS rmw_km,
+           2 * 6371 * ASIN(SQRT(POWER(SIN(RADIANS(t.lat - k.latitude) / 2), 2)
+               + COS(RADIANS(k.latitude)) * COS(RADIANS(t.lat))
+                 * POWER(SIN(RADIANS(t.lon - k.longitude) / 2), 2)))          AS dist_km
+    FROM cells k
+    JOIN {tracks} t
+      ON t.lat BETWEEN k.latitude - 5 AND k.latitude + 5
+     AND t.lon BETWEEN k.longitude - 6 AND k.longitude + 6
+),
+wind AS (
+    SELECT *, CASE WHEN dist_km <= rmw_km THEN vmax_kt
+                   ELSE vmax_kt * POWER(rmw_km / dist_km, {WIND_DECAY}) END       AS wind_kt
+    FROM pairs
+    WHERE dist_km <= {WIND_MAX_KM}
+)
+SELECT latitude, longitude, SID, ANY_VALUE(storm_name) AS storm_name, ANY_VALUE(season) AS season,
+       ANY_VALUE(basin) AS basin, ROUND(MAX(wind_kt), 1) AS wind_kt,
+       CAST(ARG_MAX(ts, wind_kt) AS DATE) AS wind_date, ROUND(MIN(dist_km)) AS closest_km
+FROM wind
+GROUP BY latitude, longitude, SID
+HAVING MAX(wind_kt) >= 34
+"""
+
+
+def storm_wind_features_sql(base, wind):
+    """SQL: tropical-cyclone wind at the property before the policy-year starts.
+
+    Parameters
+    ----------
+    base : str
+        View from :func:`base_features_sql` (needs ``latitude``,
+        ``longitude`` and ``period_start``).
+    wind : str
+        Cell-storm table from :func:`storm_wind_sql`.
+
+    Returns
+    -------
+    str
+        A ``SELECT`` with ``period_id``, ``max_wind_kt_10y``,
+        ``ts_wind_storms_10y``, ``hurricane_wind_storms_10y``,
+        ``hurricane_wind_per_year``, ``days_since_ts_wind`` and
+        ``last_wind_date`` (for the leakage check, not a feature).
+
+    Notes
+    -----
+    Only storms whose peak at the cell came **before** the start count; the
+    wind during the policy-year is part of the outcome. A cell with no
+    storm gets 0 (and NULL days since); a policy without coordinates gets
+    NULL. Computed once per (cell, start date) and joined back.
+    """
+    return f"""
+WITH starts AS (
+    SELECT DISTINCT CAST(latitude AS DOUBLE) AS lat, CAST(longitude AS DOUBLE) AS lon, period_start
+    FROM {base} WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+),
+agg AS (
+    SELECT s.lat, s.lon, s.period_start,
+        COALESCE(MAX(w.wind_kt) FILTER (WHERE w.wind_date >= s.period_start - INTERVAL 10 YEAR), 0)
+                                                                                  AS max_wind_kt_10y,
+        COUNT(w.SID) FILTER (WHERE w.wind_date >= s.period_start - INTERVAL 10 YEAR)  AS ts_wind_storms_10y,
+        COUNT(w.SID) FILTER (WHERE w.wind_date >= s.period_start - INTERVAL 10 YEAR
+                                AND w.wind_kt >= 64)                              AS hurricane_wind_storms_10y,
+        COUNT(w.SID) FILTER (WHERE w.wind_kt >= 64) * 365.25
+            / date_diff('day', DATE '1980-01-01', s.period_start)                 AS hurricane_wind_per_year,
+        date_diff('day', MAX(w.wind_date), s.period_start)                        AS days_since_ts_wind,
+        MAX(w.wind_date)                                                          AS last_wind_date
+    FROM starts s
+    LEFT JOIN {wind} w
+           ON w.latitude = s.lat AND w.longitude = s.lon
+          AND w.wind_date < s.period_start
+    GROUP BY s.lat, s.lon, s.period_start
+)
+SELECT b.period_id, a.max_wind_kt_10y, a.ts_wind_storms_10y, a.hurricane_wind_storms_10y,
+       a.hurricane_wind_per_year, a.days_since_ts_wind, a.last_wind_date
+FROM {base} b
+LEFT JOIN agg a
+       ON a.lat = CAST(b.latitude AS DOUBLE) AND a.lon = CAST(b.longitude AS DOUBLE)
+      AND a.period_start = b.period_start
+"""
 
 def fred_features_sql(base, fred):
     """SQL: national economic series as of the month before the start.

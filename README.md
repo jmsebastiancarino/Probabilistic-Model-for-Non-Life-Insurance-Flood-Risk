@@ -46,6 +46,8 @@ All four rows share the same `originalNBDate` (2019-06-01), the date the policy 
 | NFIP Community Status Book v1 | OpenFEMA | NFIP community | Community status, map dates, CRS class |
 | American Community Survey (ACS) 5-year, 2022 | U.S. Census Bureau | Census tract | Neighborhood income, home values, age (stand-in for redacted demographics) |
 | FRED | Federal Reserve Bank of St. Louis | Day / week / month | Mortgage rate, 10-year Treasury, unemployment, CPI, home prices, fed funds |
+| [IBTrACS v04r01](https://www.ncei.noaa.gov/products/international-best-track-archive) (since 1980) | NOAA NCEI | Storm track point (3-hourly) | Estimated tropical-cyclone wind at each policy location, from storms **before** the start |
+| [CPC Unified gauge-based daily precipitation](https://psl.noaa.gov/data/gridded/data.unified.daily.conus.html), US 0.25° (V1.0 to 2006, real-time from 2007) and [global 0.5°](https://psl.noaa.gov/data/gridded/data.cpc.globalprecip.html) | NOAA CPC / PSL | Grid cell × day | Observed rainfall per location (notebook 02b): long-run climate 1981–2013, and rain in the 90 days to 3 years **before** each start |
 
 **Scale:** about 74.7M policy terms (87 columns) and about 2.7M claims nationally. All files are downloaded in full and kept unchanged in `data/raw/`.
 
@@ -143,7 +145,7 @@ Policies and claims share a set of fields that together approximate a property k
 | Tenure | Months since `originalNBDate`, number of prior terms |
 | History | Prior claims on the same property (count, amount, recency) |
 | Community | CRS class, map dates, suspended or withdrawn status |
-| Context | Disaster declarations in the previous 12 months, tract income (ACS), mortgage rates (FRED) |
+| Context | Disaster declarations in the previous 12 months, tropical-cyclone wind at the property in the previous 10 years (IBTrACS), long-run rainfall, 100-year 1-day rainfall and rain in the 90 days to 3 years before the start (NOAA CPC), tract income (ACS), mortgage rates (FRED) |
 
 Many integer columns (`occupancyType`, `obstructionType`, `crsClassCode`, `locationOfContents`, …) are **codes**, not quantities, and are treated as categorical.
 
@@ -162,9 +164,10 @@ Many integer columns (`occupancyType`, `obstructionType`, `crsClassCode`, `locat
 | `00_data_dictionary` | Pull and save every source's data dictionary; build the type map |
 | `01_data_understanding` | Download all raw data in full; verify files and row counts |
 | `02_data_cleaning` | Data-quality audit (dtypes, statistics, placeholders, invalid codes, plausibility); cleaning rules for every table; cleaning log; export clean Parquet |
+| `02b_precipitation` | Observed daily rainfall (NOAA CPC Unified): download, location → grid cell, data checks, static climate features (1981–2013, 100-year 1-day rainfall by GEV with L-moments) and dated features before every start date |
 | `03_linkage_and_targets` | Decode cancellation codes, build the policy key, link terms and claims, report linkage quality, define and validate the targets, handle censoring |
 | `04_modeling_population_and_split` | Choose the modeling scope and exclusions (row-count waterfall), sample if needed, time-based train / validation / test split, rolling-origin folds |
-| `05_eda_and_feature_engineering` | EDA and features on **training data only**; join disaster, ACS, community and FRED features; leakage audit; missing-value and encoding plan |
+| `05_eda_and_feature_engineering` | EDA and features on **training data only**; join disaster, storm-wind (IBTrACS), rainfall (notebook 02b), ACS, community and FRED features; leakage audit; missing-value and encoding plan |
 | `06a_baseline_claim` | Naive benchmark and logistic regression for `CLAIM_IN_TERM` |
 | `06b_baseline_cancel` | Naive benchmark and logistic regression for the lapse target |
 | `07a_advanced_models_claim` | Gradient boosting (LightGBM or XGBoost), tuning, calibration; severity model for expected loss |
@@ -217,7 +220,9 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 │   ├── dates.py      # MM/DD/YY text dates, legend-code flags, FRED dates
 │   ├── dq.py         # data-quality checks and the cleaning log
 │   ├── clean.py      # cleaned views: column cleaning, de-duplication, dq_ flags
-│   └── geo.py        # state FIPS codes and geography keys
+│   ├── geo.py        # state FIPS codes and geography keys
+│   ├── features.py   # feature list and the SQL that builds each group
+│   └── precip.py     # rainfall features from NOAA CPC Unified (notebook 02b)
 ├── reports/          # audits, cleaning log, figures, final report
 ├── requirements.txt
 └── README.md

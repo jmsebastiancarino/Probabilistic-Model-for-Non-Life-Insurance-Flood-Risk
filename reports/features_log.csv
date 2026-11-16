@@ -1,3 +1,3 @@
 table,column,rule,reason,rows_affected
-features,all,"built 73 features for 40,497,327 policy-years",every feature known at the start of the policy-year,40497327
-features,-,"dropped after EDA, screening and leakage audit",see feature_plan.csv drop_reason,0
+features,all,"built 86 features for 40,497,327 policy-years",every feature known at the start of the policy-year,40497327
+features,"full_risk_premium, discount_to_full_risk, foundation_type, basement_type, current_zone_group, zone_changed, rr2_rated, in_sfha, year_in_term, multi_year_term, years_since_map, community_emergency_program, mortgage_rate, treasury_10y, unemployment_rate, cpi_yoy, home_price_yoy, fed_funds","dropped after EDA, screening and leakage audit",see feature_plan.csv drop_reason,18
