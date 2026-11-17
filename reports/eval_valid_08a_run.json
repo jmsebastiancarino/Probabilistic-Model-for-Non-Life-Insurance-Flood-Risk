@@ -1,0 +1,26 @@
+{
+  "eval_split": "valid",
+  "evaluated": "OOT2 (validation, 2023 - Aug 2024)",
+  "scored_at": "2026-11-18T00:43:43",
+  "primary": {
+    "claim": "claim_xgb",
+    "lapse": "lapse_rf"
+  },
+  "models": {
+    "claim": [
+      "claim_baseline_logreg",
+      "claim_lgbm",
+      "claim_rf",
+      "claim_xgb"
+    ],
+    "lapse": [
+      "lapse_baseline_logreg",
+      "lapse_rf",
+      "lapse_xgb"
+    ]
+  },
+  "base_rate_train": {
+    "claim": 0.013013213891642743,
+    "lapse": 0.1383926611127357
+  }
+}

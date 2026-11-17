@@ -1,17 +1,22 @@
 {
   "eval_split": "test",
   "evaluated": "OOT1 (test, 2021-2022)",
-  "scored_at": "2026-11-17T17:07:45",
+  "scored_at": "2026-11-17T23:55:43",
   "primary": {
-    "claim": "claim_baseline_logreg",
-    "lapse": "lapse_baseline_logreg"
+    "claim": "claim_xgb",
+    "lapse": "lapse_rf"
   },
   "models": {
     "claim": [
-      "claim_baseline_logreg"
+      "claim_baseline_logreg",
+      "claim_lgbm",
+      "claim_rf",
+      "claim_xgb"
     ],
     "lapse": [
-      "lapse_baseline_logreg"
+      "lapse_baseline_logreg",
+      "lapse_rf",
+      "lapse_xgb"
     ]
   },
   "base_rate_train": {
