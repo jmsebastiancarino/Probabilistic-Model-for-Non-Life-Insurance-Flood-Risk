@@ -1,10 +1,11 @@
 {
   "model": "lapse_rf",
   "target": "LAPSE",
-  "saved_at": "2026-11-17T01:12:58",
+  "saved_at": "2026-11-17T14:19:07",
   "train_split": "train (2014-2020), random sample of 1,000,000 rows (seed 42)",
   "tuning": "rolling-origin folds 2017-2020 on 500,000 rows; best min_samples_leaf=25, max_features=0.33",
-  "calibration": "isotonic, fitted on RF 2 out-of-bag predictions",
+  "calibration": "isotonic, fitted on RF 2 out-of-bag predictions; not used (made test results slightly worse)",
+  "cutoffs": "riskiest 10/20/30% of RF 2 out-of-bag training predictions",
   "random_filled_features": [
     "tenure_years",
     "years_since_purchase",
@@ -113,10 +114,24 @@
     "rows": 7105637,
     "lapses": 854084,
     "actual_rate": 0.12019809061453604,
-    "predicted_rate": 0.11593272695111839,
-    "log_loss": 0.3455393647890793,
-    "brier": 0.10080965229714642,
-    "log_loss_skill": 0.06297570672685748,
-    "brier_skill": 0.04969666850737409
+    "predicted_rate": 0.12205540918238476,
+    "log_loss": 0.344600881135014,
+    "brier": 0.10061165110690791,
+    "log_loss_skill": 0.0655206612886502,
+    "brier_skill": 0.05156316825651064
+  },
+  "test_auc": 0.681996159852994,
+  "test_confusion_20pct": {
+    "threshold": 0.2028257946509516,
+    "flagged_share": 0.10414238723424796,
+    "TP": 198060,
+    "FP": 541938,
+    "FN": 656024,
+    "TN": 5709615,
+    "accuracy": 0.8314068112401464,
+    "precision": 0.2676493720253298,
+    "recall": 0.23189756511069168,
+    "f1": 0.24849411761753787,
+    "lift": 2.226735638286103
   }
 }
