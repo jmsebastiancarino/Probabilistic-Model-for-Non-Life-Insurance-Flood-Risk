@@ -78,11 +78,20 @@ def load_registry(kind, model_dir, reports_dir):
     models = {}
     for path in sorted(model_dir.glob(f"{kind}_*.joblib")):
         saved = joblib.load(path)
+        if "preprocess" not in saved and "prep" in saved and ({"model", "booster"} & set(saved)):
+            from src.modeling import adapt_tree_bundle                       # a 07a claim tree bundle (RF, XGBoost, LightGBM)
+            saved = adapt_tree_bundle(saved)
         missing = {"preprocess", "model", "features"} - set(saved)
         if missing:
             raise ValueError(f"{path.name} lacks {sorted(missing)}: save it as a dict with preprocess, model and features")
         run_file = reports_dir / f"{path.stem}_run.json"
         saved["run"] = json.loads(run_file.read_text()) if run_file.exists() else {}
+        share_file = reports_dir / f"{path.stem}_test_recall_by_share.csv"          # 07a: recall at equal flagged shares
+        if share_file.exists():
+            by_share = pd.read_csv(share_file, index_col=0)
+            main = by_share.index[np.isclose(by_share.index, TARGETS[kind]["main_share"])]
+            if len(main):
+                saved["test_recall_main_share"] = float(by_share.loc[main[0]].iloc[-1])   # last column = this model
         # a calibrator is applied only if the notebook used it: an explicit "use_calibrator" key wins, otherwise
         # the run record's "calibration" note (07b random forest: "... not used (made test results slightly worse)")
         if saved.get("calibrator") is not None:
@@ -98,7 +107,9 @@ def primary_model(models, choice=None):
     """The model whose results the charts show.
 
     ``choice`` (a model name) wins; otherwise the advanced model (07a/07b)
-    with the lowest test log loss in its run record, otherwise the baseline.
+    with the lowest test log loss in its run record (07a claim tree models,
+    which save no log loss: the highest test recall when exactly 10% are flagged),
+    otherwise the baseline.
     """
     if choice:
         if choice not in models:
@@ -116,7 +127,12 @@ def primary_model(models, choice=None):
             if r.get("model") == run.get("selected_model"):
                 return r.get("log_loss", np.inf)
         return np.inf
-    return min(advanced, key=test_log_loss)
+
+    def test_recall(name):
+        # 07a claim tree models save confusion results only: test recall when exactly the main share
+        # (10%) of policy-years is flagged, so every model is compared at the same list size
+        return models[name].get("test_recall_main_share", 0.0)
+    return min(advanced, key=lambda name: (test_log_loss(name), -test_recall(name)))
 
 
 def registry_table(kind, models, primary):
@@ -124,8 +140,8 @@ def registry_table(kind, models, primary):
     rows = []
     for name, m in models.items():
         run, params = m["run"], m["run"].get("params", {})
-        rows.append({"target": kind, "model": name, "primary": name == primary, "type": type(m["model"]).__name__,
-                     "features": len(m["features"]), "trained_on": run.get("train_split", "?"),
+        rows.append({"target": kind, "model": name, "primary": name == primary, "type": getattr(m["model"], "type_name", type(m["model"]).__name__),
+                     "features": len(m["features"]), "trained_on": run.get("train_split", run.get("training_data", "?")),
                      "settings": ", ".join(f"{k}={params[k]}" for k in ("alpha", "eta0") if k in params),
                      "epochs": run.get("epochs"), "saved_at": run.get("saved_at")})
     return pd.DataFrame(rows)
@@ -319,7 +335,9 @@ def cutoff_rules(kind, train_scored, col):
 def confusion_row(y, p, cut):
     """Confusion matrix and the classification measures at one cut-off (flag if p >= cut)."""
     y = np.asarray(y)
-    flagged = (np.asarray(p) >= cut).astype(int)
+    # compare in float32: the cut-offs come from training scores kept as float32 (score_split_light), and a
+    # float64 score equal to the cut-off (every row of a segment-rule segment) could otherwise fall just below it
+    flagged = (np.asarray(p, dtype=np.float32) >= np.float32(cut)).astype(int)
     tn, fp, fn, tp = confusion_matrix(y, flagged, labels=[0, 1]).ravel()
     precision = tp / (tp + fp) if tp + fp else 0.0
     recall = tp / (tp + fn) if tp + fn else 0.0
@@ -800,6 +818,9 @@ def load_saved_test(pred_dir, models):
             t = pd.read_parquet(f)
             cands = [c for c in t.columns if c.startswith("p_") and c not in ("p_base", "p_segment")]
             # the column of the saved model: the calibrated one if its calibrator is used, otherwise the last other one
+            # (07a claim files also carry the logistic regression's p_logreg next to their own column: skip it)
+            if "logreg" not in name:
+                cands = [c for c in cands if c != "p_logreg"] or cands
             cal = [c for c in cands if c.endswith("_cal")]
             uses_cal = models[name].get("calibrator") is not None and models[name].get("use_calibrator", True)
             plain = [c for c in cands if not c.endswith("_cal")] or cands
@@ -810,7 +831,9 @@ def load_saved_test(pred_dir, models):
             frames[name] = t.rename(columns={col: f"p_{name}"})
     if not frames:
         return None
-    out = next(iter(frames.values()))[["period_id", "y", "p_base", "p_segment"]]
+    # the benchmarks come from a file that has both (06a/06b do; the 07a claim files have no p_base)
+    base = next((f for f in frames.values() if {"p_base", "p_segment"} <= set(f.columns)), next(iter(frames.values())))
+    out = base[["period_id", "y"] + [c for c in ("p_base", "p_segment") if c in base.columns]]
     for name, f in frames.items():
         out = out.merge(f[["period_id", f"p_{name}"]], on="period_id", how="inner")
     return out
