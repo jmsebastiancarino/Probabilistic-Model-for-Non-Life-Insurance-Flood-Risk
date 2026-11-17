@@ -1,0 +1,16 @@
+model,rule,cut_off
+segment rule,riskiest 5%,0.029693806685878114
+segment rule,riskiest 10%,0.014012862697569439
+segment rule,riskiest 20%,0.014012862697569439
+segment rule,"F1-best (2.0%, chosen on 2020)",0.03242171555192722
+segment rule,p >= 0.5 (default),0.5
+logistic regression (06a),riskiest 5%,0.03442961120653654
+logistic regression (06a),riskiest 10%,0.02535605266392062
+logistic regression (06a),riskiest 20%,0.017908028866618436
+logistic regression (06a),"F1-best (2.0%, chosen on 2020)",0.04942554551946255
+logistic regression (06a),p >= 0.5 (default),0.5
+LightGBM,riskiest 5%,0.045323694789420846
+LightGBM,riskiest 10%,0.020705263382644095
+LightGBM,riskiest 20%,0.009867153428093994
+LightGBM,"F1-best (2.0%, chosen on 2020)",0.1264786625037634
+LightGBM,p >= 0.5 (default),0.5
