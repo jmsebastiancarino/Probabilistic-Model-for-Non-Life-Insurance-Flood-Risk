@@ -203,3 +203,83 @@ class StatePreprocessor:
                 values = values.fillna(self.state["medians"][f])
             result[f] = values.astype("float32")
         return result
+
+
+class TreeBundlePreprocessor:
+    """The preparation of the 07a claim tree notebooks (random forest, XGBoost, LightGBM), as an object.
+
+    Notebooks 07a save a bundle with ``prep`` (training medians, the 99-fill
+    list and the category levels) and repeat it with the notebook function
+    ``to_tree_frame``. This class repeats ``to_tree_frame`` exactly, so
+    notebooks 08a/08b can score the saved models.
+
+    ``transform`` expects the rows prepared by ``src.evaluation.prepare``
+    (fixed clean-up rules, numbers and flags as float32, categories as text
+    with NaN where missing), which is what the 07a function ``prepare`` gives.
+    """
+
+    def __init__(self, prep, features):
+        self.prep = prep
+        self.features = list(features)
+
+    def transform(self, X):
+        import pandas as pd
+        X = X[self.features].copy()
+        for f, med in self.prep["medians"].items():
+            X[f] = X[f].fillna(med)
+        for f in self.prep["fill99"]:
+            X[f] = X[f].fillna(99)
+        for c, levels in self.prep["categories"].items():
+            values = X[c].astype(object).where(X[c].notna(), "(missing)")
+            X[c] = pd.Categorical(values.where(values.isin(levels), np.nan), categories=levels)
+        return X
+
+
+class TreeBundleModel:
+    """A 07a claim tree model (scikit-learn forest, XGBoost or LightGBM booster) with ``predict_proba``.
+
+    Repeats each notebook's ``predict``: the forest gets the category level
+    numbers (missing = NaN, the notebook's ``encode``); XGBoost gets a
+    ``DMatrix`` with native categories; LightGBM gets the frame. ``trees`` is
+    the number of trees the notebook kept.
+    """
+
+    def __init__(self, estimator, trees, features, categories):
+        self.estimator = estimator
+        self.trees = trees
+        self.features = list(features)
+        self.categories = list(categories)
+        module = type(estimator).__module__
+        self.library = ("xgboost" if module.startswith("xgboost") else
+                        "lightgbm" if module.startswith("lightgbm") else "sklearn")
+
+    def predict_proba(self, X):
+        X = X[self.features]
+        if self.library == "sklearn":
+            Z = X.copy()
+            for c in self.categories:
+                codes = Z[c].cat.codes.astype("float32")
+                Z[c] = codes.where(codes >= 0, np.nan)
+            p = self.estimator.predict_proba(Z.to_numpy("float32"))[:, 1]
+        elif self.library == "xgboost":
+            import xgboost as xgb
+            p = self.estimator.predict(xgb.DMatrix(X, enable_categorical=True),
+                                       iteration_range=(0, self.trees) if self.trees else (0, 0))
+        else:
+            p = self.estimator.predict(X, num_iteration=self.trees)
+        p = np.asarray(p, dtype="float64")
+        return np.column_stack([1 - p, p])
+
+    @property
+    def type_name(self):
+        return {"sklearn": type(self.estimator).__name__, "xgboost": "XGBoost Booster",
+                "lightgbm": "LightGBM Booster"}[self.library]
+
+
+def adapt_tree_bundle(bundle):
+    """Turn a 07a claim bundle (``model``/``booster``, ``trees``, ``prep``, ``features``, ``categories``)
+    into the registry format of notebooks 08a/08b (``preprocess``, ``model``, ``features``)."""
+    estimator = bundle["model"] if "model" in bundle else bundle["booster"]
+    return {"preprocess": TreeBundlePreprocessor(bundle["prep"], bundle["features"]),
+            "model": TreeBundleModel(estimator, bundle.get("trees"), bundle["features"], bundle["categories"]),
+            "features": list(bundle["features"]), "cut_offs_07": bundle.get("cut_offs"), "source_format": "07a bundle"}
