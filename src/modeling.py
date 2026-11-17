@@ -132,3 +132,74 @@ class RandomSampleImputer(BaseEstimator, TransformerMixin):
 
     def get_feature_names_out(self, input_features=None):
         return np.asarray(input_features, dtype=object)
+
+
+class StatePreprocessor:
+    """The 07b XGBoost preprocessing, as one object that can be saved and reloaded.
+
+    Notebook 07b XGB prepares its predictors with two notebook functions,
+    ``fit_preprocessor`` (which learns a *state*: medians, category levels
+    and donor pools) and ``transform_features``. A function defined in a
+    notebook can't be loaded from another notebook, so this class keeps the
+    learned state and repeats ``transform_features`` exactly. Notebooks
+    08a/08b load it through the model registry (``src.evaluation``).
+
+    Parameters
+    ----------
+    state : dict
+        The output of ``fit_preprocessor``: ``features``, ``medians``,
+        ``levels`` and ``pools``.
+    cats, flags : list of str
+        Categorical and 0/1 features (``docs/feature_plan.csv``).
+    missing_plan : dict of {str: str}
+        Feature -> missing-value rule (``docs/feature_plan.csv``).
+    seed : int
+        Seed of the stable donor draws.
+
+    Notes
+    -----
+    ``transform`` needs the **raw** rows of ``features.parquet`` with a
+    ``period_id`` column: it applies the fixed clean-up rules itself, and the
+    donor draw of each row is keyed on its ``period_id``, so a row always
+    gets the same value whatever batch it is scored in.
+    """
+
+    def __init__(self, state, cats, flags, missing_plan, seed=42):
+        self.state, self.cats, self.flags = state, list(cats), list(flags)
+        self.missing_plan, self.seed = dict(missing_plan), seed
+
+    def _stable_draw(self, ids, key, pool_size):
+        import hashlib
+        return np.fromiter((int.from_bytes(hashlib.sha256(f"{self.seed}|{key}|{value}".encode()).digest()[:8], "little")
+                            % pool_size for value in ids.astype(str)), dtype=np.int64, count=len(ids))
+
+    def transform(self, frame):
+        import pandas as pd
+        from src.features import apply_fixed_rules
+        clean = apply_fixed_rules(frame).reset_index(drop=True)
+        result = pd.DataFrame(index=clean.index)
+        random_values = {}
+        for key, (group, pool) in self.state["pools"].items():
+            selected = self._stable_draw(clean["period_id"], key, len(pool))
+            for j, f in enumerate(group):
+                random_values[f] = pool[selected, j]
+        for f in self.state["features"]:
+            if f in self.cats:
+                values = clean[f].astype("string").fillna("__MISSING__")
+                result[f] = pd.Categorical(values, categories=self.state["levels"][f])
+                continue
+            values = pd.to_numeric(clean[f], errors="coerce").astype("float64").replace([np.inf, -np.inf], np.nan)
+            rule = self.missing_plan.get(f, "")
+            if f in random_values:
+                values = values.fillna(pd.Series(random_values[f], index=clean.index))
+            elif rule.startswith("fill 99"):
+                values = values.fillna(99)
+            elif f in self.flags or rule.startswith("fill 0"):
+                result[f + "__missing"] = values.isna().astype("float32")
+                values = values.fillna(0)
+            else:
+                if "+ missing flag" in rule:
+                    result[f + "__missing"] = values.isna().astype("float32")
+                values = values.fillna(self.state["medians"][f])
+            result[f] = values.astype("float32")
+        return result

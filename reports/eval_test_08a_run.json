@@ -1,0 +1,21 @@
+{
+  "eval_split": "test",
+  "evaluated": "OOT1 (test, 2021-2022)",
+  "scored_at": "2026-11-17T17:07:45",
+  "primary": {
+    "claim": "claim_baseline_logreg",
+    "lapse": "lapse_baseline_logreg"
+  },
+  "models": {
+    "claim": [
+      "claim_baseline_logreg"
+    ],
+    "lapse": [
+      "lapse_baseline_logreg"
+    ]
+  },
+  "base_rate_train": {
+    "claim": 0.013013213891642743,
+    "lapse": 0.1383926611127357
+  }
+}

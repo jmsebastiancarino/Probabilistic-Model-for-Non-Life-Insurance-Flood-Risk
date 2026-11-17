@@ -1,0 +1,21 @@
+target,model,rule,cut_off
+claim,segment rate,riskiest 5% in train,0.029693806685878114
+claim,segment rate,riskiest 10% in train,0.014012862697569439
+claim,segment rate,riskiest 20% in train,0.014012862697569439
+claim,segment rate,F1-optimal in train,0.029693806685878114
+claim,segment rate,p >= 0.5 (default),0.5
+claim,claim_baseline_logreg,riskiest 5% in train,0.03336257364567187
+claim,claim_baseline_logreg,riskiest 10% in train,0.024874478977909016
+claim,claim_baseline_logreg,riskiest 20% in train,0.017917337677843467
+claim,claim_baseline_logreg,F1-optimal in train,0.030727657460881564
+claim,claim_baseline_logreg,p >= 0.5 (default),0.5
+lapse,segment rate,riskiest 10% in train,0.23512027431519233
+lapse,segment rate,riskiest 20% in train,0.1598254426950661
+lapse,segment rate,riskiest 30% in train,0.1188698478042064
+lapse,segment rate,F1-optimal in train,0.1598254426950661
+lapse,segment rate,p >= 0.5 (default),0.5
+lapse,lapse_baseline_logreg,riskiest 10% in train,0.2517166274263207
+lapse,lapse_baseline_logreg,riskiest 20% in train,0.19422735401582525
+lapse,lapse_baseline_logreg,riskiest 30% in train,0.15938199740904047
+lapse,lapse_baseline_logreg,F1-optimal in train,0.16234667845054257
+lapse,lapse_baseline_logreg,p >= 0.5 (default),0.5

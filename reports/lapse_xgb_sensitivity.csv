@@ -1,0 +1,3 @@
+model,rows,log_loss,brier
+XGBoost V2,7105637,0.34652501344680786,0.1010713055729866
+Tuned XGBoost with seven suspect features excluded,7105637,0.34497061371803284,0.10067571699619293

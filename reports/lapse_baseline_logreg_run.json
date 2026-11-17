@@ -1,7 +1,7 @@
 {
   "model": "lapse_baseline_logreg",
   "target": "LAPSE",
-  "saved_at": "2026-11-16T22:55:42",
+  "saved_at": "2026-11-17T17:22:10",
   "train_split": "train (2014-2020), every row, in chunks",
   "scored_on": "test (2021-2022)",
   "features_used": [
@@ -107,10 +107,11 @@
     "rows": 7105637,
     "lapses": 854084,
     "actual_rate": 0.12019809061453604,
-    "predicted_rate": 0.11856659541767119,
-    "log_loss": 0.3512877082172427,
-    "brier": 0.10219141871483425,
-    "log_loss_skill": 0.047387504666134506,
-    "brier_skill": 0.036671157555278944
+    "predicted_rate": 0.11856427558631738,
+    "log_loss": 0.35128366892103347,
+    "brier": 0.10219011681051413,
+    "roc_auc": 0.6589322908829565,
+    "log_loss_skill": 0.047398458320222714,
+    "brier_skill": 0.036683430229418
   }
 }

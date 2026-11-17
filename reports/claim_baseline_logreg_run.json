@@ -1,7 +1,7 @@
 {
   "model": "claim_baseline_logreg",
   "target": "CLAIM_IN_TERM",
-  "saved_at": "2026-11-16T22:37:08",
+  "saved_at": "2026-11-17T16:43:20",
   "train_split": "train (2014-2020), every row, in chunks",
   "scored_on": "test (2021-2022)",
   "features_used": [
@@ -108,10 +108,11 @@
     "rows": 7275717,
     "claims": 83603,
     "actual_rate": 0.011490688821459108,
-    "predicted_rate": 0.01356374739501194,
-    "log_loss": 0.061124903423386716,
-    "brier": 0.01132259188928681,
-    "log_loss_skill": 0.027266337157242693,
-    "brier_skill": 0.003378151854830147
+    "predicted_rate": 0.01356457256446783,
+    "log_loss": 0.06112079363322089,
+    "brier": 0.011322403117759058,
+    "roc_auc": 0.6570160097593061,
+    "log_loss_skill": 0.02733173981667636,
+    "brier_skill": 0.0033947676465772014
   }
 }
