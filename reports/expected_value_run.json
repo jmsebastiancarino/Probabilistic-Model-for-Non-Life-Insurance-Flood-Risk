@@ -1,0 +1,59 @@
+{
+  "notebook": "10_expected_values",
+  "run_at": "2026-11-18T12:54:48",
+  "splits": {
+    "test": "OOT1 (test, 2021-2022)",
+    "valid": "OOT2 (validation, 2023 - Aug 2024)"
+  },
+  "models": {
+    "claim": [
+      "claim_baseline_logreg",
+      "claim_lgbm",
+      "claim_rf",
+      "claim_xgb"
+    ],
+    "lapse": [
+      "lapse_baseline_logreg",
+      "lapse_rf",
+      "lapse_xgb"
+    ]
+  },
+  "primary": {
+    "claim": "claim_xgb",
+    "lapse": "lapse_rf"
+  },
+  "coverage_bands": [
+    100000,
+    200000,
+    300000
+  ],
+  "min_claims_per_cell": 500,
+  "damage_ratio_overall_train": 0.22017380769402833,
+  "rows": {
+    "claim": {
+      "test": 7275717,
+      "valid": 5724790
+    },
+    "lapse": {
+      "test": 7105637,
+      "valid": 5621274
+    }
+  },
+  "outputs": [
+    "expected_value_brier_skill_by_year.csv",
+    "expected_value_claim_ratios.csv",
+    "expected_value_claim_ratios_by_decile.csv",
+    "expected_value_claim_ratios_by_zone.csv",
+    "expected_value_claims_by_year.csv",
+    "expected_value_damage_ratio.csv",
+    "expected_value_grouped_accuracy.csv",
+    "expected_value_headline.csv",
+    "expected_value_lapse_by_decile.csv",
+    "expected_value_lapse_by_year.csv",
+    "expected_value_probability_accuracy.csv",
+    "expected_value_run.json",
+    "expected_value_severity_check.csv",
+    "fig_expected_value_lapsed_premium_by_decile.png",
+    "fig_expected_value_loss_ratio_by_decile.png"
+  ]
+}

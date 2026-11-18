@@ -1,7 +1,7 @@
 {
   "eval_split": "valid",
   "evaluated": "OOT2 (validation, 2023 - Aug 2024)",
-  "scored_at": "2026-11-18T00:43:43",
+  "scored_at": "2026-11-18T13:30:55",
   "primary": {
     "claim": "claim_xgb",
     "lapse": "lapse_rf"

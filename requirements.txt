@@ -8,3 +8,6 @@ matplotlib>=3.8       # notebook 02 figures
 numpy>=1.26
 netCDF4>=1.6         # notebook 02b (CPC rainfall files)
 scipy>=1.11          # notebook 02b (nearest grid cell)
+scikit-learn>=1.9    # notebooks 06-09 (models saved with 1.9.x; older versions may not load them)
+xgboost>=3.4         # notebooks 07a, 07b, 08a, 08b, 09 (on macOS also: brew install libomp)
+lightgbm>=4.7        # notebooks 07a, 08a, 08b, 09

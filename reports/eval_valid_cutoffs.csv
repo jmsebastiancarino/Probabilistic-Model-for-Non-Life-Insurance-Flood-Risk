@@ -34,10 +34,10 @@ lapse,lapse_baseline_logreg,riskiest 20% in train,0.19352617859840393
 lapse,lapse_baseline_logreg,riskiest 30% in train,0.15907427668571472
 lapse,lapse_baseline_logreg,F1-optimal in train,0.15988381206989288
 lapse,lapse_baseline_logreg,p >= 0.5 (default),0.5
-lapse,lapse_rf,riskiest 10% in train,0.2601097822189331
-lapse,lapse_rf,riskiest 20% in train,0.20192360877990723
-lapse,lapse_rf,riskiest 30% in train,0.16699877381324768
-lapse,lapse_rf,F1-optimal in train,0.18918003141880035
+lapse,lapse_rf,riskiest 10% in train,0.26011335849761963
+lapse,lapse_rf,riskiest 20% in train,0.20191940665245056
+lapse,lapse_rf,riskiest 30% in train,0.1669984757900238
+lapse,lapse_rf,F1-optimal in train,0.18914693593978882
 lapse,lapse_rf,p >= 0.5 (default),0.5
 lapse,lapse_xgb,riskiest 10% in train,0.25294366478919983
 lapse,lapse_xgb,riskiest 20% in train,0.19591347873210907
