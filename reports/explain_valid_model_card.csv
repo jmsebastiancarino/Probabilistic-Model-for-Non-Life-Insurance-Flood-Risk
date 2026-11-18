@@ -1,0 +1,8 @@
+target,model,file,primary,type,features,trained_on,validation_auc
+claim,logistic regression,claim_baseline_logreg.joblib,False,SGDClassifier,52,"train (2014-2020), every row, in chunks",0.649783549975437
+claim,LightGBM,claim_lgbm.joblib,False,LightGBM Booster,52,"train (2014-2020): every claim + 10% of the other policy-years, weighted back",0.7092898535186651
+claim,random forest,claim_rf.joblib,False,RandomForestClassifier,52,"train (2014-2020): every claim + 10% of the other policy-years, weighted back",0.7355052204425634
+claim,XGBoost,claim_xgb.joblib,True,XGBoost Booster,52,"train (2014-2020): every claim + 10% of the other policy-years, weighted back",0.6690699645869511
+lapse,logistic regression,lapse_baseline_logreg.joblib,False,SGDClassifier,68,"train (2014-2020), every row, in chunks",0.6149773105223397
+lapse,random forest,lapse_rf.joblib,True,RandomForestClassifier,68,"train (2014-2020), all 26,758,825 rows, read in 06b's 28 chunks (2 at a time): 14 trees per group x 14 groups = 196 trees, each on 25% of its group",0.6269660959928081
+lapse,XGBoost,lapse_xgb.joblib,False,XGBClassifier,68,"all 26,758,825 training rows, 06b's 28 chunks streamed into a QuantileDMatrix",0.6187454747127348

@@ -1,0 +1,61 @@
+model,feature,mean_abs_contribution,scale,direction,spearman,definition
+logistic regression,max_wind_kt_10y,0.21659373018999267,log-odds,+,0.999947218847786,Highest estimated tropical-cyclone wind (knots) at the property's 0.1-degree cell in the 10 years before the start; 0 = none
+logistic regression,post_firm,0.21009710917041965,log-odds,-,-1.0,Built after the community's first flood map (post-FIRM)
+logistic regression,prev_gap_days,0.15490531124198142,log-odds,+,1.0,Days between the end of the previous term and the start of this term
+logistic regression,obstruction_type,0.15169003260968236,log-odds,category,,Obstruction type below the elevated floor
+logistic regression,hfiaa_surcharge,0.14431420481148907,log-odds,-,-1.0,HFIAA surcharge ($)
+logistic regression,building_description,0.13330055152627693,log-odds,category,,Building description code
+logistic regression,coverage_change_pct,0.12683555912634237,log-odds,+,0.976513445003963,Change in building coverage from the previous term (%)
+logistic regression,primary_residence,0.1097315848063646,log-odds,-,-1.0,Primary residence
+logistic regression,premium_change_pct,0.09091308549410598,log-odds,+,0.9999918258462902,Change in premium from the previous term of the same policy (%)
+logistic regression,hurricane_wind_storms_10y,0.08937843593825809,log-odds,-,-0.999978368025302,Storms that brought hurricane-force wind (64+ kt) to the cell in the 10 years before the start
+logistic regression,building_age,0.08676689530193865,log-odds,-,-0.9999966695172294,Policy-year start year minus construction year
+logistic regression,term_no,0.0815128799551024,log-odds,-,-0.9929287388962991,"Term number within the rebuilt policy, counting terms since the data begins (2009)"
+logistic regression,prior_claims_n,0.07976098872859526,log-odds,+,0.9999975474684847,Claims on the same property with a loss before the start
+logistic regression,days_since_ts_wind,0.07865847520016407,log-odds,+,0.9999991628703248,Days since the last 34+ kt wind at the cell; NULL = none since 1980
+logistic regression,tenure_years,0.06816302365900855,log-odds,-,-0.9999892870345748,Years from the original new-business date to the policy-year start
+LightGBM,ts_wind_storms_10y,0.2564606016857724,log-odds,mixed,-0.062310019185014574,Storms that brought tropical-storm-force wind (34+ kt) to the cell in the 10 years before the start
+LightGBM,days_since_ts_wind,0.24398098917864797,log-odds,-,-0.31124351086345875,Days since the last 34+ kt wind at the cell; NULL = none since 1980
+LightGBM,hurricane_wind_per_year,0.23172484980969846,log-odds,+,0.23432050008906022,"Long-run rate of 64+ kt storms at the cell per year, from 1980 to the start"
+LightGBM,premium_change_pct,0.23044427525711444,log-odds,+,0.5827810222989658,Change in premium from the previous term of the same policy (%)
+LightGBM,max_wind_kt_10y,0.2234733637576409,log-odds,-,-0.21657880109806016,Highest estimated tropical-cyclone wind (knots) at the property's 0.1-degree cell in the 10 years before the start; 0 = none
+LightGBM,crs_class,0.22002708943159344,log-odds,category,,Community Rating System class on the term (1 = best; NULL = not in CRS)
+LightGBM,days_since_flood_disaster,0.16995893417008417,log-odds,+,0.6818096171819068,Days since the most recent flood-related declaration in the county or state
+LightGBM,building_age,0.1689488334274042,log-odds,+,0.7126616286872094,Policy-year start year minus construction year
+LightGBM,obstruction_type,0.16608494184976355,log-odds,category,,Obstruction type below the elevated floor
+LightGBM,premium_per_1k_coverage,0.16542601606523283,log-odds,+,0.7249914621968073,"Premium per $1,000 of building + contents coverage: the price of cover"
+LightGBM,hfiaa_surcharge,0.142640374036158,log-odds,-,-0.6125381469450767,HFIAA surcharge ($)
+LightGBM,flood_disasters_12m,0.13795819598245185,log-odds,-,-0.36162113676121194,Flood-related disaster declarations in the county (or statewide) in the 12 months before the start
+LightGBM,subsidized_rate_type,0.12063744415829988,log-odds,category,,Subsidized rate type code
+LightGBM,term_no,0.1125260649841161,log-odds,-,-0.6971768033527809,"Term number within the rebuilt policy, counting terms since the data begins (2009)"
+LightGBM,prior_claims_paid,0.07399680261774633,log-odds,+,0.45655341663559323,Total paid on those earlier claims ($)
+random forest,days_since_ts_wind,0.004891062146448262,probability,mixed,0.02073991519898813,Days since the last 34+ kt wind at the cell; NULL = none since 1980
+random forest,hurricane_wind_per_year,0.0026866467955022452,probability,+,0.3852752269610863,"Long-run rate of 64+ kt storms at the cell per year, from 1980 to the start"
+random forest,ts_wind_storms_10y,0.002211850531573456,probability,+,0.5457455120753895,Storms that brought tropical-storm-force wind (34+ kt) to the cell in the 10 years before the start
+random forest,max_wind_kt_10y,0.002193787030343536,probability,+,0.20945557087269362,Highest estimated tropical-cyclone wind (knots) at the property's 0.1-degree cell in the 10 years before the start; 0 = none
+random forest,days_since_flood_disaster,0.0021355869537617107,probability,+,0.3663926090738905,Days since the most recent flood-related declaration in the county or state
+random forest,premium_per_1k_coverage,0.0017561633379732052,probability,+,0.6246212864458434,"Premium per $1,000 of building + contents coverage: the price of cover"
+random forest,flood_disasters_12m,0.001510324561090421,probability,+,0.1760410988232434,Flood-related disaster declarations in the county (or statewide) in the 12 months before the start
+random forest,crs_class,0.0013588201774004229,probability,category,,Community Rating System class on the term (1 = best; NULL = not in CRS)
+random forest,hurricane_wind_storms_10y,0.0013213956522352694,probability,-,-0.49006403949057825,Storms that brought hurricane-force wind (64+ kt) to the cell in the 10 years before the start
+random forest,premium,0.0010523012669681404,probability,+,0.7207627711513567,Total premium of the term ($)
+random forest,hfiaa_surcharge,0.0010305662852999518,probability,mixed,0.022334713341845648,HFIAA surcharge ($)
+random forest,obstruction_type,0.0009521334045333486,probability,category,,Obstruction type below the elevated floor
+random forest,years_since_last_claim,0.0009101462341026206,probability,-,-0.5305685545883906,Years since the most recent earlier loss; NULL = no earlier claim
+random forest,policy_cost,0.0009055072691348537,probability,+,0.7913743608349267,Premium plus fees and surcharges ($)
+random forest,premium_change_pct,0.0008614162952042193,probability,+,0.4052555828180511,Change in premium from the previous term of the same policy (%)
+XGBoost,days_since_ts_wind,0.33588868379592896,log-odds,-,-0.2100209402410194,Days since the last 34+ kt wind at the cell; NULL = none since 1980
+XGBoost,ts_wind_storms_10y,0.3221060037612915,log-odds,-,-0.19823642692486396,Storms that brought tropical-storm-force wind (34+ kt) to the cell in the 10 years before the start
+XGBoost,hurricane_wind_per_year,0.3187439441680908,log-odds,+,0.18835452792835694,"Long-run rate of 64+ kt storms at the cell per year, from 1980 to the start"
+XGBoost,max_wind_kt_10y,0.27680909633636475,log-odds,-,-0.1643272251239636,Highest estimated tropical-cyclone wind (knots) at the property's 0.1-degree cell in the 10 years before the start; 0 = none
+XGBoost,crs_class,0.20630806684494019,log-odds,category,,Community Rating System class on the term (1 = best; NULL = not in CRS)
+XGBoost,days_since_flood_disaster,0.18647007644176483,log-odds,+,0.6598951664949624,Days since the most recent flood-related declaration in the county or state
+XGBoost,building_age,0.1780582219362259,log-odds,+,0.5658252960317005,Policy-year start year minus construction year
+XGBoost,obstruction_type,0.17601428925991058,log-odds,category,,Obstruction type below the elevated floor
+XGBoost,flood_disasters_12m,0.14770689606666565,log-odds,mixed,-0.0701307276379897,Flood-related disaster declarations in the county (or statewide) in the 12 months before the start
+XGBoost,premium_per_1k_coverage,0.14006559550762177,log-odds,+,0.8590509560800519,"Premium per $1,000 of building + contents coverage: the price of cover"
+XGBoost,hfiaa_surcharge,0.13928508758544922,log-odds,-,-0.7274102973637466,HFIAA surcharge ($)
+XGBoost,term_no,0.12776778638362885,log-odds,-,-0.8415530677830095,"Term number within the rebuilt policy, counting terms since the data begins (2009)"
+XGBoost,premium_change_pct,0.08507991582155228,log-odds,+,0.564438140050521,Change in premium from the previous term of the same policy (%)
+XGBoost,years_since_last_claim,0.07239110767841339,log-odds,-,-0.87638960018885,Years since the most recent earlier loss; NULL = no earlier claim
+XGBoost,prior_claims_paid,0.06852065026760101,log-odds,+,0.4411059516337599,Total paid on those earlier claims ($)

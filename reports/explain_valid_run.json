@@ -1,0 +1,40 @@
+{
+  "split": "valid",
+  "evaluated": "OOT2 (validation, 2023 - Aug 2024)",
+  "saved_at": "2026-11-18T08:59:11",
+  "primary": {
+    "claim": "claim_xgb",
+    "lapse": "lapse_rf"
+  },
+  "models": {
+    "claim": [
+      "claim_baseline_logreg",
+      "claim_lgbm",
+      "claim_rf",
+      "claim_xgb"
+    ],
+    "lapse": [
+      "lapse_baseline_logreg",
+      "lapse_rf",
+      "lapse_xgb"
+    ]
+  },
+  "rows": {
+    "importance": {
+      "claim": 100000,
+      "lapse": 50000
+    },
+    "contributions": 3000,
+    "partial_dependence": 5000
+  },
+  "seed": 42,
+  "assumptions": {
+    "save_rate": 0.1,
+    "cost_per_contact": 20.0
+  },
+  "methods": {
+    "importance": "drop in ROC-AUC, one shuffle per feature",
+    "contributions": "XGBoost/LightGBM TreeSHAP; random forest path decomposition; logistic regression coef x (value - mean)",
+    "partial_dependence": "mean probability with the feature set for every sampled row"
+  }
+}

@@ -1,0 +1,46 @@
+model,feature,mean_abs_contribution,scale,direction,spearman,definition
+logistic regression,zone_group,0.2515840206676042,log-odds,category,,"Rated flood zone group: A, V, X, D or UNKNOWN"
+logistic regression,tenure_years,0.2008030699910452,log-odds,-,-0.9999908768313214,Years from the original new-business date to the policy-year start
+logistic regression,elevated_building,0.18472481646055128,log-odds,-,-1.0,Building is elevated
+logistic regression,floors,0.16733387562068075,log-odds,category,,Number of floors code
+logistic regression,latitude,0.14595300879298173,log-odds,-,-0.9999990621043852,"Latitude, rounded to 0.1 degree by FEMA"
+logistic regression,premium_per_1k_coverage,0.1395252632956831,log-odds,+,0.99999375021697,"Premium per $1,000 of building + contents coverage: the price of cover"
+logistic regression,years_since_purchase,0.12969550389270998,log-odds,-,-0.9999842371364802,Years from the property purchase date to the start (NULL if the date is later or missing)
+logistic regression,obstruction_type,0.12086552755324195,log-odds,category,,Obstruction type below the elevated floor
+logistic regression,new_business,0.11215694199657006,log-odds,+,1.0,First year of the policy (tenure below 1 year)
+logistic regression,policy_cost,0.10438040055367029,log-odds,+,0.9999996656188123,Premium plus fees and surcharges ($)
+logistic regression,mandatory_purchase,0.10254929499060725,log-odds,-,-1.0,Insurance required by the mortgage lender
+logistic regression,acs_median_income,0.10132017062891539,log-odds,-,-0.9999984414072338,Tract median household income ($)
+logistic regression,elevation_certificate,0.10125330818114507,log-odds,category,,Elevation certificate indicator code
+logistic regression,hurricane_wind_storms_10y,0.09651419859614543,log-odds,+,0.9999780105665623,Storms that brought hurricane-force wind (64+ kt) to the cell in the 10 years before the start
+logistic regression,acs_median_age,0.09295239638287585,log-odds,-,-0.9999956958678854,Tract median age
+random forest,tenure_years,0.021673357408555433,probability,-,-0.8091533681683194,Years from the original new-business date to the policy-year start
+random forest,elevation_certificate,0.017179289678750955,probability,category,,Elevation certificate indicator code
+random forest,zone_group,0.011738938833444316,probability,category,,"Rated flood zone group: A, V, X, D or UNKNOWN"
+random forest,new_business,0.01077101800655263,probability,+,0.6755519149801598,First year of the policy (tenure below 1 year)
+random forest,premium_per_1k_coverage,0.008830229533774565,probability,+,0.25598581943077015,"Premium per $1,000 of building + contents coverage: the price of cover"
+random forest,years_since_purchase,0.007873632882971437,probability,+,0.22570137109141772,Years from the property purchase date to the start (NULL if the date is later or missing)
+random forest,premium_change_pct,0.007502311454894993,probability,+,0.5196124260209679,Change in premium from the previous term of the same policy (%)
+random forest,floors,0.007248452751009848,probability,category,,Number of floors code
+random forest,building_coverage,0.006769129035055712,probability,-,-0.7163263952532272,Building coverage ($)
+random forest,term_no,0.006448247669191974,probability,-,-0.576534871470316,"Term number within the rebuilt policy, counting terms since the data begins (2009)"
+random forest,coverage_to_value,0.006421257418496485,probability,+,0.6246427757342741,Building coverage divided by replacement cost (insurance to value)
+random forest,prev_gap_days,0.0052910336911812855,probability,mixed,0.033482482124142655,Days between the end of the previous term and the start of this term
+random forest,primary_residence,0.004986386757743711,probability,-,-0.7232217190428737,Primary residence
+random forest,replacement_cost,0.004234410354238424,probability,-,-0.8086324107132764,Building replacement cost ($)
+random forest,premium,0.0038278100170266367,probability,+,0.13845242239031263,Total premium of the term ($)
+XGBoost,term_no,0.19335776567459106,log-odds,-,-0.4205114924647357,"Term number within the rebuilt policy, counting terms since the data begins (2009)"
+XGBoost,tenure_years,0.1753278374671936,log-odds,-,-0.8647535105284998,Years from the original new-business date to the policy-year start
+XGBoost,zone_group,0.1534828096628189,log-odds,category,,"Rated flood zone group: A, V, X, D or UNKNOWN"
+XGBoost,elevation_certificate,0.13802310824394226,log-odds,category,,Elevation certificate indicator code
+XGBoost,floors,0.1303631216287613,log-odds,category,,Number of floors code
+XGBoost,new_business,0.12479393184185028,log-odds,+,0.6753466154361535,First year of the policy (tenure below 1 year)
+XGBoost,base_flood_elevation,0.07967434078454971,log-odds,+,0.4701235530408363,Base flood elevation (feet)
+XGBoost,primary_residence,0.07812542468309402,log-odds,-,-0.712435599244089,Primary residence
+XGBoost,premium_per_1k_coverage,0.07333096116781235,log-odds,+,0.6569467333850622,"Premium per $1,000 of building + contents coverage: the price of cover"
+XGBoost,obstruction_type,0.058811116963624954,log-odds,category,,Obstruction type below the elevated floor
+XGBoost,coverage_to_value,0.05156969279050827,log-odds,+,0.7965675331159265,Building coverage divided by replacement cost (insurance to value)
+XGBoost,years_since_purchase,0.05116947367787361,log-odds,-,-0.40349371050563854,Years from the property purchase date to the start (NULL if the date is later or missing)
+XGBoost,building_coverage,0.04543383792042732,log-odds,-,-0.7519903082383131,Building coverage ($)
+XGBoost,hfiaa_surcharge,0.0442449226975441,log-odds,+,0.705182902068708,HFIAA surcharge ($)
+XGBoost,latitude,0.041455768048763275,log-odds,-,-0.6333763396211449,"Latitude, rounded to 0.1 degree by FEMA"
