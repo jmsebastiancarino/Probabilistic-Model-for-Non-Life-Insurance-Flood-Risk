@@ -1,0 +1,21 @@
+Rank,Feature,Aggregated normalized gain
+1,new_business,0.11882815
+2,prev_gap_days,0.070519576
+3,days_since_ts_wind,0.0458121746
+4,term_no,0.03838457
+5,tenure_years,0.03586783
+6,elevation_certificate,0.035431795
+7,base_flood_elevation,0.033295564
+8,elevation_difference,0.0292753624
+9,coverage_to_value,0.027164894000000002
+10,building_coverage,0.026409099
+11,obstruction_type,0.025023444
+12,primary_residence,0.022884032
+13,returned_after_lapse,0.022288702940000002
+14,hurricane_wind_storms_10y,0.021990122
+15,precip_annual_mean_mm,0.019834155
+16,floors,0.01932829
+17,zone_group,0.018347194
+18,precip_365d_pct_normal,0.016946588
+19,replacement_cost,0.016624346
+20,elevated_building,0.016568083
