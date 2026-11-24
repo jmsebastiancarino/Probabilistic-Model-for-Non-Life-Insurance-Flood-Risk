@@ -1,7 +1,7 @@
 {
   "eval_split": "test",
   "evaluated": "OOT1 (test, 2021-2022)",
-  "scored_at": "2026-11-17T23:55:43",
+  "scored_at": "2026-11-20T10:37:05",
   "primary": {
     "claim": "claim_xgb",
     "lapse": "lapse_rf"

@@ -9,7 +9,7 @@
   "training_data": "all 26,758,825 training rows, 06b's 28 chunks streamed into a QuantileDMatrix",
   "preprocessing_rows": 1000000,
   "tuning_rows": 500000,
-  "sample_origin": "New manifest of the preprocessing sample",
+  "sample_origin": "Existing training-ID manifest",
   "sample_id_checksum": "877a5067ac349a773de1f3850e4bb75d578b1a489c3e35ebc53d538818c2c96b",
   "features": [
     "premium",

@@ -26,7 +26,7 @@ The two models use `CLAIM_IN_TERM` and `LAPSE`. `CANCEL_IN_TERM` and `NON_RENEWA
 
 All four rows share the same `originalNBDate` (2019-06-01), the date the policy was first bought. That shared value is part of how the rows are linked back into one policy (section 5).
 
-**How it would be used:** each month, score the policies coming up for renewal. High lapse risk points to retention outreach; high claim risk points to pricing and reserving review.
+**How it would be used:** each month, score the policies coming up for renewal. High lapse risk points to retention outreach; high claim risk points to pricing and reserving review. The probabilities also turn into dollars (notebook 10): expected claims = P(claim) × expected claim size, and expected lapsed premium = P(lapse) × premium.
 
 ---
 
@@ -172,12 +172,23 @@ Many integer columns (`occupancyType`, `obstructionType`, `crsClassCode`, `locat
 | `06b_baseline_cancel` | Naive benchmark and logistic regression for the lapse target |
 | `07a_advanced_models_claim` | Gradient boosting (LightGBM or XGBoost), tuning, calibration; severity model for expected loss |
 | `07b_advanced_models_cancel` | Gradient boosting, tuning, calibration; discrete-time hazard or survival model |
-| `08_evaluation_benchmarking_monitoring` | Final scoring of the frozen models on the validation holdout (out-of-time 2, opened once; dry run on test first); benchmark table, confusion matrices and ROC curves, calibration (A/E, ECE, slope), calibration by segment and storm exposure, stability by year, cohort survival analysis for lapse (retention of new-business cohorts, actual vs predicted), simulated monitoring (PSI, A/E, alert rules); appendix: bootstrap of the gains, policy-history sensitivity |
-| `09_explainability_and_report` | SHAP and partial dependence, example explanations, business use, limitations, conclusions |
+| `08a_evaluation_classification` | Final scoring of **every saved model** (claims: logistic regression, random forest, XGBoost, LightGBM; lapse: logistic regression, random forest, XGBoost) on the validation holdout (out-of-time 2, opened once; dry run on test first), saved for 08b. Classification view, one section per target (claim, lapse): benchmark table (ROC-AUC; accuracy, precision, recall, F1 at the main rule), confusion matrices at cut-offs set on **every training row** (riskiest shares, F1-optimal, 0.5), ROC curves, train vs test vs validation, and the saved test results of models not in the registry |
+| `08b_evaluation_additional_analysis` | Reads 08a's predictions; one section per target: probability check (log loss, Brier, skill, A/E), calibration (deciles, ECE, slope, expected vs actual), calibration by segment and storm during the term, stability by year, simulated monitoring (PSI, A/E, alert rules); for lapse, cohort survival analysis (retention of new business, actual vs predicted, and by segment at sale); appendix: bootstrap of the gains, policy-history sensitivity |
+| `09_explainability_and_report` | Explains every model on the validation years: permutation importance (drop in ROC-AUC), feature contributions (exact TreeSHAP for XGBoost and LightGBM, tree path decomposition for the random forests, coefficient × value for logistic regression; no extra package), partial dependence of key features, example policies (waterfall charts); business use: retention lists and an illustrative campaign, yearly recalibration of the lapse model, claim frequency vs price by risk decile and flood zone; limitations, model card, conclusions and recommendations |
+| `10_expected_values` | Turns the probabilities into dollars on both out-of-time splits, from 08a's saved predictions: expected damage ratio (paid ÷ coverage) by flood zone and coverage band, estimated on the training claims; expected claims = P(claim) × damage ratio × coverage; expected lapsed premium = P(lapse) × premium; expected vs actual loss ratio, A/E in dollars (split into frequency × severity) and damage ratio, by year, risk decile and flood zone; probability accuracy (Brier, Brier skill, RMSE, log loss); RMSE and MAD of expected vs actual totals by risk decile and by state |
 
-**Split:** by time, each split after the one before it: **train** 2014–2020; **test** 2021–2022, used to tune and compare models; **validation** 2023 to August 2024, the final holdout, used once in notebook 08. (We name the tuning split "test" and the final holdout "validation"; many ML texts use the opposite names.) Training includes the 2016–2017 storm years, tuning includes Ian (2022), and the final holdout has a calm year (2023) and a storm year (2024). Rolling-origin folds inside 2014–2020 (checking 2017, 2018, 2019 and 2020) are used for tuning, because storm years dominate claims; the holdout years are never used for tuning.
+**Split:** by time, each split after the one before it: **train** 2014–2020; **test** 2021–2022, used to tune and compare models; **validation** 2023 to August 2024, the final holdout, used once in notebooks 08a/08b. (We name the tuning split "test" and the final holdout "validation"; many ML texts use the opposite names.) Training includes the 2016–2017 storm years, tuning includes Ian (2022), and the final holdout has a calm year (2023) and a storm year (2024). Rolling-origin folds inside 2014–2020 (checking 2017, 2018, 2019 and 2020) are used for tuning, because storm years dominate claims; the holdout years are never used for tuning.
 **In-time and out-of-time:** the training years are the development sample; the rolling-origin folds inside 2014–2020 are the in-time validation used for tuning; test (2021–2022) is out-of-time 1 and validation (2023 to August 2024) is out-of-time 2 (notebooks 06a/06b, Step 1.2).
-**Metrics:** two views. As classifiers: confusion matrices with accuracy, precision, recall and F1 at fixed cut-offs (claims: the riskiest 5/10/20% of policy-years; lapse: 10/20/30%; and the default 0.5, which flags almost nobody for a 1% event), and ROC curves with their AUC. As probability models: log loss (also used for tuning), Brier score, skill over the base rate, calibration by decile, and expected vs actual counts.
+**Metrics:** two views. As classifiers: confusion matrices with accuracy, precision, recall and F1 at fixed cut-offs (claims: the riskiest 5/10/20% of policy-years; lapse: 10/20/30%; and the default 0.5, which flags almost nobody for a 1% event), and ROC curves with their AUC. As probability models: log loss (also used for tuning), Brier score, skill over the base rate, calibration by decile, and expected vs actual counts. In dollars (notebook 10): expected claims and expected lapsed premium against the actual amounts, the expected loss ratio (claims ÷ premium), A/E in dollars and the damage ratio (claims ÷ coverage), with RMSE and MAD of the expected totals by risk decile and by state.
+
+**Running the evaluation and explanation notebooks (08a, 08b, 09, 10):**
+- **Inputs:** the models saved by 06a/06b/07a/07b in `data/processed/models/` (one `.joblib` per model; the 07a claim bundles are loaded as saved through an adapter in `src/modeling.py`), their test predictions in `data/processed/predictions/`, and their run records in `reports/`. The model files are not on GitHub; get them from the team folder.
+- **Order:** 08a, then 08b, then 09 and 10; one at a time. 08b and 09 read 08a's predictions and stop if they were made for another split. 10 reads the predictions of **both** splits, so 08a must have run once with `EVAL_SPLIT = "test"` and once with `"valid"`.
+- **The holdout switch:** `EVAL_SPLIT` (Step 0.2 of 08a and 08b) stays `"test"` for dry runs and is set to `"valid"` **once**, in both notebooks, when every model is final. In the final run, 08a shows train, test (from each model's saved test predictions) and validation side by side.
+- **Primary model** (shown in the charts): the advanced model with the lowest test log loss, or, for the 07a claim models that save no log loss, the highest test recall when exactly 10% are flagged; `PRIMARY_CHOICE` overrides it. Final run: XGBoost (claims) and the random forest (lapse).
+- **Outputs:** every file carries its split: `reports/eval_test_*`, `reports/eval_valid_*` (08a/08b), `reports/explain_valid_*` (09) and `reports/expected_value_*` (10), with the matching `fig_*.png`. 08a (Step 5.3) and 08b (Step 4.3) also write their results as Excel workbooks, `reports/08a Evaluation Classification Results (test run).xlsx` and `reports/08b Evaluation Additional Analysis Results (test run).xlsx` (or `(validation run)`), and notebook 10's tables are compiled, one tab each, in `reports/Expected Value Results.xlsx`; 08a also saves `data/processed/predictions/eval_<split>_<target>_predictions.parquet`.
+- **Run time** on a 14-core, 24 GB laptop: about 1–1½ hours for 08a (it scores every training row to set the cut-offs), 20–30 minutes for 08b, 15–25 minutes for 09 and about 2 minutes for 10.
+- **Packages:** `requirements.txt` includes `scikit-learn`, `xgboost` and `lightgbm`; on macOS, XGBoost also needs `brew install libomp`.
 
 ## 9. Data-quality findings so far
 
@@ -198,7 +209,9 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 ## 10. Known risks and limitations
 
 - **Linkage error** in the reconstructed policy key affects the non-renewal label and the claim matching.
-- **Weather drives claims.** A model trained on a storm year may not carry over to calmer years, so the time-based split and disaster features matter.
+- **Weather drives claims.** A model trained on a storm year may not carry over to calmer years, so the time-based split and disaster features matter. In dollars the effect is larger still: by state and year, the expected claim dollars miss by about 90–120% of the actual for every model (notebook 10), so expected claims are a long-run average, not a forecast of a given year.
+- **Claim size drifts.** The expected claim size (damage ratio by flood zone and coverage band) is estimated on 2014–2020; claims in 2023–24 paid about 39% more for the same coverage (notebook 10). The ratios need updating on recent claims, and a dedicated severity model is a natural next step.
+- **Ranking is not the same as calibration.** The claim tree models (trained on every claim plus 10% of the other policy-years) rank best but their probability values are off (XGBoost: count A/E 1.43 on validation), so recalibrate them before using them for expected amounts (notebooks 08b, 10).
 - **Class imbalance** for claims (about 1%): we keep the real claim rate (no class weights), read precision, recall and F1 at cut-offs that flag the riskiest policy-years rather than accuracy at 0.5, and check the probabilities with log loss, Brier score and calibration.
 - **No personal or behavioral data:** no demographics, payment history or contact data.
 - **Data volume:** handled out of core with DuckDB and Parquet.
@@ -212,7 +225,7 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 │   ├── interim/      # DuckDB database and temporary files (gitignored)
 │   └── processed/    # cleaned and modeling tables (gitignored)
 ├── docs/             # data dictionaries, field mapping, cleaning decisions
-├── notebooks/        # 00–09, see section 8
+├── notebooks/        # 00–10, see section 8
 ├── src/              # shared functions, imported by the notebooks (documented with docstrings)
 │   ├── paths.py      # folder locations, correct from any working directory
 │   ├── db.py         # DuckDB connection and raw views
@@ -223,8 +236,12 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 │   ├── clean.py      # cleaned views: column cleaning, de-duplication, dq_ flags
 │   ├── geo.py        # state FIPS codes and geography keys
 │   ├── features.py   # feature list and the SQL that builds each group
-│   └── precip.py     # rainfall features from NOAA CPC Unified (notebook 02b)
-├── reports/          # audits, cleaning log, figures, final report
+│   ├── precip.py     # rainfall features from NOAA CPC Unified (notebook 02b)
+│   ├── modeling.py   # saved preprocessing classes, and the adapter for the 07a claim bundles
+│   ├── evaluation.py # model registry, scoring, cut-offs, classification and probability checks (08a, 08b)
+│   ├── explain.py    # permutation importance, feature contributions, partial dependence (09)
+│   └── workbooks.py  # Excel workbooks of the 08a and 08b results (08a Step 5.3, 08b Step 4.3)
+├── reports/          # audits, cleaning log, figures, final report, results workbooks (.xlsx)
 ├── requirements.txt
 └── README.md
 ```
@@ -241,7 +258,7 @@ Every rule is recorded in `reports/cleaning_log.csv` with the table, column, rul
 | 6 | EDA and features | Driver analysis, feature tables | Not started |
 | 7 | Baselines | Logistic models for claim and lapse | Not started |
 | 8 | Advanced models | Calibrated gradient boosting and survival models | Not started |
-| 9 | Evaluation and report | Benchmarks, monitoring, explanations, final report | Not started |
+| 9 | Evaluation and report | Benchmarks, monitoring, explanations, final report | Done (notebooks 08a, 08b, 09, 10; final run on the validation years) |
 
 ## 13. Reproducibility
 
